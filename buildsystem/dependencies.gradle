@@ -1,0 +1,71 @@
+ext {
+    // Versions
+    supportLibraryVersion = '27.1.1'
+    daggerVersion = '2.15'
+    okHttpVersion = '3.10.0'
+    retrofitVersion = '2.3.0'
+    stethoVersion = '1.5.0'
+    mosbyVersion = '3.1.0'
+    glideVersion = '4.6.1'
+    paperParcelVersion = '2.0.5'
+    ankoVersion = '0.10.4'
+
+    libs = [
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
+            ankoCommons             : "org.jetbrains.anko:anko-commons:$ankoVersion",
+            ankoCommonsSupportV7    : "org.jetbrains.anko:anko-appcompat-v7-commons:$ankoVersion",
+            ankoCommonsSupportV4    : "org.jetbrains.anko:anko-support-v4-commons:$ankoVersion",
+            appCompat               : "com.android.support:appcompat-v7:$supportLibraryVersion",
+            recyclerView            : "com.android.support:recyclerview-v7:$supportLibraryVersion",
+            cardView                : "com.android.support:cardview-v7:$supportLibraryVersion",
+            gridLayout              : "com.android.support:gridlayout-v7:$supportLibraryVersion",
+            mediaRouter             : "com.android.support:mediarouter-v7:$supportLibraryVersion",
+            palette                 : "com.android.support:palette-v7:$supportLibraryVersion",
+            preference              : "com.android.support:preference-v7:$supportLibraryVersion",
+            annotations             : "com.android.support:support-annotations:$supportLibraryVersion",
+            constraintLayout        : "com.android.support.constraint:constraint-layout:1.0.2",
+            mosby                   : "com.hannesdorfmann.mosby3:mvp:$mosbyVersion",
+            mosbyMvi                : "com.hannesdorfmann.mosby3:mvi:$mosbyVersion",
+            mosbyViewState          : "com.hannesdorfmann.mosby3:viewstate:$mosbyVersion",
+            mosbyLce                : "com.hannesdorfmann.mosby3:mvp-lce:$mosbyVersion",
+            mosbyNullObject         : "com.hannesdorfmann.mosby3:mvp-nullobject-presenter:$mosbyVersion",
+            rxJava2                 : "io.reactivex.rxjava2:rxjava:2.1.12",
+            rxKotlin2               : "io.reactivex.rxjava2:rxkotlin:2.2.0",
+            rxAndroid2              : "io.reactivex.rxjava2:rxandroid:2.0.2",
+            dagger                  : "com.google.dagger:dagger:$daggerVersion",
+            daggerAndroid           : "com.google.dagger:dagger-android:$daggerVersion",
+            daggerAndroidSupport    : "com.google.dagger:dagger-android-support:$daggerVersion",
+            gson                    : "com.google.code.gson:gson:2.8.0",
+            okHttp                  : "com.squareup.okhttp3:okhttp:$okHttpVersion",
+            okHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
+            retrofit                : "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            retrofitRxJava2Adapter  : "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+            threetenabp             : "com.jakewharton.threetenabp:threetenabp:1.0.5",
+            timber                  : "com.jakewharton.timber:timber:4.7.0",
+            stetho                  : "com.facebook.stetho:stetho:$stethoVersion",
+            stethoOkhttp            : "com.facebook.stetho:stetho-okhttp3:$stethoVersion",
+            glide                   : "com.github.bumptech.glide:glide:$glideVersion",
+            strictmodeNotifier      : "com.nshmura:strictmode-notifier:0.9.3",
+            blockCanary             : "com.github.markzhai:blockcanary-android:1.5.0",
+            leakCanary              : "com.squareup.leakcanary:leakcanary-android:1.5.4",
+            hockeyApp               : "net.hockeyapp.android:HockeySDK:5.1.0",
+            paperParcel             : "nz.bradcampbell:paperparcel:$paperParcelVersion",
+    ]
+
+    proc = [
+            dagger         : "com.google.dagger:dagger-compiler:$daggerVersion", // kapt
+            daggerAndroid  : "com.google.dagger:dagger-android-processor:$daggerVersion", // kapt
+            javaxAnnotation: "org.glassfish:javax.annotation:10.0-b28", // kapt (compileOnly)
+            glide          : "com.github.bumptech.glide:compiler:$glideVersion", // kapt
+            paperParcel    : "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion", //kapt
+    ]
+
+    test = [
+            mockito              : "org.mockito:mockito-core:2.18.0",
+            mockitoKotlin        : "com.nhaarman:mockito-kotlin-kt1.1:1.5.0",
+            junit                : "junit:junit:4.12",
+            mockWebServer        : "com.squareup.okhttp3:mockwebserver:$okHttpVersion",
+            threetenabp          : 'org.threeten:threetenbp:1.3.2'
+    ]
+}

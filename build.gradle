@@ -1,0 +1,57 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+
+    ext {
+        kotlinVersion = '1.2.41'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        google()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2"
+        classpath "com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:0.6"
+        classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        // There is a problem with this plugin when using Gradle Plugin >= 3.0.0-alpha3
+        // https://jira.sonarsource.com/browse/SONARGRADL-41
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"
+    }
+}
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+}
+
+detekt {
+    profile("main") {
+        input = "$projectDir/app/src/main/kotlin"
+        config = "$projectDir/default-detekt-config.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+        maven { url "https://jitpack.io" }
+        maven { url "https://clojars.org/repo/" }
+        maven { url "https://maven.fabric.io/public" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+apply from: 'buildsystem/dependencies.gradle'
+apply from: 'buildsystem/bitrise.gradle'
+apply from: 'buildsystem/secrets.gradle'

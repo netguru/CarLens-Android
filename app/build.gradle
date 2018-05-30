@@ -1,0 +1,217 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.frogermcs.androiddevmetrics'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+apply from: '../buildsystem/sonarqube.gradle'
+
+ext {
+
+    secrets = [
+            // define your app secrets, for example:
+            hockeyAppId: keyProperty("HOCKEY_APP_ID")
+    ]
+}
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "co.netguru.android.carrecognition"
+        minSdkVersion 18
+        targetSdkVersion 27
+        versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
+        versionName '0.1.0'
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix "-DEBUG"
+            applicationIdSuffix ".debug"
+            testCoverageEnabled true
+            debuggable true
+            minifyEnabled true
+            shrinkResources false
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro', 'proguard-rules-test.pro'
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "api"
+
+    productFlavors {
+        mock {
+            versionNameSuffix "-MOCK"
+            applicationIdSuffix ".mock"
+            dimension "api"
+
+            // put your secrets in the BuildConfig.java class, for example:
+            buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
+        }
+        production {
+            dimension "api"
+            // inherit
+        }
+    }
+
+    variantFilter { variant ->
+        def buildName = variant.buildType.name
+        def flavorName = variant.getFlavors().get(0).name
+        // remove unnecessary variants
+        ['release'].each {
+            if (buildName == it) {
+                ['mock'].each {
+                    if (flavorName == it) {
+                        variant.setIgnore(true)
+                    }
+                }
+            }
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    sourceSets.all {
+        it.java.srcDir "src/$it.name/kotlin"
+    }
+
+    junitJacoco {
+        jacocoVersion='0.7.9'
+        excludes = ['android/databinding/**/*.class',
+                    '**/android/databinding/*Binding.class',
+                    '**/BR.*',
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/BuildConfig.*',
+                    '**/Manifest*.*',
+                    '**/*$ViewInjector*.*',
+                    '**/*$ViewBinder*.*',
+                    '**/*_MembersInjector.class',
+                    '**/Dagger*Component.class',
+                    '**/Dagger*Component$Builder.class',
+                    '**/*Module_*Factory.class',
+                    '**/AutoValue_*.*',
+                    '**/*JavascriptBridge.class',
+                    '**/Lambda$*.class',
+                    '**/Lambda.class',
+                    '**/*Lambda.class',
+                    '**/*Lambda*.class']
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+configurations {
+    dependencyUpdates.resolutionStrategy = {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+
+    //Kotlin
+    implementation libs.kotlin
+
+    // Anko Commons
+    implementation libs.ankoCommons
+    implementation libs.ankoCommonsSupportV7
+    implementation libs.ankoCommonsSupportV4
+
+    // Support
+    implementation libs.appCompat
+    implementation libs.recyclerView
+
+    // MVP
+    implementation(libs.mosby) {
+        exclude module: 'appcompat-v7'
+        exclude module: 'support-annotations'
+    }
+
+    // Dagger
+    implementation libs.dagger
+    implementation libs.daggerAndroid
+    implementation libs.daggerAndroidSupport
+    kapt proc.dagger
+    kapt proc.daggerAndroid
+    compileOnly proc.javaxAnnotation
+
+    //RxJava
+    implementation libs.rxJava2
+    implementation (libs.rxKotlin2)  {
+        exclude module: 'rxjava'
+        exclude module: 'kotlin-stdlib'
+    }
+    implementation(libs.rxAndroid2) {
+        exclude module: 'rxjava'
+    }
+
+    // OkHttp + Retrofit
+    implementation libs.okHttp
+    implementation libs.okHttpLoggingInterceptor
+    implementation libs.retrofit
+    implementation libs.retrofitGsonConverter
+    implementation libs.retrofitRxJava2Adapter
+
+    // PaperParcel
+    implementation libs.paperParcel
+    kapt proc.paperParcel
+
+    // Timber
+    implementation libs.timber
+
+    // Stetho
+    debugImplementation libs.stetho
+
+    // LeakCanary
+    debugImplementation libs.leakCanary
+
+    // BlockCanary
+    debugImplementation libs.blockCanary
+
+    // StrictMode
+    debugImplementation libs.strictmodeNotifier
+
+    // Unit testing
+    testImplementation test.junit
+    testImplementation test.mockito
+    testImplementation test.mockitoKotlin
+}

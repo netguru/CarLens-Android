@@ -1,0 +1,86 @@
+android.applicationVariants.all { variant ->
+    task("sonarqube${variant.getName().capitalize()}").doLast {
+        sonarqube.ext.sonarCurBuildType = variant.getBuildType().name
+        sonarqube.ext.sonarCurFlavor = variant.getFlavorName()
+        sonarqube.ext.sonarConfig.versionName = variant.getVersionName()
+        sonarqube.ext.sonarConfig.applicationId = android.defaultConfig.applicationId
+        //if you want separate projects for every variant replace this value with variant.getApplicationId()
+
+        //get source and test directories
+        sonarqube.ext.sonarConfig.sources = variant.getSourceSets().collect {
+            it.getJavaDirectories() + it.getResDirectories()
+        }.flatten().findAll {
+            it.exists()
+        }.collect {
+            it.path.substring(projectDir.path.length() + 1)
+        }.join(",")
+
+        def testDirectories = android.sourceSets.test.java.srcDirs + android.sourceSets.test.res.srcDirs +
+                android.sourceSets.androidTest.java.srcDirs + android.sourceSets.androidTest.res.srcDirs
+        if (variant.getTestVariant() != null)
+            sonarqube.ext.sonarConfig.tests = variant.getTestVariant().getSourceSets().collect {
+                it.getJavaDirectories() + it.getResDirectories()
+            }.plus(testDirectories).flatten().findAll {
+                it.exists()
+            }.collect {
+                it.path.substring(projectDir.path.length() + 1)
+            }.unique().join(",")
+        else
+            sonarqube.ext.sonarConfig.tests = testDirectories.findAll { it.exists() }.collect {
+                it.path.substring(projectDir.path.length() + 1)
+            }.join(",")
+
+        //run sonarqube with prepopulated fields
+        tasks["sonarqube"].execute()
+    }
+}
+
+sonarqube {
+
+    ext {
+        sonarConfig = [
+                projectName : "Android Template", //project name as displayed in SonarQube
+                analysisMode: (bitrise.cli.isPr) ? "preview" : "publish", //preview is required for github plugin
+                githubRepo  : "netguru/netguru-android-template" //optional - github plugin repo
+        ]
+    }
+
+    properties {
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-25/android.jar,"
+        // required metadata for sonarqube
+        property "sonar.login", keyProperty('SONAR_ACCESS_TOKEN') //access token as login
+        property "sonar.projectKey", sonarConfig.applicationId
+        property "sonar.projectName", sonarConfig.projectName
+        property "sonar.projectVersion", sonarConfig.versionName
+        property "sonar.host.url", "https://sonar.devguru.co:443" //https - port 443
+
+        //project config - directories
+        property "sonar.java.source", "1.7"
+        property "sonar.sources", sonarConfig.sources
+        property "sonar.binaries", "build/intermediates/classes/${sonarCurFlavor}/${sonarCurBuildType}"
+        property "sonar.java.binaries", "build/intermediates/classes/${sonarCurFlavor}/${sonarCurBuildType}"
+        property "sonar.tests", sonarConfig.tests
+        property "sonar.java.test.binaries", "build/intermediates/classes/${sonarCurFlavor}/${sonarCurBuildType}"
+        property "sonar.libraries", libraries
+        property "sonar.java.libraries", libraries
+        property "sonar.java.test.libraries", libraries
+        // path to coverage reports
+        property "sonar.jacoco.reportPath", "build/jacoco/test${sonarCurFlavor.capitalize()}${sonarCurBuildType.capitalize()}UnitTest.exec"
+        //coverage plugin
+        property "sonar.java.coveragePlugin", "jacoco"
+        //path to lint reports
+        property "sonar.android.lint.report", "build/outputs/lint-results-${sonarCurFlavor}${sonarCurBuildType.capitalize()}.xml"
+
+        property "sonar.analysis.mode", sonarConfig.analysisMode //analysis mode
+
+        property "sonar.scm.provider", "git" //scm provider
+
+        //Github plugin
+        //github oauth access token
+        property "sonar.github.oauth", (bitrise.cli.isPr) ? keyProperty('GITHUB_OAUTH_TOKEN') : null
+        //project repository
+        property "sonar.github.repository", (bitrise.cli.isPr) ? sonarConfig.githubRepo : null
+        //pull request number
+        property "sonar.github.pullRequest", (bitrise.cli.isPr) ? bitrise.io.pullRequest : null
+    }
+}
