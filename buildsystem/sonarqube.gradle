@@ -39,9 +39,9 @@ sonarqube {
 
     ext {
         sonarConfig = [
-                projectName : "Android Template", //project name as displayed in SonarQube
+                projectName : "Car recognition ", //project name as displayed in SonarQube
                 analysisMode: (bitrise.cli.isPr) ? "preview" : "publish", //preview is required for github plugin
-                githubRepo  : "netguru/netguru-android-template" //optional - github plugin repo
+                githubRepo  : "netguru/car-recognition-android" //optional - github plugin repo
         ]
     }
 
