@@ -1,4 +1,4 @@
-package co.netguru.android.template.application
+package co.netguru.android.carrecognition.application
 
 import io.reactivex.exceptions.UndeliverableException
 import timber.log.Timber

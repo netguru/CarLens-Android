@@ -1,7 +1,7 @@
-package co.netguru.android.template.application
+package co.netguru.android.carrecognition.application
 
 import android.content.Context
-import co.netguru.android.template.application.scope.AppScope
+import co.netguru.android.carrecognition.application.scope.AppScope
 import javax.inject.Inject
 
 /**
