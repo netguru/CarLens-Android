@@ -64,6 +64,7 @@ android {
 
             // put your secrets in the BuildConfig.java class, for example:
             buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
+            buildConfigField 'String', 'baseUrl', "\"https://dev.sighthoundapi.com/\""
         }
         production {
             dimension "api"
@@ -190,6 +191,7 @@ dependencies {
     implementation libs.retrofit
     implementation libs.retrofitGsonConverter
     implementation libs.retrofitRxJava2Adapter
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
 
     // PaperParcel
     implementation libs.paperParcel
@@ -197,6 +199,8 @@ dependencies {
 
     // Timber
     implementation libs.timber
+
+
 
     // Stetho
     debugImplementation libs.stetho
@@ -214,4 +218,13 @@ dependencies {
     testImplementation test.junit
     testImplementation test.mockito
     testImplementation test.mockitoKotlin
+
+    //TODO: @bochen tidy it up
+    implementation 'com.github.google:cameraview:3eaeac09a7'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:design:27.1.1'
+    implementation("com.github.hotchemi:permissionsdispatcher:3.2.0") {
+        exclude module: "support-v13"
+    }
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:3.2.0"
 }
