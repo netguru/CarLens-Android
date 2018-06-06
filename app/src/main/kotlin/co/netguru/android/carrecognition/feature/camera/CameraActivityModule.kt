@@ -5,7 +5,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-abstract class CameraModule {
+abstract class CameraActivityModule {
 
     @Binds
     @ActivityScope

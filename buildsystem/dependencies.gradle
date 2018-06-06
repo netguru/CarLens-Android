@@ -9,6 +9,7 @@ ext {
     glideVersion = '4.6.1'
     paperParcelVersion = '2.0.5'
     ankoVersion = '0.10.4'
+    permissionDispatcherVersion = '3.2.0'
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -24,6 +25,7 @@ ext {
             preference              : "com.android.support:preference-v7:$supportLibraryVersion",
             annotations             : "com.android.support:support-annotations:$supportLibraryVersion",
             constraintLayout        : "com.android.support.constraint:constraint-layout:1.0.2",
+            design                  : "com.android.support:design:$supportLibraryVersion",
             mosby                   : "com.hannesdorfmann.mosby3:mvp:$mosbyVersion",
             mosbyMvi                : "com.hannesdorfmann.mosby3:mvi:$mosbyVersion",
             mosbyViewState          : "com.hannesdorfmann.mosby3:viewstate:$mosbyVersion",
@@ -51,6 +53,8 @@ ext {
             leakCanary              : "com.squareup.leakcanary:leakcanary-android:1.5.4",
             hockeyApp               : "net.hockeyapp.android:HockeySDK:5.1.0",
             paperParcel             : "nz.bradcampbell:paperparcel:$paperParcelVersion",
+            permissiondispatcher    : "com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion",
+            cameraview              : "com.github.google:cameraview:3eaeac09a7"
     ]
 
     proc = [
@@ -59,6 +63,7 @@ ext {
             javaxAnnotation: "org.glassfish:javax.annotation:10.0-b28", // kapt (compileOnly)
             glide          : "com.github.bumptech.glide:compiler:$glideVersion", // kapt
             paperParcel    : "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion", //kapt
+            permissiondispatcher: "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion",
     ]
 
     test = [
