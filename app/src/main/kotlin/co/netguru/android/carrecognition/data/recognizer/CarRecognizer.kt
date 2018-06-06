@@ -1,20 +1,19 @@
 package co.netguru.android.carrecognition.data.recognizer
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.data.rest.Response
 import co.netguru.android.carrecognition.data.rest.SighthoundApi
 import io.reactivex.Single
 import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.io.File
+import javax.inject.Inject
 
-
-class CarRecognizer(private val api: SighthoundApi) {
+@AppScope
+class CarRecognizer @Inject constructor(private val api: SighthoundApi) {
 
     companion object {
         private const val MEDIA_TYPE = "image/jpeg"
