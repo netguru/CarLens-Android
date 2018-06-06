@@ -24,20 +24,15 @@ class CameraPresenter @Inject constructor(private val carRecognizer: CarRecogniz
     }
 
     override fun cameraButtonClicked() {
-        //get bitmap
         ifViewAttached {
-            it.showResult("")
+            it.clearResult()
             it.showProgress(true)
             it.getCameraShot()
         }
-
     }
 
     override fun pictureTaken(data: ByteArray?) {
-        Timber.d("picture taken ${data?.size}")
-        //call endpoind to check what car is on the photo
         if (data != null) {
-            Timber.d("picture taken data != null")
             compositeDisposable += carRecognizer.recognize(data)
                     .applyIoSchedulers()
                     .subscribeBy(
@@ -46,20 +41,16 @@ class CameraPresenter @Inject constructor(private val carRecognizer: CarRecogniz
                                     val resultObject = result.objects.firstOrNull()
                                     it.showProgress(false)
                                     if(resultObject == null){
-                                        it.showResult("no car found")
+                                        it.showNoCarFoundResult()
                                     } else {
-                                        val resultString = with(resultObject.vehicleAnnotation.attributes.system){
-                                            "Maker= ${make.name} [confidence= ${make.confidence}] \n" +
-                                                    " Model = ${model.name} [confidence= ${model.confidence}]"
-                                        }
-                                        it.showResult(resultString)
+                                        val details = resultObject.vehicleAnnotation.attributes.system
+                                        it.showResult(details.make.name, details.make.confidence, details.model.name, details.model.confidence)
                                     }
                                 }
                             }, onError = { t: Throwable ->
                                 ifViewAttached {
-                                    it.showResult(t.message.toString())
+                                    it.showError(t.message.toString())
                                     it.showProgress(false)
-                                    t.printStackTrace()
                                 }
                     })
         }

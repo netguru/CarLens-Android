@@ -15,7 +15,6 @@ import javax.inject.Inject
 
 @RuntimePermissions
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
-
     @Inject
     lateinit var cameraPresenter: Lazy<CameraPresenter>
 
@@ -71,8 +70,20 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    override fun showResult(result: String) {
-        resultText.text = result
+    override fun showResult(makeName: String, makeConfidence: Double, modelName: String, modelConfidence: Double) {
+        resultText.text = getString(R.string.car_recognized_message, makeName, makeConfidence, modelName, modelConfidence)
+    }
+
+    override fun clearResult() {
+        resultText.text = ""
+    }
+
+    override fun showNoCarFoundResult() {
+        resultText.text = getString(R.string.no_car_found)
+    }
+
+    override fun showError(message: String) {
+        resultText.text = getString(R.string.error_message, message)
     }
 
     override fun showProgress(visible: Boolean) {
