@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="co.netguru.android.carrecognition"
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    package="co.netguru.android.carrecognition"
           xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name="co.netguru.android.carrecognition.application.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round">
+        android:roundIcon="@mipmap/ic_launcher_round"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name="co.netguru.android.carrecognition.feature.splash.SplashActivity"
@@ -18,5 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:label="@string/camera"
+            android:theme="@style/Theme.AppCompat"
+            android:name=".feature.camera.CameraActivity" />
     </application>
 </manifest>
