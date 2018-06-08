@@ -72,6 +72,10 @@ android {
         }
     }
 
+    aaptOptions {
+        noCompress '.tflite'
+    }
+
     variantFilter { variant ->
         def buildName = variant.buildType.name
         def flavorName = variant.getFlavors().get(0).name
@@ -105,7 +109,7 @@ android {
     }
 
     junitJacoco {
-        jacocoVersion='0.7.9'
+        jacocoVersion = '0.7.9'
         excludes = ['android/databinding/**/*.class',
                     '**/android/databinding/*Binding.class',
                     '**/BR.*',
@@ -130,6 +134,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 configurations {
@@ -179,7 +184,7 @@ dependencies {
 
     //RxJava
     implementation libs.rxJava2
-    implementation (libs.rxKotlin2)  {
+    implementation(libs.rxKotlin2) {
         exclude module: 'rxjava'
         exclude module: 'kotlin-stdlib'
     }
@@ -218,7 +223,10 @@ dependencies {
     testImplementation test.mockito
     testImplementation test.mockitoKotlin
 
-    implementation libs.cameraview
+    implementation libs.fotoapparat
+    implementation libs.exifinterface
+
+    implementation libs.tensorflowLite
 
     // Permission Dispatcher
     implementation(libs.permissiondispatcher) {

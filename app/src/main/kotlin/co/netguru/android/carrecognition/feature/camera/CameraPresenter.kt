@@ -1,59 +1,52 @@
 package co.netguru.android.carrecognition.feature.camera
 
 import co.netguru.android.carrecognition.application.scope.ActivityScope
-import co.netguru.android.carrecognition.data.recognizer.CarRecognizer
+import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
+import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import io.fotoapparat.preview.Frame
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.internal.schedulers.RxThreadFactory
 import io.reactivex.rxkotlin.plusAssign
-import javax.inject.Inject
-import co.netguru.android.carrecognition.common.extensions.*;
-import co.netguru.android.carrecognition.data.rest.Response
 import io.reactivex.rxkotlin.subscribeBy
-import timber.log.Timber
+import javax.inject.Inject
 
 @ActivityScope
-class CameraPresenter @Inject constructor(private val carRecognizer: CarRecognizer)
+class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer)
     : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
 
     private val compositeDisposable = CompositeDisposable()
+    private var processing = false
 
     override fun destroy() {
         super.destroy()
         compositeDisposable.clear()
     }
 
-    override fun cameraButtonClicked() {
-        ifViewAttached {
-            it.clearResult()
-            it.showProgress(true)
-            it.getCameraShot()
+    override fun processFrame(it: Frame) {
+        if (processing) {
+            return
         }
-    }
+        processing = true
 
-    override fun pictureTaken(data: ByteArray?) {
-        if (data != null) {
-            compositeDisposable += carRecognizer.recognize(data)
-                    .applyIoSchedulers()
-                    .subscribeBy(
-                            onSuccess = { result: Response ->
-                                ifViewAttached {
-                                    val resultObject = result.objects.firstOrNull()
-                                    it.showProgress(false)
-                                    if(resultObject == null){
-                                        it.showNoCarFoundResult()
-                                    } else {
-                                        val details = resultObject.vehicleAnnotation.attributes.system
-                                        it.showResult(details.make.name, details.make.confidence, details.model.name, details.model.confidence)
-                                    }
-                                }
-                            }, onError = { t: Throwable ->
-                                ifViewAttached {
-                                    it.showError(t.message.toString())
-                                    it.showProgress(false)
-                                }
-                    })
-        }
+        compositeDisposable += tFlowRecognizer
+                .classify(it)
+                .applyComputationSchedulers()
+                .subscribeBy(
+                        onSuccess = { result ->
+                            ifViewAttached { view ->
+                                view.printResult(result.map {
+                                    "${it.first} (${(-1 * it.second).toFloat() / Byte.MAX_VALUE})"
+                                }.reduce { acc, s -> "$acc \n $s" })
+                            }
+                            processing = false
+                        },
+                        onError = { error ->
+                            ifViewAttached {
+                                it.printResult(error.stackTrace.toString())
+                            }
+                            processing = false
+                        }
+                )
     }
 
 }

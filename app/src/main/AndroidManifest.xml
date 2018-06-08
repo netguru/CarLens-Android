@@ -25,6 +25,7 @@
         </activity>
         <activity
             android:label="@string/camera"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
             android:name=".feature.camera.CameraActivity" />
     </application>
