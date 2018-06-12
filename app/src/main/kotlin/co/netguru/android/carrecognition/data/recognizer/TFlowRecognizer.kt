@@ -1,11 +1,9 @@
 package co.netguru.android.carrecognition.data.recognizer
 
-import android.graphics.Bitmap
-import android.graphics.Bitmap.createBitmap
+import android.content.Context
+import co.netguru.android.carrecognition.application.ApplicationModule
 import co.netguru.android.carrecognition.application.scope.AppScope
-import co.netguru.android.carrecognition.common.extensions.getPixels
-import co.netguru.android.carrecognition.common.extensions.rotate
-import co.netguru.android.carrecognition.common.extensions.yuvNv21toRgb
+import co.netguru.android.carrecognition.common.extensions.ImageUtils
 import io.fotoapparat.preview.Frame
 import io.reactivex.Single
 import org.tensorflow.lite.Interpreter
@@ -19,14 +17,18 @@ import kotlin.system.measureTimeMillis
 
 @AppScope
 class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
-                                          @Named("labels") private val labels: List<String>) {
+                                          private val context: Context,
+                                          @Named(ApplicationModule.LABELS_BINDING) private val labels: List<String>) {
 
-    private val inputWidth = 224
-    private val inputHeight = 224
-    private val DIM_BATCH_SIZE = 1
-    private val DIM_PIXEL_SIZE = 3
+    companion object {
+        const val INPUT_WIDTH = 224
+        const val INPUT_HEIGHT = 224
+        const val DIM_BATCH_SIZE = 1
+        const val DIM_PIXEL_SIZE = 3
+    }
+
     private val imgData = ByteBuffer
-            .allocateDirect(DIM_BATCH_SIZE * inputWidth * inputHeight * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
+            .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
             .apply {
                 order(ByteOrder.nativeOrder())
             }
@@ -40,16 +42,18 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
             val time = measureTimeMillis {
 
                 imgData.rewind()
-                prepareBitmap(frame).forEach {
-                    addPixelValue(it)
-                }
+
+                ImageUtils.prepareBitmap(context, frame.image, frame.size.width, frame.size.height, frame.rotation, INPUT_WIDTH)
+                        .forEach {
+                            addPixelValue(it)
+                        }
                 
                 tflowTime = measureTimeMillis {
                     tflow.run(imgData, result)
                 }
 
                 finalResult = result[0]
-                        .mapIndexed { index, byte -> Pair(index, byte) }
+                        .mapIndexed { index, confidence -> Pair(index, confidence) }
                         .sortedBy { it.second }
                         .take(1)
                         .map { Pair(labels[it.first], it.second) }
@@ -59,21 +63,6 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         }
     }
 
-    private fun prepareBitmap(frame: Frame): IntArray {
-        val baseBitmap = createBitmap(frame.image.yuvNv21toRgb(frame.size.width, frame.size.height),
-                0,
-                frame.size.width,
-                frame.size.width,
-                frame.size.height,
-                Bitmap.Config.ARGB_8888)
-        val scaledBitmap = Bitmap.createScaledBitmap(baseBitmap, inputWidth, inputHeight, false)
-        val rotatedBitmap = scaledBitmap.rotate(-frame.rotation.toFloat())
-        val intValues = rotatedBitmap.getPixels(inputWidth * inputHeight)
-        baseBitmap.recycle()
-        scaledBitmap.recycle()
-        rotatedBitmap.recycle()
-        return intValues
-    }
 
 
     private fun addPixelValue(pixelValue: Int) {

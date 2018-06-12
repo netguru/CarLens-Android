@@ -14,6 +14,12 @@ import javax.inject.Named
 @Module
 class ApplicationModule {
 
+    companion object {
+        const val MODEL_PATH = "mobilenet_quant_v1_224.tflite"
+        const val LABELS_PATH = "labels.txt"
+        const val LABELS_BINDING = "labels"
+    }
+
     @Provides
     @AppScope
     fun rxJavaErrorHandler(): RxJavaErrorHandler = RxJavaErrorHandlerImpl()
@@ -25,7 +31,7 @@ class ApplicationModule {
     @Provides
     @AppScope
     fun provideTensorFlow(context: Context): Interpreter {
-        val fileDescriptor = context.assets.openFd("mobilenet_quant_v1_224.tflite")
+        val fileDescriptor = context.assets.openFd(MODEL_PATH)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         val fileChannel = inputStream.channel
         val startOffset = fileDescriptor.startOffset
@@ -35,9 +41,9 @@ class ApplicationModule {
 
     @Provides
     @AppScope
-    @Named("labels")
+    @Named(LABELS_BINDING)
     fun provideLabels(context: Context): List<String> {
-        val stream = context.assets.open("labels.txt")
+        val stream = context.assets.open(LABELS_PATH)
         return stream.bufferedReader().use(BufferedReader::readText).split("\n")
     }
 }
