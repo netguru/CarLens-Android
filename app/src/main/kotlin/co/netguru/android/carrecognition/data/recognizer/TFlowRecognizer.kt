@@ -39,15 +39,9 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
             var tflowTime = 0L
             val time = measureTimeMillis {
 
-                val intValues = prepareBitmap(frame)
-
-                if (imgData == null) {
-                    throw IllegalStateException("img data buffer is null")
-                }
                 imgData.rewind()
-
-                intValues.forEachIndexed { index, _ ->
-                    addPixelValue(intValues[index])
+                prepareBitmap(frame).forEach {
+                    addPixelValue(it)
                 }
                 
                 tflowTime = measureTimeMillis {
