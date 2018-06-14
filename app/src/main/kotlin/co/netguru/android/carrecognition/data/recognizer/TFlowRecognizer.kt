@@ -1,7 +1,7 @@
 package co.netguru.android.carrecognition.data.recognizer
 
 import android.content.Context
-import co.netguru.android.carrecognition.application.ApplicationModule
+import co.netguru.android.carrecognition.application.TFlowModule
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.common.extensions.ImageUtils
 import io.fotoapparat.preview.Frame
@@ -16,9 +16,9 @@ import kotlin.system.measureTimeMillis
 
 
 @AppScope
-class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
+class TFlowRecognizer @Inject constructor(@Named(TFlowModule.MOBILENET) private val tflow: Interpreter,
                                           private val context: Context,
-                                          @Named(ApplicationModule.LABELS_BINDING) private val labels: List<String>) {
+                                          @Named(TFlowModule.MOBILENET_LABELS_BINDING) private val labels: List<String>) {
 
     companion object {
         const val INPUT_WIDTH = 224
