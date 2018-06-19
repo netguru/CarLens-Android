@@ -3,9 +3,12 @@ package co.netguru.android.carrecognition.data.recognizer
 import android.content.Context
 import android.graphics.RectF
 import co.netguru.android.carrecognition.application.TFlowModule
+import co.netguru.android.carrecognition.common.Multimap
 import co.netguru.android.carrecognition.common.extensions.ImageUtils
 import co.netguru.android.carrecognition.common.extensions.area
 import co.netguru.android.carrecognition.common.extensions.intersectionArea
+import co.netguru.android.carrecognition.common.multimapOf
+import co.netguru.android.carrecognition.common.plus
 import io.fotoapparat.preview.Frame
 import io.reactivex.Single
 import org.tensorflow.lite.Interpreter
@@ -33,9 +36,7 @@ class TFlowDetector @Inject constructor(
 
     fun detect(frame: Frame): Single<List<Recognition>> {
         return Single.fromCallable {
-            val result = mutableMapOf<String, MutableList<Recognition>>()
-            val finalResult = mutableListOf<Recognition>()
-
+            var finalResult = listOf<Recognition>()
             val time = measureTimeMillis {
 
                 val intValues = ImageUtils.prepareBitmap(
@@ -72,9 +73,8 @@ class TFlowDetector @Inject constructor(
 
                 decodeCenterSizeBoxes(outputLocations)
 
-                decodeRecognitions(outputClasses, outputLocations, result)
-
-                filterOverlappingBoxes(result, finalResult)
+                finalResult =
+                        decodeRecognitions(outputClasses, outputLocations).filterOverlappingBoxes()
             }
 
             Timber.d("Object detection took: $time")
@@ -91,11 +91,9 @@ class TFlowDetector @Inject constructor(
     private fun createOutputClassesMatrix() =
         Array(1, { Array(NUM_RESULTS, { FloatArray(NUM_CLASSES) }) })
 
-    private fun filterOverlappingBoxes(
-        result: MutableMap<String, MutableList<Recognition>>,
-        finalResult: MutableList<Recognition>
-    ) {
-        for (pair in result) {
+    private fun Multimap<String, Recognition>.filterOverlappingBoxes(): List<Recognition> {
+        var result = listOf<Recognition>()
+        for (pair in this) {
             val recognitionsForLabel = mutableListOf<Recognition>()
             //take best elements and check if they don't overlap
             val bestList = pair.value.sortedBy { it.confidence }.takeLast(10)
@@ -117,15 +115,16 @@ class TFlowDetector @Inject constructor(
                     }
                 }
             }
-            finalResult.addAll(recognitionsForLabel)
+            result += recognitionsForLabel
         }
+        return result
     }
 
     private fun decodeRecognitions(
         outputClasses: Array<Array<FloatArray>>,
-        outputLocations: Array<Array<Array<FloatArray>>>,
-        result: MutableMap<String, MutableList<Recognition>>
-    ) {
+        outputLocations: Array<Array<Array<FloatArray>>>
+    ): Multimap<String, Recognition> {
+        var result = multimapOf<String, Recognition>()
         for (i in 0 until NUM_RESULTS) {
             var topScore = Float.NEGATIVE_INFINITY
             var topScoreIndex = Int.MIN_VALUE
@@ -147,15 +146,10 @@ class TFlowDetector @Inject constructor(
                     outputLocations[0][i][0][2] * INPUT_SIZE
                 )
                 val recognition = Recognition("$i", labels[topScoreIndex], topScore, detection)
-                addToMap(result, recognition)
+                result += Pair(recognition.title, recognition)
             }
         }
-    }
-
-    private fun addToMap(map: MutableMap<String, MutableList<Recognition>>, element: Recognition) {
-        val list = (map[element.title] ?: mutableListOf())
-        list.add(element)
-        map[element.title] = list
+        return result
     }
 
     private fun decodeCenterSizeBoxes(predictions: Array<Array<Array<FloatArray>>>) {
