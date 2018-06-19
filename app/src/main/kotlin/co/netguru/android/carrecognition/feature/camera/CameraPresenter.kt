@@ -38,7 +38,6 @@ class CameraPresenter @Inject constructor(private val detector: TFlowDetector)
         previewResolution = Resolution(it.size.width, it.size.height)
 
         compositeDisposable += detector.detect(it)
-                .applyComputationSchedulers()
                 .map {
                     it.filter { it.location != null }
                             .map {
@@ -52,6 +51,7 @@ class CameraPresenter @Inject constructor(private val detector: TFlowDetector)
                                 Pair(it.title, rect)
                             }
                 }
+            .applyComputationSchedulers()
                 .subscribeBy(
                         onSuccess = { result ->
                             ifViewAttached { view ->

@@ -14,18 +14,18 @@ import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
 @RuntimePermissions
-class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
-
+class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(),
+    CameraContract.View {
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
     private val fotoAparat by lazy {
         Fotoapparat
-                .with(this)
-                .into(cameraView)
-                .previewScaleType(ScaleType.CenterInside)
-                .frameProcessor { presenter.processFrame(it) }
-                .build()
+            .with(this)
+            .into(cameraView)
+            .previewScaleType(ScaleType.CenterInside)
+            .frameProcessor { presenter.processFrame(it) }
+            .build()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         presenter.destroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }

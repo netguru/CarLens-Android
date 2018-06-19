@@ -3,6 +3,7 @@ package co.netguru.android.carrecognition.common.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.TypedArray
 import android.support.annotation.AttrRes
 import android.support.annotation.ColorRes
 import android.support.annotation.DrawableRes
@@ -29,4 +30,12 @@ fun Context.getAttributeDrawable(@AttrRes attrDrawableRes: Int): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(attrDrawableRes, typedValue, true)
     return typedValue.resourceId
+}
+
+inline fun <T : TypedArray> T.use(block: T.() -> Unit) {
+    try {
+        block()
+    } finally {
+        recycle()
+    }
 }

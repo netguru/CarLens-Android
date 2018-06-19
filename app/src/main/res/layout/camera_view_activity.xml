@@ -22,14 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!-- This view will display detected faces -->
+        <!-- This view will display detected objects -->
         <co.netguru.android.carrecognition.view.RectanglesView
             android:id="@+id/rectanglesView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:rectanglesColor="@android:color/holo_green_light"
+            app:rectanglesColor="@color/green"
             app:rectanglesStrokeWidth="2dp"
-            app:textColor="@android:color/holo_orange_dark"
+            app:textColor="@color/green"
             app:textSize="20sp" />
 
     </co.netguru.android.carrecognition.view.CameraOverlayLayout>

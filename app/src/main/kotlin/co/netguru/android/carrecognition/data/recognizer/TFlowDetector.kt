@@ -14,28 +14,22 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlin.system.measureTimeMillis
 
-data class Recognition(val id: String,
-                       val title: String,
-                       val confidence: Float,
-                       val location: RectF?)
+data class Recognition(
+    val id: String,
+    val title: String,
+    val confidence: Float,
+    val location: RectF?
+)
 
-class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
-                                        private val tf: Interpreter,
-                                        @Named(TFlowModule.COCO_LABELS)
-                                        private val labels: List<String>,
-                                        @Named(TFlowModule.BOXPRIORS)
-                                        private val boxPriors: Array<Array<Float>>,
-                                        private val context: Context) {
-
-    companion object {
-        val INPUT_SIZE = 300
-        private val NUM_RESULTS = 1917
-        private val NUM_CLASSES = 91
-        private val Y_SCALE = 10.0f
-        private val X_SCALE = 10.0f
-        private val H_SCALE = 5.0f
-        private val W_SCALE = 5.0f
-    }
+class TFlowDetector @Inject constructor(
+    @Named(TFlowModule.DETECTOR)
+    private val tf: Interpreter,
+    @Named(TFlowModule.COCO_LABELS)
+    private val labels: List<String>,
+    @Named(TFlowModule.BOXPRIORS)
+    private val boxPriors: Array<Array<Float>>,
+    private val context: Context
+) {
 
     fun detect(frame: Frame): Single<List<Recognition>> {
         return Single.fromCallable {
@@ -44,8 +38,15 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
 
             val time = measureTimeMillis {
 
-                val intValues = ImageUtils.prepareBitmap(context, frame.image, frame.size.width, frame.size.height, frame.rotation, INPUT_SIZE)
-                val img = createImgArray()
+                val intValues = ImageUtils.prepareBitmap(
+                    context,
+                    frame.image,
+                    frame.size.width,
+                    frame.size.height,
+                    frame.rotation,
+                    INPUT_SIZE
+                )
+                val img = createImgMatrix()
 
                 //convert image to table of floats (-1, 1)
                 for (i in 0 until INPUT_SIZE) {
@@ -59,9 +60,11 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
 
                 //prepare input and output data structures
                 val inputArray: Array<Any> = arrayOf(img)
-                val outputLocations = createOutputLocationsArray()
-                val outputClasses = createOutputClassesArray()
-                val outputMap = HashMap<Int, Any>() //it is important not to use Kotlin mapOf here, because Tensor flow will not be able to copy data into it
+                val outputLocations = createOutputLocationsMatrix()
+                val outputClasses = createOutputClassesMatrix()
+
+                //it is important not to use Kotlin mapOf here, because Tensor flow will not be able to copy data into it
+                val outputMap = HashMap<Int, Any>()
                 outputMap[0] = outputLocations
                 outputMap[1] = outputClasses
 
@@ -75,17 +78,23 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
             }
 
             Timber.d("Object detection took: $time")
-            return@fromCallable finalResult.sortedBy { it.confidence }.takeLast(3)
+            finalResult.sortedBy { it.confidence }.takeLast(NR_OF_RECOGNITIONS)
         }
     }
 
-    private fun createImgArray() = Array(1, { Array(INPUT_SIZE, { Array(INPUT_SIZE, { FloatArray(3) }) }) })
+    private fun createImgMatrix() =
+        Array(1, { Array(INPUT_SIZE, { Array(INPUT_SIZE, { FloatArray(3) }) }) })
 
-    private fun createOutputLocationsArray() = Array(1, { Array(NUM_RESULTS, { Array(1, { FloatArray(4) }) }) })
+    private fun createOutputLocationsMatrix() =
+        Array(1, { Array(NUM_RESULTS, { Array(1, { FloatArray(4) }) }) })
 
-    private fun createOutputClassesArray() = Array(1, { Array(NUM_RESULTS, { FloatArray(NUM_CLASSES) }) })
+    private fun createOutputClassesMatrix() =
+        Array(1, { Array(NUM_RESULTS, { FloatArray(NUM_CLASSES) }) })
 
-    private fun filterOverlappingBoxes(result: MutableMap<String, MutableList<Recognition>>, finalResult: MutableList<Recognition>) {
+    private fun filterOverlappingBoxes(
+        result: MutableMap<String, MutableList<Recognition>>,
+        finalResult: MutableList<Recognition>
+    ) {
         for (pair in result) {
             val recognitionsForLabel = mutableListOf<Recognition>()
             //take best elements and check if they don't overlap
@@ -98,8 +107,9 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
                     }
                     for (alreadyInList in recognitionsForLabel) {
                         if (alreadyInList.location != null) {
-                            val intersectionArea = alreadyInList.location.intersectionArea(element.location)
-                            if (intersectionArea < element.location.area() * 0.9) {
+                            val intersectionArea =
+                                alreadyInList.location.intersectionArea(element.location)
+                            if (intersectionArea < element.location.area() * INTERSECTION_SIMILARITY) {
                                 recognitionsForLabel.add(alreadyInList)
                             }
                         }
@@ -111,13 +121,16 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
         }
     }
 
-    private fun decodeRecognitions(outputClasses: Array<Array<FloatArray>>,
-                                   outputLocations: Array<Array<Array<FloatArray>>>,
-                                   result: MutableMap<String, MutableList<Recognition>>) {
+    private fun decodeRecognitions(
+        outputClasses: Array<Array<FloatArray>>,
+        outputLocations: Array<Array<Array<FloatArray>>>,
+        result: MutableMap<String, MutableList<Recognition>>
+    ) {
         for (i in 0 until NUM_RESULTS) {
-            var topScore = -1000f
-            var topScoreIndex = -1
+            var topScore = Float.NEGATIVE_INFINITY
+            var topScoreIndex = Int.MIN_VALUE
 
+            // Skip the first catch-all class.
             for (j in 1 until NUM_CLASSES) {
                 val score = expit(outputClasses[0][i][j])
                 if (score > topScore) {
@@ -128,10 +141,11 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
 
             if (topScore > 0.01f) {
                 val detection = RectF(
-                        outputLocations[0][i][0][1] * INPUT_SIZE,
-                        outputLocations[0][i][0][0] * INPUT_SIZE,
-                        outputLocations[0][i][0][3] * INPUT_SIZE,
-                        outputLocations[0][i][0][2] * INPUT_SIZE)
+                    outputLocations[0][i][0][1] * INPUT_SIZE,
+                    outputLocations[0][i][0][0] * INPUT_SIZE,
+                    outputLocations[0][i][0][3] * INPUT_SIZE,
+                    outputLocations[0][i][0][2] * INPUT_SIZE
+                )
                 val recognition = Recognition("$i", labels[topScoreIndex], topScore, detection)
                 addToMap(result, recognition)
             }
@@ -148,8 +162,10 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
         for (i in 0 until NUM_RESULTS) {
             val ycenter = predictions[0][i][0][0] / Y_SCALE * boxPriors[2][i] + boxPriors[0][i]
             val xcenter = predictions[0][i][0][1] / X_SCALE * boxPriors[3][i] + boxPriors[1][i]
-            val h = Math.exp((predictions[0][i][0][2] / H_SCALE).toDouble()).toFloat() * boxPriors[2][i]
-            val w = Math.exp((predictions[0][i][0][3] / W_SCALE).toDouble()).toFloat() * boxPriors[3][i]
+            val h =
+                Math.exp((predictions[0][i][0][2] / H_SCALE).toDouble()).toFloat() * boxPriors[2][i]
+            val w =
+                Math.exp((predictions[0][i][0][3] / W_SCALE).toDouble()).toFloat() * boxPriors[3][i]
 
             val ymin = ycenter - h / 2f
             val xmin = xcenter - w / 2f
@@ -165,5 +181,17 @@ class TFlowDetector @Inject constructor(@Named(TFlowModule.DETECTOR)
 
     private fun expit(x: Float): Float {
         return (1.0 / (1.0 + Math.exp((-x).toDouble()))).toFloat()
+    }
+
+    companion object {
+        const val INPUT_SIZE = 300
+        private const val NUM_RESULTS = 1917
+        private const val NUM_CLASSES = 91
+        private const val Y_SCALE = 10.0f
+        private const val X_SCALE = 10.0f
+        private const val H_SCALE = 5.0f
+        private const val W_SCALE = 5.0f
+        private const val NR_OF_RECOGNITIONS = 3
+        private const val INTERSECTION_SIMILARITY = 0.9f
     }
 }

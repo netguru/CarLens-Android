@@ -16,9 +16,11 @@ import kotlin.system.measureTimeMillis
 
 
 @AppScope
-class TFlowRecognizer @Inject constructor(@Named(TFlowModule.MOBILENET) private val tflow: Interpreter,
-                                          private val context: Context,
-                                          @Named(TFlowModule.MOBILENET_LABELS_BINDING) private val labels: List<String>) {
+class TFlowRecognizer @Inject constructor(
+    @Named(TFlowModule.MOBILENET) private val tflow: Interpreter,
+    private val context: Context,
+    @Named(TFlowModule.MOBILENET_LABELS_BINDING) private val labels: List<String>
+) {
 
     companion object {
         const val INPUT_WIDTH = 224
@@ -28,10 +30,10 @@ class TFlowRecognizer @Inject constructor(@Named(TFlowModule.MOBILENET) private 
     }
 
     private val imgData = ByteBuffer
-            .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
-            .apply {
-                order(ByteOrder.nativeOrder())
-            }
+        .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE)
+        .apply {
+            order(ByteOrder.nativeOrder())
+        }
 
 
     fun classify(frame: Frame): Single<List<Pair<String, Byte>>> {
@@ -43,26 +45,32 @@ class TFlowRecognizer @Inject constructor(@Named(TFlowModule.MOBILENET) private 
 
                 imgData.rewind()
 
-                ImageUtils.prepareBitmap(context, frame.image, frame.size.width, frame.size.height, frame.rotation, INPUT_WIDTH)
-                        .forEach {
-                            addPixelValue(it)
-                        }
-                
+                ImageUtils.prepareBitmap(
+                    context,
+                    frame.image,
+                    frame.size.width,
+                    frame.size.height,
+                    frame.rotation,
+                    INPUT_WIDTH
+                )
+                    .forEach {
+                        addPixelValue(it)
+                    }
+
                 tflowTime = measureTimeMillis {
                     tflow.run(imgData, result)
                 }
 
                 finalResult = result[0]
-                        .mapIndexed { index, confidence -> Pair(index, confidence) }
-                        .sortedBy { it.second }
-                        .take(1)
-                        .map { Pair(labels[it.first], it.second) }
+                    .mapIndexed { index, confidence -> Pair(index, confidence) }
+                    .sortedBy { it.second }
+                    .take(1)
+                    .map { Pair(labels[it.first], it.second) }
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult
         }
     }
-
 
 
     private fun addPixelValue(pixelValue: Int) {

@@ -1,11 +1,13 @@
 package co.netguru.android.carrecognition.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.extensions.use
 import java.util.*
 
 /**
@@ -18,32 +20,39 @@ class RectanglesView : View {
     private val textPaint = Paint()
     private val calculatedBounds = Rect()
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
 
         applyAttributes(context, attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
 
         applyAttributes(context, attrs)
     }
 
+    @SuppressLint("Recycle")
     private fun applyAttributes(context: Context, attrs: AttributeSet?) {
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.RectanglesView)
 
-        try {
+        attributes.use {
             strokePaint.style = Paint.Style.STROKE
-            strokePaint.color = attributes.getColor(R.styleable.RectanglesView_rectanglesColor, Color.BLUE)
-            strokePaint.strokeWidth = attributes.getDimensionPixelSize(R.styleable.RectanglesView_rectanglesStrokeWidth, 1).toFloat()
+            strokePaint.color = getColor(R.styleable.RectanglesView_rectanglesColor, Color.BLUE)
+            strokePaint.strokeWidth = getDimensionPixelSize(
+                R.styleable.RectanglesView_rectanglesStrokeWidth,
+                1
+            ).toFloat()
 
             textPaint.style = Paint.Style.FILL_AND_STROKE
-            textPaint.color = attributes.getColor(R.styleable.RectanglesView_textColor, Color.BLUE)
+            textPaint.color = getColor(R.styleable.RectanglesView_textColor, Color.BLUE)
             textPaint.strokeWidth = 1f
-            textPaint.textSize = attributes.getDimensionPixelSize(R.styleable.RectanglesView_textSize, 100).toFloat()
-        } finally {
-            attributes.recycle()
+            textPaint.textSize = getDimensionPixelSize(R.styleable.RectanglesView_textSize, 100)
+                .toFloat()
         }
     }
 
@@ -67,7 +76,12 @@ class RectanglesView : View {
         for ((text, box) in data) {
             canvas.drawRect(box, strokePaint)
             textPaint.getTextBounds(text, 0, text.length, calculatedBounds)
-            canvas.drawText(text, box.left, box.top - (calculatedBounds.top - calculatedBounds.bottom), textPaint)
+            canvas.drawText(
+                text,
+                box.left,
+                box.top - (calculatedBounds.top - calculatedBounds.bottom),
+                textPaint
+            )
         }
     }
 
