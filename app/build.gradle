@@ -64,7 +64,6 @@ android {
 
             // put your secrets in the BuildConfig.java class, for example:
             buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
-            buildConfigField 'String', 'baseUrl', "\"https://dev.sighthoundapi.com/\""
         }
         production {
             dimension "api"
