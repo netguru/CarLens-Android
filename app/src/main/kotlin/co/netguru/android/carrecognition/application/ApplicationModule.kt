@@ -15,7 +15,7 @@ import javax.inject.Named
 class ApplicationModule {
 
     companion object {
-        const val MODEL_PATH = "mobilenet_quant_v1_224.tflite"
+        const val MODEL_PATH = "converted.tflite"
         const val LABELS_PATH = "labels.txt"
         const val LABELS_BINDING = "labels"
     }
