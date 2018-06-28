@@ -1,10 +1,10 @@
 package co.netguru.android.carrecognition.data.recognizer
 
 import android.content.Context
+import android.media.Image
 import co.netguru.android.carrecognition.application.ApplicationModule
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.common.extensions.ImageUtils
-import io.fotoapparat.preview.Frame
 import io.reactivex.Single
 import org.tensorflow.lite.Interpreter
 import timber.log.Timber
@@ -34,33 +34,40 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
             }
 
 
-    fun classify(frame: Frame): Single<List<Pair<String, Byte>>> {
+    fun classify(frame: Image): Single<List<Pair<String, Byte>>> {
         return Single.fromCallable {
             var finalResult = emptyList<Pair<String, Byte>>()
-            val result = Array(1, { ByteArray(labels.size - 1) })
+            val result = Array(1) { ByteArray(labels.size - 1) }
             var tflowTime = 0L
             val time = measureTimeMillis {
 
                 imgData.rewind()
 
-                ImageUtils.prepareBitmap(context, frame.image, frame.size.width, frame.size.height, frame.rotation, INPUT_WIDTH)
-                        .forEach {
-                            addPixelValue(it)
-                        }
-                
+                ImageUtils.prepareBitmap(
+                    context,
+                    frame,
+                    frame.width,
+                    frame.height,
+                    -90,
+                    INPUT_WIDTH
+                ).forEach {
+                    addPixelValue(it)
+                }
+
                 tflowTime = measureTimeMillis {
                     tflow.run(imgData, result)
                 }
 
                 finalResult = result[0]
-                        .mapIndexed { index, confidence -> Pair(index, confidence) }
-                        .sortedBy { it.second }
-                        .take(1)
-                        .map { Pair(labels[it.first], it.second) }
+                    .mapIndexed { index, confidence -> Pair(index, confidence) }
+                    .sortedBy { it.second }
+                    .takeLast(3)
+                    .map { Pair(labels[it.first], it.second) }
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult
         }
+
     }
 
 

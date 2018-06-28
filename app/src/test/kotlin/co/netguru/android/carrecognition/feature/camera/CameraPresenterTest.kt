@@ -1,9 +1,9 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.nhaarman.mockito_kotlin.*
-import io.fotoapparat.preview.Frame
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +28,7 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show result on recognition`() {
-        val frame = mock<Frame>()
+        val frame = mock<Image>()
         tflow.stub {
             on { classify(any()) } doReturn Single.just(listOf(Pair("test", 0.toByte())))
         }

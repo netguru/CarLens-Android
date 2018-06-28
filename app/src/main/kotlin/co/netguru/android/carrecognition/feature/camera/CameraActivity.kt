@@ -1,34 +1,62 @@
 package co.netguru.android.carrecognition.feature.camera
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.data.ar.StickerNode
+import com.google.ar.core.Pose
+import com.google.ar.core.TrackingState
+import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.ux.ArFragment
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
-import io.fotoapparat.Fotoapparat
 import kotlinx.android.synthetic.main.camera_view_activity.*
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
-@RuntimePermissions
+
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
-    private val fotoAparat by lazy {
-        Fotoapparat
-                .with(this)
-                .into(cameraView)
-                .frameProcessor { presenter.processFrame(it) }
-                .build()
-    }
 
+    private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
+
+
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_view_activity)
         setPresenter(createPresenter())
+
+        makePhotoButton.setOnClickListener {
+            val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
+            val pose =
+                frame.camera.pose
+                    .compose(Pose.makeTranslation(0f, 0f, -1f))
+                    .extractTranslation()
+
+            val anchor = AnchorNode(arFragment.arSceneView.session.createAnchor(pose))
+            anchor.setParent(arFragment.arSceneView.scene)
+            anchor.addChild(StickerNode("test", this))
+        }
+
+
+        arFragment.planeDiscoveryController.hide()
+        arFragment.planeDiscoveryController.setInstructionView(null)
+        arFragment.arSceneView.planeRenderer.isEnabled = false
+
+        arFragment.arSceneView.scene.setOnUpdateListener {
+            arFragment.onUpdate(it)
+            val frame = arFragment.arSceneView.arFrame ?: return@setOnUpdateListener
+            if (frame.camera.trackingState != TrackingState.TRACKING) {
+                return@setOnUpdateListener
+            }
+            if (!presenter.isProcessing()) {
+                val image = arFragment.arSceneView.arFrame.acquireCameraImage()
+                presenter.processFrame(image)
+            }
+        }
     }
 
     override fun onResume() {
@@ -39,17 +67,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onPause() {
         super.onPause()
         presenter.detachView()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        startCameraWithPermissionCheck()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        fotoAparat.stop()
     }
 
     override fun onDestroy() {
@@ -57,18 +74,9 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         presenter.destroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
 
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
-    }
-
-    @NeedsPermission(Manifest.permission.CAMERA)
-    fun startCamera() {
-        fotoAparat.start()
     }
 
     override fun printResult(result: String) {
