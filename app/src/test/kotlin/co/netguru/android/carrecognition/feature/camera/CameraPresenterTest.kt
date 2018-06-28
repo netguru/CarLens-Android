@@ -33,7 +33,7 @@ class CameraPresenterTest {
             on { classify(any()) } doReturn Single.just(listOf(Pair("test", 0.toByte())))
         }
         presenter.processFrame(frame)
-        verify(view).printResult("test (0.0)")
+        verify(view).printResult("test (0%)")
 
     }
 }

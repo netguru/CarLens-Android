@@ -13,5 +13,6 @@ interface CameraContract {
         fun processFrame(image: Image)
         fun processShot()
         fun isProcessing(): Boolean
+        fun getCurrentRecognition(): String
     }
 }

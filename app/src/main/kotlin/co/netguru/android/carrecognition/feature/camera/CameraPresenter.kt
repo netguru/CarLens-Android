@@ -15,7 +15,6 @@ import javax.inject.Inject
 class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer)
     : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
 
-
     private val compositeDisposable = CompositeDisposable()
     private var processing = false
 
@@ -23,6 +22,8 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         super.destroy()
         compositeDisposable.clear()
     }
+
+    private var lastRecognition = Pair("", 0.toByte())
 
     override fun processFrame(image: Image) {
         if (processing) {
@@ -35,15 +36,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                 .applyComputationSchedulers()
                 .subscribeBy(
                         onSuccess = { result ->
-                            ifViewAttached { view ->
-                                view.printResult(
-                                    result.map {
-                                        "${it.first} (${((it.second.toFloat() / Byte.MAX_VALUE) * 100).toInt()}%)"
-                                    }.reversed()
-                                        .reduce { acc, s -> "$acc \n $s" }
-                                )
-                            }
-
+                            lastRecognition = result.last()
                             image.close()
                             processing = false
                         },
@@ -58,10 +51,17 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                 )
     }
 
+    override fun getCurrentRecognition(): String {
+        return lastRecognition.toFormattedString()
+    }
+
     override fun processShot() {
         Timber.d("Button clicked")
     }
 
     override fun isProcessing() = processing
+
+    private fun Pair<String, Byte>.toFormattedString() =
+        "$first (${((second.toFloat() / Byte.MAX_VALUE) * 100).toInt()}%)"
 
 }
