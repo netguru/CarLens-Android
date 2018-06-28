@@ -1,13 +1,14 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.animation.ValueAnimator
 import android.media.Image
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
+import com.google.ar.core.exceptions.NotYetAvailableException
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ux.ArFragment
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
+
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
@@ -60,7 +62,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    private fun setupArFragment() {
+    fun setupArFragment() {
         arFragment.planeDiscoveryController.hide()
         arFragment.planeDiscoveryController.setInstructionView(null)
         arFragment.arSceneView.planeRenderer.isEnabled = false
@@ -86,7 +88,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun printResult(result: String) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+        debugTextView.text = result
     }
 
     override fun createAnchor(hitPoint: HitResult, text: String) {
@@ -101,8 +103,19 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         if (frame.camera.trackingState != TrackingState.TRACKING) {
             return null
         }
-        return arFragment.arSceneView.arFrame.acquireCameraImage()
+        return try {
+            arFragment.arSceneView.arFrame.acquireCameraImage()
+        } catch (e: NotYetAvailableException) {
+            null
+        }
+    }
+
+    override fun updateViewFinder(viewfinderSize: Double) {
+        val animator = ValueAnimator.ofFloat(viewfinder.progress, viewfinderSize.toFloat())
+        animator.addUpdateListener { animation ->
+            viewfinder.progress = animation.animatedValue as Float
+        }
+        animator.start()
     }
 }
-
 

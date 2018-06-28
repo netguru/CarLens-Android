@@ -237,4 +237,5 @@ dependencies {
 
     //sceneform and arcore
     implementation libs.sceneform
+    implementation libs.lottie
 }

@@ -11,6 +11,7 @@ interface CameraContract {
         fun printResult(result: String)
         fun createAnchor(hitPoint: HitResult, text: String)
         fun acquireFrame(): Image?
+        fun updateViewFinder(viewfinderSize: Double)
     }
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)

@@ -25,14 +25,29 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
-        const val CONFIDENCE_THRESHOLD = 50
+    }
+
+    enum class Labels {
+        FORD_FIESTA,
+        HONDA_CIVIC,
+        NISSAN_QASHQAI,
+        NOT_CAR,
+        TOYOTA_CAMRY,
+        TOYOTA_COROLLA,
+        VOLKSWAGEN_GOLF,
+        VOLKSWAGEN_PASSAT,
+        VOLKSWAGEN_TIGUAN;
+
+        companion object {
+            fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
+        }
     }
 
     private val imgData = ByteBuffer
-            .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
-            .apply {
-                order(ByteOrder.nativeOrder())
-            }
+        .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
+        .apply {
+            order(ByteOrder.nativeOrder())
+        }
 
 
     fun classify(frame: Image): Single<List<Recognition>> {
@@ -60,9 +75,14 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                 }
 
                 finalResult = result[0]
-                    .mapIndexed { index, confidence -> Recognition(labels[index], confidence) }
-                    .filter { it.confidence > CONFIDENCE_THRESHOLD }
+                    .mapIndexed { index, confidence ->
+                        Recognition(
+                            Labels.of(labels[index]),
+                            confidence.toDouble() / Byte.MAX_VALUE
+                        )
+                    }
                     .sortedByDescending { it.confidence }
+                    .take(3)
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult

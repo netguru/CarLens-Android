@@ -38,7 +38,7 @@ class CameraPresenterTest {
     fun `Should create anchor on hit result`() {
         val result = mock<HitResult>()
         presenter.processHitResult(result)
-        verify(view).createAnchor(result, " (0%)")
+        verify(view).createAnchor(result, "NOT_CAR (0%)")
     }
 
     @Test
@@ -46,7 +46,14 @@ class CameraPresenterTest {
         val frame = mock<Image>()
         val point = mock<HitResult>()
         tflow.stub {
-            on { classify(any()) } doReturn Single.just(listOf(Recognition("test", 26.toByte())))
+            on { classify(any()) } doReturn Single.just(
+                listOf(
+                    Recognition(
+                        TFlowRecognizer.Labels.VOLKSWAGEN_PASSAT,
+                        0.2
+                    )
+                )
+            )
         }
         view.stub {
             on { acquireFrame() } doReturn frame
@@ -56,6 +63,6 @@ class CameraPresenterTest {
         //and user tries to put label
         presenter.processHitResult(point)
 
-        verify(view).createAnchor(point, "test (20%)")
+        verify(view).createAnchor(point, "VOLKSWAGEN_PASSAT (20%)")
     }
 }
