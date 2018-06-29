@@ -13,6 +13,11 @@ class ImageUtils {
 
     companion object {
 
+        /**
+         * Transforms passed [yuvImage] (YUV420888 format) with given [width] and [height]
+         * to RGB image, rotates it with for [rotation] degrees and
+         * scales to size of [inputSize] x [inputSize] pixels
+         */
         fun prepareBitmap(
             context: Context, image: Image, width: Int,
             height: Int, rotation: Int, inputSize: Int
@@ -24,7 +29,7 @@ class ImageUtils {
         }
 
         /**
-         * Transforms passed [yuvImage] with given [width] and [height]
+         * Transforms passed [yuvImage] (NV21 format) with given [width] and [height]
          * to RGB image, rotates it with for [rotation] degrees and
          * scales to size of [inputSize] x [inputSize] pixels
          */
@@ -203,10 +208,8 @@ class ImageUtils {
             )
 
             val lo = Script.LaunchOptions()
-            lo.setX(
-                0,
-                width
-            )  // by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
+            // by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
+            lo.setX(0, width)
             lo.setY(0, height)
 
             mYuv420.forEach_doConvert(outAlloc, lo)

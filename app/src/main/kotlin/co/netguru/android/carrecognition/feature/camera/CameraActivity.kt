@@ -1,10 +1,12 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.media.Image
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.StickerNode
+import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ux.ArFragment
@@ -21,13 +23,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
 
-    private val screenWidth by lazy {
+    private val cameraWidth by lazy {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         displayMetrics.widthPixels
     }
 
-    private val screenHeigh by lazy {
+    private val cameraHeight by lazy {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         displayMetrics.heightPixels
@@ -45,19 +47,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         makePhotoButton.setOnClickListener {
             val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
+            val hitPoint = frame.hitTest(cameraWidth / 2f, cameraHeight / 2f).firstOrNull()
 
-            val hitPoint = frame.hitTest(screenWidth / 2f, screenHeigh / 2f).firstOrNull()
-            if (hitPoint == null) {
-                printResult("point not found")
-            } else {
-                printResult("point found")
-                val anchor =
-                    AnchorNode(arFragment.arSceneView.session.createAnchor(hitPoint.hitPose))
-                anchor.setParent(arFragment.arSceneView.scene)
-                anchor.addChild(StickerNode(presenter.getCurrentRecognition(), this))
-            }
+            presenter.processHitResult(hitPoint)
         }
-
 
         arFragment.arSceneView.scene.setOnUpdateListener {
             arFragment.onUpdate(it)
@@ -65,10 +58,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             if (frame.camera.trackingState != TrackingState.TRACKING) {
                 return@setOnUpdateListener
             }
-            if (!presenter.isProcessing()) {
-                val image = arFragment.arSceneView.arFrame.acquireCameraImage()
-                presenter.processFrame(image)
-            }
+            presenter.frameUpdated()
         }
     }
 
@@ -87,14 +77,27 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         presenter.destroy()
     }
 
-
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
     }
 
     override fun printResult(result: String) {
-        //resultText.text = result
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun createAnchor(hitPoint: HitResult, text: String) {
+        val anchor =
+            AnchorNode(arFragment.arSceneView.session.createAnchor(hitPoint.hitPose))
+        anchor.setParent(arFragment.arSceneView.scene)
+        anchor.addChild(StickerNode(text, this))
+    }
+
+    override fun acquireFrame(): Image? {
+        val frame = arFragment.arSceneView.arFrame ?: return null
+        if (frame.camera.trackingState != TrackingState.TRACKING) {
+            return null
+        }
+        return arFragment.arSceneView.arFrame.acquireCameraImage()
     }
 }
 

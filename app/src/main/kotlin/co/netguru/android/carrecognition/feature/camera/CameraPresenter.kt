@@ -4,11 +4,11 @@ import android.media.Image
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
+import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
-import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityScope
@@ -25,14 +25,35 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
     private var lastRecognition = Pair("", 0.toByte())
 
-    override fun processFrame(image: Image) {
+    override fun processHitResult(hitPoint: HitResult?) {
+        if (hitPoint == null) {
+            ifViewAttached {
+                it.printResult("point not found")
+            }
+        } else {
+            ifViewAttached {
+                it.createAnchor(hitPoint, lastRecognition.toFormattedString())
+            }
+        }
+    }
+
+    override fun frameUpdated() {
+        if (!processing) {
+            ifViewAttached {
+                it.acquireFrame()?.let {
+                    processFrame(it)
+                }
+            }
+        }
+    }
+
+    private fun processFrame(image: Image) {
         if (processing) {
             return
         }
         processing = true
 
-        compositeDisposable += tFlowRecognizer
-            .classify(image)
+        compositeDisposable += tFlowRecognizer.classify(image)
                 .applyComputationSchedulers()
                 .subscribeBy(
                         onSuccess = { result ->
@@ -50,16 +71,6 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                         }
                 )
     }
-
-    override fun getCurrentRecognition(): String {
-        return lastRecognition.toFormattedString()
-    }
-
-    override fun processShot() {
-        Timber.d("Button clicked")
-    }
-
-    override fun isProcessing() = processing
 
     private fun Pair<String, Byte>.toFormattedString() =
         "$first (${((second.toFloat() / Byte.MAX_VALUE) * 100).toInt()}%)"

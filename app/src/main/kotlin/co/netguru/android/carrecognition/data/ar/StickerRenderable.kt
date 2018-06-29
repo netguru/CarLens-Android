@@ -19,7 +19,7 @@ class StickerNode(
 
     override fun onActivate() {
         ViewRenderable.builder()
-            .setView(context, R.layout.renderable).build()
+            .setView(context, R.layout.sticker).build()
             .thenAccept {
                 val view = it.view as TextView
                 view.text = text
@@ -34,8 +34,7 @@ class StickerNode(
 
         //rotate note so it always faces camera
         val direction = Vector3.subtract(scene.camera.worldPosition, worldPosition)
-        val lookRotation = Quaternion.lookRotation(direction, Vector3.up())
-        worldRotation = lookRotation
+        worldRotation = Quaternion.lookRotation(direction, Vector3.up())
     }
 
 }
