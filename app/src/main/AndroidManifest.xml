@@ -36,6 +36,6 @@
             android:name=".feature.camera.CameraActivity"
             android:label="@string/camera"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 </manifest>

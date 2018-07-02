@@ -15,8 +15,9 @@ class LimitedList<T>(private val limit: Int) : Iterable<T> {
     }
 
     fun size() = list.size
+    fun clear() = list.clear()
+    fun isFull() = list.size == limit
 
     operator fun get(index: Int) = list[index]
-
     override fun iterator() = list.iterator()
 }
