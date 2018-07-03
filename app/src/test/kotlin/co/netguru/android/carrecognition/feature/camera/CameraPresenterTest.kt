@@ -2,6 +2,7 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
+import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.HitResult
 import com.nhaarman.mockito_kotlin.*
@@ -45,7 +46,7 @@ class CameraPresenterTest {
         val frame = mock<Image>()
         val point = mock<HitResult>()
         tflow.stub {
-            on { classify(any()) } doReturn Single.just(listOf(Pair("test", 26.toByte())))
+            on { classify(any()) } doReturn Single.just(listOf(Recognition("test", 26.toByte())))
         }
         view.stub {
             on { acquireFrame() } doReturn frame

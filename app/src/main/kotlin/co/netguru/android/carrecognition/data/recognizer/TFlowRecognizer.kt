@@ -25,6 +25,7 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
+        const val CONFIDENCE_THRESHOLD = 50
     }
 
     private val imgData = ByteBuffer
@@ -34,9 +35,9 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
             }
 
 
-    fun classify(frame: Image): Single<List<Pair<String, Byte>>> {
+    fun classify(frame: Image): Single<List<Recognition>> {
         return Single.fromCallable {
-            var finalResult = emptyList<Pair<String, Byte>>()
+            var finalResult = emptyList<Recognition>()
             val result = Array(1) { ByteArray(labels.size - 1) }
             var tflowTime = 0L
             val time = measureTimeMillis {
@@ -59,18 +60,15 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                 }
 
                 finalResult = result[0]
-                    .mapIndexed { index, confidence -> Pair(index, confidence) }
-                    .sortedBy { it.second }
-                    .takeLast(3)
-                    .map { Pair(labels[it.first], it.second) }
+                    .mapIndexed { index, confidence -> Recognition(labels[index], confidence) }
+                    .filter { it.confidence > CONFIDENCE_THRESHOLD }
+                    .sortedByDescending { it.confidence }
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult
         }
 
     }
-
-
 
     private fun addPixelValue(pixelValue: Int) {
         imgData.put((pixelValue shr 16 and 0xFF).toByte())

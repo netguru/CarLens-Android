@@ -1,8 +1,6 @@
 package co.netguru.android.carrecognition.data.ar
 
 import android.content.Context
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.widget.TextView
 import co.netguru.android.carrecognition.R
 import com.google.ar.sceneform.AnchorNode
@@ -11,7 +9,6 @@ import com.google.ar.sceneform.math.Quaternion
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ViewRenderable
 
-@RequiresApi(Build.VERSION_CODES.N)
 class StickerNode(
     private val text: String,
     private val context: Context

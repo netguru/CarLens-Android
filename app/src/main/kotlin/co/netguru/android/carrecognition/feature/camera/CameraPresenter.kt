@@ -3,6 +3,7 @@ package co.netguru.android.carrecognition.feature.camera
 import android.media.Image
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
+import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
@@ -23,7 +24,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         compositeDisposable.clear()
     }
 
-    private var lastRecognition = Pair("", 0.toByte())
+    private var lastRecognition = Recognition("", 0.toByte())
 
     override fun processHitResult(hitPoint: HitResult?) {
         if (hitPoint == null) {
@@ -32,7 +33,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
             }
         } else {
             ifViewAttached {
-                it.createAnchor(hitPoint, lastRecognition.toFormattedString())
+                it.createAnchor(hitPoint, lastRecognition.toString())
             }
         }
     }
@@ -55,24 +56,20 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
         compositeDisposable += tFlowRecognizer.classify(image)
                 .applyComputationSchedulers()
+                .doOnDispose {
+                    image.close()
+                    processing = false
+                }
                 .subscribeBy(
                         onSuccess = { result ->
                             lastRecognition = result.last()
-                            image.close()
-                            processing = false
+
                         },
                         onError = { error ->
                             ifViewAttached {
                                 it.printResult(error.message.toString())
                             }
-
-                            image.close()
-                            processing = false
                         }
                 )
     }
-
-    private fun Pair<String, Byte>.toFormattedString() =
-        "$first (${((second.toFloat() / Byte.MAX_VALUE) * 100).toInt()}%)"
-
 }

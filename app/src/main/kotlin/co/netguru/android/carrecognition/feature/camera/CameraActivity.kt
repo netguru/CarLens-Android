@@ -41,9 +41,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         setContentView(R.layout.camera_view_activity)
         setPresenter(createPresenter())
 
-        arFragment.planeDiscoveryController.hide()
-        arFragment.planeDiscoveryController.setInstructionView(null)
-        arFragment.arSceneView.planeRenderer.isEnabled = false
+        setupArFragment()
 
         makePhotoButton.setOnClickListener {
             val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
@@ -60,6 +58,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             }
             presenter.frameUpdated()
         }
+    }
+
+    private fun setupArFragment() {
+        arFragment.planeDiscoveryController.hide()
+        arFragment.planeDiscoveryController.setInstructionView(null)
+        arFragment.arSceneView.planeRenderer.isEnabled = false
     }
 
     override fun onResume() {
