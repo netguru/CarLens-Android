@@ -14,7 +14,7 @@ interface CameraContract {
         fun updateViewFinder(viewfinderSize: Float)
         fun showViewFinder()
         fun frameStreamEnabled(enabled: Boolean)
-        fun showDetails(label: Car)
+        fun showDetails(car: Car)
         fun tryAttachPin()
     }
     interface Presenter: MvpPresenter<View> {
