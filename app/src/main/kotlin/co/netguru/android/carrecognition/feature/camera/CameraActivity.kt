@@ -1,27 +1,38 @@
 package co.netguru.android.carrecognition.feature.camera
 
-import android.Manifest
+import android.media.Image
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.widget.Toast
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.data.ar.StickerNode
+import com.google.ar.core.HitResult
+import com.google.ar.core.TrackingState
+import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.ux.ArFragment
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
-import io.fotoapparat.Fotoapparat
 import kotlinx.android.synthetic.main.camera_view_activity.*
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
-@RuntimePermissions
+
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
-    private val fotoAparat by lazy {
-        Fotoapparat
-                .with(this)
-                .into(cameraView)
-                .frameProcessor { presenter.processFrame(it) }
-                .build()
+
+    private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
+
+    private val cameraWidth by lazy {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics.widthPixels
+    }
+
+    private val cameraHeight by lazy {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        displayMetrics.heightPixels
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +40,30 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_view_activity)
         setPresenter(createPresenter())
+
+        setupArFragment()
+
+        makePhotoButton.setOnClickListener {
+            val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
+            val hitPoint = frame.hitTest(cameraWidth / 2f, cameraHeight / 2f).firstOrNull()
+
+            presenter.processHitResult(hitPoint)
+        }
+
+        arFragment.arSceneView.scene.setOnUpdateListener {
+            arFragment.onUpdate(it)
+            val frame = arFragment.arSceneView.arFrame ?: return@setOnUpdateListener
+            if (frame.camera.trackingState != TrackingState.TRACKING) {
+                return@setOnUpdateListener
+            }
+            presenter.frameUpdated()
+        }
+    }
+
+    private fun setupArFragment() {
+        arFragment.planeDiscoveryController.hide()
+        arFragment.planeDiscoveryController.setInstructionView(null)
+        arFragment.arSceneView.planeRenderer.isEnabled = false
     }
 
     override fun onResume() {
@@ -39,17 +74,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onPause() {
         super.onPause()
         presenter.detachView()
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        startCameraWithPermissionCheck()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        fotoAparat.stop()
     }
 
     override fun onDestroy() {
@@ -57,22 +81,27 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         presenter.destroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA)
-    fun startCamera() {
-        fotoAparat.start()
+    override fun printResult(result: String) {
+        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
     }
 
-    override fun printResult(result: String) {
-        resultText.text = result
+    override fun createAnchor(hitPoint: HitResult, text: String) {
+        val anchor =
+            AnchorNode(arFragment.arSceneView.session.createAnchor(hitPoint.hitPose))
+        anchor.setParent(arFragment.arSceneView.scene)
+        anchor.addChild(StickerNode(text, this))
+    }
+
+    override fun acquireFrame(): Image? {
+        val frame = arFragment.arSceneView.arFrame ?: return null
+        if (frame.camera.trackingState != TrackingState.TRACKING) {
+            return null
+        }
+        return arFragment.arSceneView.arFrame.acquireCameraImage()
     }
 }
 

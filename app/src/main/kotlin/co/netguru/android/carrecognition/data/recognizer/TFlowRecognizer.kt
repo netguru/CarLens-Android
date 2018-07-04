@@ -1,10 +1,10 @@
 package co.netguru.android.carrecognition.data.recognizer
 
 import android.content.Context
+import android.media.Image
 import co.netguru.android.carrecognition.application.ApplicationModule
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.common.extensions.ImageUtils
-import io.fotoapparat.preview.Frame
 import io.reactivex.Single
 import org.tensorflow.lite.Interpreter
 import timber.log.Timber
@@ -25,6 +25,7 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
+        const val CONFIDENCE_THRESHOLD = 50
     }
 
     private val imgData = ByteBuffer
@@ -34,36 +35,40 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
             }
 
 
-    fun classify(frame: Frame): Single<List<Pair<String, Byte>>> {
+    fun classify(frame: Image): Single<List<Recognition>> {
         return Single.fromCallable {
-            var finalResult = emptyList<Pair<String, Byte>>()
-            val result = Array(1, { ByteArray(labels.size - 1) })
+            var finalResult = emptyList<Recognition>()
+            val result = Array(1) { ByteArray(labels.size - 1) }
             var tflowTime = 0L
             val time = measureTimeMillis {
 
                 imgData.rewind()
 
-                ImageUtils.prepareBitmap(context, frame.image, frame.size.width, frame.size.height, frame.rotation, INPUT_WIDTH)
-                        .forEach {
-                            addPixelValue(it)
-                        }
-                
+                ImageUtils.prepareBitmap(
+                    context,
+                    frame,
+                    frame.width,
+                    frame.height,
+                    -90,
+                    INPUT_WIDTH
+                ).forEach {
+                    addPixelValue(it)
+                }
+
                 tflowTime = measureTimeMillis {
                     tflow.run(imgData, result)
                 }
 
                 finalResult = result[0]
-                        .mapIndexed { index, confidence -> Pair(index, confidence) }
-                        .sortedBy { it.second }
-                        .take(1)
-                        .map { Pair(labels[it.first], it.second) }
+                    .mapIndexed { index, confidence -> Recognition(labels[index], confidence) }
+                    .filter { it.confidence > CONFIDENCE_THRESHOLD }
+                    .sortedByDescending { it.confidence }
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult
         }
+
     }
-
-
 
     private fun addPixelValue(pixelValue: Int) {
         imgData.put((pixelValue shr 16 and 0xFF).toByte())
