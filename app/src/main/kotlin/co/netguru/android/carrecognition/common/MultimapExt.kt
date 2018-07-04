@@ -1,15 +1,10 @@
 typealias Multimap<K, V> = Map<K, List<V>>
 
-fun <K, V> mutableMultimapOf(vararg pair: Pair<K, List<V>>): MutableMap<K, List<V>> =
-    mutableMapOf(*pair)
-
-fun <K, V> multimapOf(vararg pair: Pair<K, List<V>>): Multimap<K, V> = mapOf(*pair)
-
 fun <K, V> Multimap<K, V>.partition(
     predicate: (V) -> Boolean
 ): Pair<Multimap<K, V>, Multimap<K, V>> {
-    val first = mutableMultimapOf<K, V>()
-    val second = mutableMultimapOf<K, V>()
+    val first = mutableMapOf<K, List<V>>()
+    val second = mutableMapOf<K, List<V>>()
     for (k in this.keys) {
         val (firstValuePartition, secondValuePartition) = this[k]!!.partition(predicate)
         first[k] = firstValuePartition
@@ -25,7 +20,7 @@ fun <K, V> Multimap<K, V>.toPairsList(): List<Pair<K, V>> = this.flatMap { (k, v
 fun <K, V> Multimap<K, V>.flattenValues() = this.values.flatten()
 
 operator fun <K, V> Multimap<K, V>.plus(pair: Pair<K, V>): Multimap<K, V> = if (this.isEmpty()) {
-    multimapOf(pair.first to listOf(pair.second))
+    mapOf(pair.first to listOf(pair.second))
 } else {
     val mutableMap = this.toMutableMap()
     val keyValues = mutableMap[pair.first]
@@ -54,7 +49,7 @@ operator fun <K, V> Multimap<K, V>.minus(pair: Pair<K, V>): Multimap<K, V> = if 
 }
 
 fun <K, V> List<Pair<K, V>>.toMultiMap(): Multimap<K, V> {
-    var result = multimapOf<K, V>()
+    var result = mapOf<K, List<V>>()
     forEach {
         result += it
     }
@@ -62,7 +57,7 @@ fun <K, V> List<Pair<K, V>>.toMultiMap(): Multimap<K, V> {
 }
 
 fun <K, V, I> List<I>.toMultiMap(mapper: (I) -> Pair<K, V>): Multimap<K, V> {
-    var result = multimapOf<K, V>()
+    var result = mapOf<K, List<V>>()
     forEach {
         result += mapper(it)
     }

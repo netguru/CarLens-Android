@@ -19,5 +19,4 @@ class LimitedList<T>(private val limit: Int) : Iterable<T> {
     operator fun get(index: Int) = list[index]
 
     override fun iterator() = list.iterator()
-
 }
