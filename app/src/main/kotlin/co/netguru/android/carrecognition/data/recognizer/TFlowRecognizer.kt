@@ -25,22 +25,7 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
-    }
-
-    enum class Labels {
-        FORD_FIESTA,
-        HONDA_CIVIC,
-        NISSAN_QASHQAI,
-        NOT_CAR,
-        TOYOTA_CAMRY,
-        TOYOTA_COROLLA,
-        VOLKSWAGEN_GOLF,
-        VOLKSWAGEN_PASSAT,
-        VOLKSWAGEN_TIGUAN;
-
-        companion object {
-            fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
-        }
+        const val NR_OF_RETURNED_RECOGNITIONS = 3
     }
 
     private val imgData = ByteBuffer
@@ -77,12 +62,12 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                 finalResult = result[0]
                     .mapIndexed { index, confidence ->
                         Recognition(
-                            Labels.of(labels[index]),
+                            CAR.of(labels[index]),
                             confidence.toDouble() / Byte.MAX_VALUE
                         )
                     }
                     .sortedByDescending { it.confidence }
-                    .take(3)
+                    .take(NR_OF_RETURNED_RECOGNITIONS)
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult

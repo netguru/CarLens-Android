@@ -8,7 +8,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface CameraContract {
     interface View : MvpView {
-        fun printResult(result: String)
         fun createAnchor(hitPoint: HitResult, text: String)
         fun acquireFrame(): Image?
         fun updateViewFinder(viewfinderSize: Double)

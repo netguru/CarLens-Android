@@ -6,4 +6,13 @@
     <string name="error_message">Error during operation: %s</string>
     <string name="car_recognized_message">Make: %1$s [%2$f]\n Model: %3$s [%4$f]</string>
     <string name="viewfinder">viewfinder</string>
+    <string name="ford_fiesta">Ford Fiesta</string>
+    <string name="honda_civic">Honda Civic</string>
+    <string name="nissan_qashqai">Nissan Qashqai</string>
+    <string name="not_car">not a car</string>
+    <string name="toyota_camry">Toyota Camry</string>
+    <string name="toyota_corolla">Toyota Corolla</string>
+    <string name="volkswagen_golf">Volkswagen Golf</string>
+    <string name="volkswagen_passat">Volkswagen Passat</string>
+    <string name="volkswagen_tiguan">Volkswagen Tiguan</string>
 </resources>

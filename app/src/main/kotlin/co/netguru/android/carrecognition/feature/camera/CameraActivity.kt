@@ -19,11 +19,11 @@ import javax.inject.Inject
 
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
 
-
     @Inject
     lateinit var cameraPresenter: CameraPresenter
 
     private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
+    private var recognitionIndicatorAnimator: ValueAnimator? = null
 
     private val cameraWidth by lazy {
         val displayMetrics = DisplayMetrics()
@@ -62,7 +62,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    fun setupArFragment() {
+    private fun setupArFragment() {
         arFragment.planeDiscoveryController.hide()
         arFragment.planeDiscoveryController.setInstructionView(null)
         arFragment.arSceneView.planeRenderer.isEnabled = false
@@ -76,6 +76,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onPause() {
         super.onPause()
         presenter.detachView()
+        recognitionIndicatorAnimator?.cancel()
+        recognitionIndicatorAnimator = null
     }
 
     override fun onDestroy() {
@@ -85,10 +87,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
-    }
-
-    override fun printResult(result: String) {
-        debugTextView.text = result
     }
 
     override fun createAnchor(hitPoint: HitResult, text: String) {
@@ -111,11 +109,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun updateViewFinder(viewfinderSize: Double) {
-        val animator = ValueAnimator.ofFloat(viewfinder.progress, viewfinderSize.toFloat())
-        animator.addUpdateListener { animation ->
-            viewfinder.progress = animation.animatedValue as Float
-        }
-        animator.start()
+        recognitionIndicatorAnimator =
+                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize.toFloat())
+                    .apply {
+                        addUpdateListener { animation ->
+                            recognitionIndicator.progress = animation.animatedValue as Float
+                        }
+                        start()
+                    }
     }
 }
 
