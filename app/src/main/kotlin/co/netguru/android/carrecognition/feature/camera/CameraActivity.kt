@@ -1,13 +1,14 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.animation.ValueAnimator
 import android.media.Image
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
+import com.google.ar.core.exceptions.NotYetAvailableException
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.ux.ArFragment
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
@@ -22,6 +23,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     lateinit var cameraPresenter: CameraPresenter
 
     private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
+    private var recognitionIndicatorAnimator: ValueAnimator? = null
 
     private val cameraWidth by lazy {
         val displayMetrics = DisplayMetrics()
@@ -74,6 +76,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onPause() {
         super.onPause()
         presenter.detachView()
+        recognitionIndicatorAnimator?.cancel()
+        recognitionIndicatorAnimator = null
     }
 
     override fun onDestroy() {
@@ -83,10 +87,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
-    }
-
-    override fun printResult(result: String) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
     }
 
     override fun createAnchor(hitPoint: HitResult, text: String) {
@@ -101,8 +101,22 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         if (frame.camera.trackingState != TrackingState.TRACKING) {
             return null
         }
-        return arFragment.arSceneView.arFrame.acquireCameraImage()
+        return try {
+            arFragment.arSceneView.arFrame.acquireCameraImage()
+        } catch (e: NotYetAvailableException) {
+            null
+        }
+    }
+
+    override fun updateViewFinder(viewfinderSize: Double) {
+        recognitionIndicatorAnimator =
+                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize.toFloat())
+                    .apply {
+                        addUpdateListener { animation ->
+                            recognitionIndicator.progress = animation.animatedValue as Float
+                        }
+                        start()
+                    }
     }
 }
-
 
