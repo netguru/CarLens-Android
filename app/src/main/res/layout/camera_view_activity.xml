@@ -28,5 +28,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
+    <ImageView
+        android:id="@+id/carListButton"
+        android:layout_width="@dimen/car_list_button_size"
+        android:layout_height="@dimen/car_list_button_size"
+        android:layout_marginBottom="44dp"
+        android:layout_marginStart="45dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/car_list_button" />
+
+    <co.netguru.android.carrecognition.feature.cars.CarsListView
+        android:id="@+id/carsListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 
 </android.support.constraint.ConstraintLayout>

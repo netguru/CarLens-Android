@@ -2,4 +2,6 @@
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
     <color name="green">#5FCF6F</color>
+
+    <color name="car_list_background">#EEF3F5</color>
 </resources>
