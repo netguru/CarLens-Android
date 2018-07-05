@@ -2,6 +2,7 @@
 <resources>
 
     <string name="camera">Camera</string>
+    <string name="car_list">Car List</string>
     <string name="no_car_found">No car found in the image</string>
     <string name="error_message">Error during operation: %s</string>
     <string name="car_recognized_message">Make: %1$s [%2$f]\n Model: %3$s [%4$f]</string>

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.camera_view_activity.*
 import javax.inject.Inject
 
 
@@ -38,6 +40,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         setupArFragment()
 
+        carListButton.setOnClickListener { showCarList() }
+
 //        makePhotoButton.setOnClickListener {
 //            val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
 //            val hitPoint = frame.hitTest(cameraWidth / 2f, cameraHeight / 2f).firstOrNull()
@@ -53,6 +57,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 //            }
 //            presenter.frameUpdated()
 //        }
+    }
+
+    private fun showCarList() {
+        val startX = carListButton.left + (carListButton.width / 2)
+        val startY = carListButton.bottom + (carListButton.height / 2)
+        CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
     }
 
     private fun setupArFragment() {

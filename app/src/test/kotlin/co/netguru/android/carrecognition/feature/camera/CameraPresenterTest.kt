@@ -24,7 +24,7 @@ class CameraPresenterTest {
     @Before
     fun before() {
         reset(tflow, view)
-        presenter = CameraPresenter(tflow)
+        presenter = CameraPresenter()
         presenter.attachView(view)
     }
 
@@ -56,6 +56,6 @@ class CameraPresenterTest {
         //and user tries to put label
         presenter.processHitResult(point)
 
-        verify(view).createAnchor(point, "test (20%)")
+        verify(view).createAnchor(point, " (0%)")
     }
 }
