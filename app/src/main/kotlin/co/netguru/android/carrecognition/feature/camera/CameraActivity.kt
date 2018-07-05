@@ -3,10 +3,9 @@ package co.netguru.android.carrecognition.feature.camera
 import android.media.Image
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.View
-import android.view.ViewAnimationUtils
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
@@ -41,7 +40,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         setupArFragment()
 
-        carListButton.setOnClickListener { onCarListClick() }
+        carListButton.setOnClickListener { showCarList() }
 
 //        makePhotoButton.setOnClickListener {
 //            val frame = arFragment.arSceneView.arFrame ?: return@setOnClickListener
@@ -60,17 +59,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 //        }
     }
 
-    private fun onCarListClick() {
-        val startRadius = 0f
-        val endRadius = Math.hypot(content.width.toDouble(), content.height.toDouble())
-
-        ViewAnimationUtils.createCircularReveal(carsListView,
-                carListButton.left, carListButton.bottom,
-                startRadius, endRadius.toFloat())
-                .also {
-                    carsListView.visibility = View.VISIBLE
-                    it.start()
-                }
+    private fun showCarList() {
+        val startX = carListButton.left + (carListButton.width / 2)
+        val startY = carListButton.bottom + (carListButton.height / 2)
+        CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
     }
 
     private fun setupArFragment() {
