@@ -62,7 +62,7 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                 finalResult = result[0]
                     .mapIndexed { index, confidence ->
                         Recognition(
-                            CAR.of(labels[index]),
+                            Car.of(labels[index]),
                             confidence.toDouble() / Byte.MAX_VALUE
                         )
                     }

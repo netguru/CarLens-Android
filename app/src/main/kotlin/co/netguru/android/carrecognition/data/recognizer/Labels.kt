@@ -5,7 +5,7 @@ import android.support.annotation.StringRes
 import co.netguru.android.carrecognition.R
 
 
-enum class CAR(@StringRes private val textId: Int) {
+enum class Car(@StringRes private val textId: Int) {
     FORD_FIESTA(R.string.ford_fiesta),
     HONDA_CIVIC(R.string.honda_civic),
     NISSAN_QASHQAI(R.string.nissan_qashqai),

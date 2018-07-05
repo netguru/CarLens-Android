@@ -4,7 +4,7 @@ import android.media.Image
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.LimitedList
 import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
-import co.netguru.android.carrecognition.data.recognizer.CAR
+import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.HitResult
@@ -37,7 +37,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
             .toList()
             .sortedByDescending { it.second }
             .firstOrNull()
-        return Recognition(best?.first ?: CAR.NOT_CAR, best?.second ?: 0.0)
+        return Recognition(best?.first ?: Car.NOT_CAR, best?.second ?: 0.0)
     }
 
     override fun processHitResult(hitPoint: HitResult?) {
@@ -87,7 +87,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
     private fun getViewfinderSize(averageBestRecognition: Recognition): Double {
         return when (averageBestRecognition.title) {
-            CAR.NOT_CAR -> 0.0
+            Car.NOT_CAR -> 0.0
             else -> (averageBestRecognition.confidence)
         }
     }

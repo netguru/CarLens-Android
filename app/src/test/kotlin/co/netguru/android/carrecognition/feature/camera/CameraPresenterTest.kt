@@ -2,7 +2,7 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
-import co.netguru.android.carrecognition.data.recognizer.CAR
+import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.HitResult
@@ -44,7 +44,7 @@ class CameraPresenterTest {
             on { classify(any()) } doReturn Single.just(
                 listOf(
                     Recognition(
-                        CAR.VOLKSWAGEN_PASSAT,
+                        Car.VOLKSWAGEN_PASSAT,
                         0.2
                     )
                 )
