@@ -2,6 +2,7 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
+import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.HitResult
@@ -29,16 +30,10 @@ class CameraPresenterTest {
     }
 
     @Test
-    fun `Should print error message when no point is found`() {
-        presenter.processHitResult(null)
-        verify(view).printResult("point not found")
-    }
-
-    @Test
     fun `Should create anchor on hit result`() {
         val result = mock<HitResult>()
         presenter.processHitResult(result)
-        verify(view).createAnchor(result, " (0%)")
+        verify(view).createAnchor(result, "NOT_CAR (0%)")
     }
 
     @Test
@@ -46,7 +41,14 @@ class CameraPresenterTest {
         val frame = mock<Image>()
         val point = mock<HitResult>()
         tflow.stub {
-            on { classify(any()) } doReturn Single.just(listOf(Recognition("test", 26.toByte())))
+            on { classify(any()) } doReturn Single.just(
+                listOf(
+                    Recognition(
+                        Car.VOLKSWAGEN_PASSAT,
+                        0.2
+                    )
+                )
+            )
         }
         view.stub {
             on { acquireFrame() } doReturn frame
@@ -56,6 +58,6 @@ class CameraPresenterTest {
         //and user tries to put label
         presenter.processHitResult(point)
 
-        verify(view).createAnchor(point, " (0%)")
+        verify(view).createAnchor(point, "VOLKSWAGEN_PASSAT (20%)")
     }
 }

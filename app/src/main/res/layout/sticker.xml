@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:background="@color/green"
     android:padding="@dimen/padding_small"
-    android:textAlignment="center"
-    tools:text="test (0%)" />
+    tools:text="test (0%)"
+    android:textAlignment="center" />

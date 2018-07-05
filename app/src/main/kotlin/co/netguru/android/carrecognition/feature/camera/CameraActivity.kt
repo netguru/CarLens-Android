@@ -1,9 +1,9 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.animation.ValueAnimator
 import android.media.Image
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.HitResult
@@ -13,12 +13,13 @@ import kotlinx.android.synthetic.main.camera_view_activity.*
 import javax.inject.Inject
 
 
-class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
+abstract class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
 
 //    private val arFragment by lazy { supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment }
+    private var recognitionIndicatorAnimator: ValueAnimator? = null
 
     private val cameraWidth by lazy {
         val displayMetrics = DisplayMetrics()
@@ -79,6 +80,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onPause() {
         super.onPause()
         presenter.detachView()
+        recognitionIndicatorAnimator?.cancel()
+        recognitionIndicatorAnimator = null
     }
 
     override fun onDestroy() {
@@ -88,10 +91,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
-    }
-
-    override fun printResult(result: String) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
     }
 
     override fun createAnchor(hitPoint: HitResult, text: String) {
@@ -106,8 +105,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 //        if (frame.camera.trackingState != TrackingState.TRACKING) {
 //            return null
 //        }
-//        return arFragment.arSceneView.arFrame.acquireCameraImage()
+//        return try {
+//            arFragment.arSceneView.arFrame.acquireCameraImage()
+//        } catch (e: NotYetAvailableException) {
+//            null
+//        }
 //    }
 }
-
-

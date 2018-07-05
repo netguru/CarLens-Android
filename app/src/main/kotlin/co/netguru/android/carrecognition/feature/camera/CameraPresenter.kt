@@ -2,10 +2,13 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.application.scope.ActivityScope
+import co.netguru.android.carrecognition.common.LimitedList
+import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.disposables.CompositeDisposable
+import toMultiMap
 import javax.inject.Inject
 
 @ActivityScope
@@ -15,21 +18,29 @@ class CameraPresenter @Inject constructor()
     private val compositeDisposable = CompositeDisposable()
     private var processing = false
 
+    private val recognitionData = LimitedList<Recognition>(30)
+
     override fun destroy() {
         super.destroy()
         compositeDisposable.clear()
     }
 
-    private var lastRecognition = Recognition("", 0.toByte())
+    private fun getAverageBestRecognition(): Recognition {
+        val best = recognitionData.toList()
+            .toMultiMap { Pair(it.title, it.confidence) }
+            .mapValues { (_, value) -> value.average() }
+            .toList()
+            .sortedByDescending { it.second }
+            .firstOrNull()
+        return Recognition(best?.first ?: Car.NOT_CAR, best?.second ?: 0.0)
+    }
 
     override fun processHitResult(hitPoint: HitResult?) {
         if (hitPoint == null) {
-            ifViewAttached {
-                it.printResult("point not found")
-            }
+            //TODO: figure out what to do here (retry? cancel?)
         } else {
             ifViewAttached {
-                it.createAnchor(hitPoint, lastRecognition.toString())
+                it.createAnchor(hitPoint, getAverageBestRecognition().toString())
             }
         }
     }
@@ -51,21 +62,28 @@ class CameraPresenter @Inject constructor()
         processing = true
 
 //        compositeDisposable += tFlowRecognizer.classify(image)
-//                .applyComputationSchedulers()
-//                .doOnDispose {
-//                    image.close()
-//                    processing = false
+//            .applyComputationSchedulers()
+//            .doFinally {
+//                image.close()
+//                processing = false
+//            }
+//            .subscribeBy(
+//                onSuccess = { result ->
+//                    recognitionData.addAll(result)
+//                    ifViewAttached {
+//                        it.updateViewFinder(getViewfinderSize(getAverageBestRecognition()))
+//                    }
+//                },
+//                onError = { error ->
+//                    Timber.e(error)
 //                }
-//                .subscribeBy(
-//                        onSuccess = { result ->
-//                            lastRecognition = result.last()
-//
-//                        },
-//                        onError = { error ->
-//                            ifViewAttached {
-//                                it.printResult(error.message.toString())
-//                            }
-//                        }
-//                )
+//            )
+    }
+
+    private fun getViewfinderSize(averageBestRecognition: Recognition): Double {
+        return when (averageBestRecognition.title) {
+            Car.NOT_CAR -> 0.0
+            else -> (averageBestRecognition.confidence)
+        }
     }
 }
