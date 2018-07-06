@@ -36,7 +36,7 @@
             android:name=".feature.camera.CameraActivity"
             android:label="@string/camera"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".feature.cars.CarListActivity"
             android:label="@string/discovered"
