@@ -14,6 +14,9 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_xsmall">4dp</dimen>
     <dimen name="margin_xxsmall">2dp</dimen>
+
+    <dimen name="corner_radius">20dp</dimen>
+
     <dimen name="car_list_button_size">45dp</dimen>
     <dimen name="up_arrow_size">42dp</dimen>
 </resources>
