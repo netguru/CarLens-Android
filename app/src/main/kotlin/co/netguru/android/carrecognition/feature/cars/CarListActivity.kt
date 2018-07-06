@@ -11,6 +11,7 @@ import co.netguru.android.carrecognition.R
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.car_list_view.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -27,16 +28,32 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
 
         if (savedInstanceState == null) {
             root_layout.visibility = View.INVISIBLE
-
-            val viewTreeObserver = root_layout.viewTreeObserver
-            if (viewTreeObserver.isAlive) {
-                viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        showCircularAnimation(false)
-                        root_layout.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    }
-                })
+            onGlobalLayout {
+                initViewPager()
+                showCircularAnimation(false)
             }
+        }
+    }
+
+    private fun onGlobalLayout(block: () -> Unit) {
+        val viewTreeObserver = root_layout.viewTreeObserver
+        if (viewTreeObserver.isAlive) {
+            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    block()
+                    root_layout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            })
+        }
+    }
+
+    private fun initViewPager() {
+        viewPager.apply {
+            offscreenPageLimit = 2
+            pageMargin = -rootView.width / 10
+            Timber.d("pageMargin $pageMargin")
+            adapter = CarsPagerAdapter()
+            setPageTransformer(false, CarListPageTransformer())
         }
     }
 
@@ -54,7 +71,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     }
 
     private fun Animator.finishOnAnimationEnd() {
-        addListener(object: Animator.AnimatorListener {
+        addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator?) {}
             override fun onAnimationCancel(animation: Animator?) {}
             override fun onAnimationRepeat(animation: Animator?) {}
