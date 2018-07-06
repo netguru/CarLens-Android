@@ -2,9 +2,6 @@
 <resources>
 
     <string name="camera">Camera</string>
-    <string name="no_car_found">No car found in the image</string>
-    <string name="error_message">Error during operation: %s</string>
-    <string name="car_recognized_message">Make: %1$s [%2$f]\n Model: %3$s [%4$f]</string>
     <string name="viewfinder">viewfinder</string>
     <string name="ford_fiesta">Ford Fiesta</string>
     <string name="honda_civic">Honda Civic</string>
@@ -15,4 +12,10 @@
     <string name="volkswagen_golf">Volkswagen Golf</string>
     <string name="volkswagen_passat">Volkswagen Passat</string>
     <string name="volkswagen_tiguan">Volkswagen Tiguan</string>
+    <string name="searching">Searching</string>
+    <string name="error_install_ar_core">Please install ARCore</string>
+    <string name="error_update_ar_core">Please update ARCore</string>
+    <string name="error_update_app">Please update this app</string>
+    <string name="error_device_not_compatible">This device does not support AR</string>
+    <string name="error_failed_to_create_session">Failed to create AR session</string>
 </resources>

@@ -63,7 +63,7 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                     .mapIndexed { index, confidence ->
                         Recognition(
                             Car.of(labels[index]),
-                            confidence.toDouble() / Byte.MAX_VALUE
+                            confidence.toFloat() / Byte.MAX_VALUE
                         )
                     }
                     .sortedByDescending { it.confidence }

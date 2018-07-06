@@ -37,15 +37,14 @@ class CameraPresenterTest {
     }
 
     @Test
-    fun `Should show result on recognition`() {
+    fun `Should show details on 30 frame`() {
         val frame = mock<Image>()
-        val point = mock<HitResult>()
         tflow.stub {
             on { classify(any()) } doReturn Single.just(
                 listOf(
                     Recognition(
                         Car.VOLKSWAGEN_PASSAT,
-                        0.2
+                        0.6f
                     )
                 )
             )
@@ -53,11 +52,23 @@ class CameraPresenterTest {
         view.stub {
             on { acquireFrame() } doReturn frame
         }
-        //when frame is updated
-        presenter.frameUpdated()
-        //and user tries to put label
-        presenter.processHitResult(point)
 
-        verify(view).createAnchor(point, "VOLKSWAGEN_PASSAT (20%)")
+        //we need 30 frames to start showing data
+        for (i in 0..29) {
+            presenter.frameUpdated()
+        }
+
+        verify(view).updateViewFinder(0.6f)
+        verify(view).frameStreamEnabled(false)
+        verify(view).showDetails(Car.VOLKSWAGEN_PASSAT)
+        verify(view).tryAttachPin()
+    }
+
+    @Test
+    fun `Should show view finder and enable frame stream on discarding bottom sheet`() {
+        presenter.bottomSheetHidden()
+        verify(view).updateViewFinder(0f)
+        verify(view).frameStreamEnabled(true)
+        verify(view).showViewFinder()
     }
 }
