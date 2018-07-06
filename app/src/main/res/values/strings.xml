@@ -13,6 +13,7 @@
     <string name="zero_to_sixty_label">0 to 60 MPS</string>
     <string name="zero_to_sixty_value">%d sec.</string>
     <string name="top_speed_value">%d mph</string>
+    <string name="maker_model_template">%1$s %2$s</string>
 
     <string name="not_car">not a car</string>
     <string name="ford">Ford</string>
