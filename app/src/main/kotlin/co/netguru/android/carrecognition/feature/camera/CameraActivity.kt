@@ -136,9 +136,9 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         recognitionIndicator.visibility = View.GONE
 
-
         car_model.text = car.getModel(this)
         car_maker.text = car.getMaker(this)
+        miniImage.setImageDrawable(car.getMiniImage(this))
 
         createAnimator(car.topSpeed.toFloat() / Car.TOP_SPEED_MAX) {
             top_speed_bar.progress = it
@@ -175,6 +175,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
         val animator = when (topValue) {
             is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)

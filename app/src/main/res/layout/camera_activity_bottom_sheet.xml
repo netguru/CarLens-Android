@@ -88,13 +88,13 @@
         tools:text="Volkswagen" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/miniImage"
         android:layout_width="138dp"
         android:layout_height="77dp"
         android:contentDescription="@null"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/top_margin"
-        app:srcCompat="@mipmap/volkswagenpassat" />
+        tools:srcCompat="@mipmap/fordfiesta" />
 
     <co.netguru.android.carrecognition.feature.camera.GradientProgress
         android:id="@+id/top_speed_bar"

@@ -40,18 +40,14 @@ class GradientProgress : View {
         }
 
     private var angle = 0f
-
     private var width = 0f
     private var height = 0f
-    private var paintStrokeWidth = 50f
-
-    private var minAngle = 40f
-    private var maxSweep = 280f
-
+    private var paintStrokeWidth = DEFAULT_PAINT_STROKE
+    private var minAngle = DEFAULT_MIN_ANGLE
+    private var maxSweep = DEFAULT_MAX_SWEEP
     private var gradientStart = Color.BLUE
     private var gradientEnd = Color.RED
     private var backCircleColor = Color.LTGRAY
-
     private var drawRect = RectF()
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -134,7 +130,11 @@ class GradientProgress : View {
             )
             canvas.restore()
         }
+    }
 
-
+    companion object {
+        const val DEFAULT_MIN_ANGLE = 40f
+        const val DEFAULT_MAX_SWEEP = 280f
+        const val DEFAULT_PAINT_STROKE = 50f
     }
 }
