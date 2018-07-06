@@ -4,4 +4,7 @@
     <color name="light_gray">#e3e1e3</color>
     <color name="green">#5FCF6F</color>
     <color name="blue">#5fa4cf</color>
+
+    <color name="pink">#FF5969</color>
+    <color name="orange">#FF8D3D</color>
 </resources>
