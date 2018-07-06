@@ -8,7 +8,6 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import co.netguru.android.carrecognition.R
-
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.recognizer.Car
@@ -102,11 +101,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         ArActivityUtils.processPermissionResult(this)
     }
 
-    override fun createAnchor(hitPoint: HitResult, text: String) {
-        val anchor =
-            AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
+    override fun createAnchor(hitPoint: HitResult, car: Car) {
+        val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
         anchor.setParent(arSceneView.scene)
-        anchor.addChild(StickerNode(text, this))
+        anchor.addChild(StickerNode(car, this) { showDetails(car) })
     }
 
     override fun acquireFrame(): Image? {
@@ -123,7 +121,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun updateViewFinder(viewfinderSize: Float) {
         recognitionIndicatorAnimator =
-                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize.toFloat())
+                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
                     .apply {
                         addUpdateListener { animation ->
                             recognitionIndicator.progress = animation.animatedValue as Float

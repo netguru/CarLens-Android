@@ -11,4 +11,5 @@
     <color name="top_bar_tint">#D7E2E6</color>
     <color name="subtitle">#9BB3C6</color>
     <color name="black">#000</color>
+    <color name="pin_background_color">#c0ffffff</color>
 </resources>
