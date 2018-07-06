@@ -9,7 +9,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface CameraContract {
     interface View : MvpView {
-        fun createAnchor(hitPoint: HitResult, text: String)
+        fun createAnchor(hitPoint: HitResult, car: Car)
         fun acquireFrame(): Image?
         fun updateViewFinder(viewfinderSize: Float)
         fun showViewFinder()

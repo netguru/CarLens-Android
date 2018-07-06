@@ -8,7 +8,6 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import co.netguru.android.carrecognition.R
-
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
@@ -54,7 +53,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         carListButton.setOnClickListener { showCarList() }
 
         bottomSheetBehavior.setBottomSheetCallback(object :
-                BottomSheetBehavior.BottomSheetCallback() {
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
 
@@ -106,11 +105,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         ArActivityUtils.processPermissionResult(this)
     }
 
-    override fun createAnchor(hitPoint: HitResult, text: String) {
-//        val anchor =
-//            AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
+    override fun createAnchor(hitPoint: HitResult, car: Car) {
+//        val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
 //        anchor.setParent(arSceneView.scene)
-//        anchor.addChild(StickerNode(text, this))
+//        anchor.addChild(StickerNode(car, this) { showDetails(car) })
     }
 
     override fun acquireFrame(): Image? = null
@@ -127,7 +125,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun updateViewFinder(viewfinderSize: Float) {
 //        recognitionIndicatorAnimator =
-//                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize.toFloat())
+//                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
 //                    .apply {
 //                        addUpdateListener { animation ->
 //                            recognitionIndicator.progress = animation.animatedValue as Float
@@ -163,7 +161,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.horsePower.toFloat() / Car.HORSEPOWER_MAX) {
-            power_bar.progress = it
+//            power_bar.progress = it
         }
 
         createAnimator(car.horsePower) {
@@ -171,7 +169,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.engine.toFloat() / Car.ENGINE_MAX) {
-            engine_bar.progress = it
+//            engine_bar.progress = it
         }
 
         createAnimator(car.engine) {

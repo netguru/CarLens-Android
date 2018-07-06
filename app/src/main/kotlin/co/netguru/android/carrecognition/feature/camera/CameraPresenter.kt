@@ -8,6 +8,7 @@ import co.netguru.android.carrecognition.data.recognizer.Recognition
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import toMultiMap
 import javax.inject.Inject
 
@@ -16,9 +17,10 @@ class CameraPresenter @Inject constructor()
     : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
 
     private val compositeDisposable = CompositeDisposable()
-    private var processing = false
 
     private val recognitionData = LimitedList<Recognition>(SAMPLE_SIZE)
+    private var processing = false
+    private var nrOfTries = NR_OF_TRIES
 
     override fun destroy() {
         super.destroy()
@@ -37,6 +39,7 @@ class CameraPresenter @Inject constructor()
 
     override fun bottomSheetHidden() {
         recognitionData.clear()
+        nrOfTries = NR_OF_TRIES
         ifViewAttached {
             it.updateViewFinder(0f)
             it.frameStreamEnabled(true)
@@ -47,12 +50,18 @@ class CameraPresenter @Inject constructor()
     override fun processHitResult(hitPoint: HitResult?) {
         if (hitPoint == null) {
             ifViewAttached {
-                //TODO: figure out what to do in this case (retry? cancel?)
+                if (nrOfTries > 0) {
+                    nrOfTries -= 1
+                    it.tryAttachPin()
+                } else {
+                    Timber.d("point not FOUND!")
+                }
             }
         } else {
+            nrOfTries = NR_OF_TRIES
             //todo: test if point is not to close to other points in scene
             ifViewAttached {
-                it.createAnchor(hitPoint, getAverageBestRecognition().toString())
+                it.createAnchor(hitPoint, getAverageBestRecognition().title)
             }
         }
     }
@@ -114,7 +123,8 @@ class CameraPresenter @Inject constructor()
     }
 
     companion object {
-        private const val RECOGNITION_THRESHOLD = 0.30
+        private const val RECOGNITION_THRESHOLD = 0.02
         private const val SAMPLE_SIZE = 30
+        private const val NR_OF_TRIES = 5
     }
 }

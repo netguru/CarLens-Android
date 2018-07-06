@@ -33,7 +33,7 @@ class CameraPresenterTest {
     fun `Should create anchor on hit result`() {
         val result = mock<HitResult>()
         presenter.processHitResult(result)
-        verify(view).createAnchor(result, "NOT_CAR (0%)")
+        verify(view).createAnchor(result, Car.NOT_CAR)
     }
 
     @Test
