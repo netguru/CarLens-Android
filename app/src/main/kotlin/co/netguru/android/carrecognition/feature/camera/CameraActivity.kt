@@ -1,13 +1,14 @@
 package co.netguru.android.carrecognition.feature.camera
 
 import android.animation.ValueAnimator
-import android.graphics.drawable.GradientDrawable
 import android.media.Image
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import co.netguru.android.carrecognition.R
+
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
@@ -41,14 +42,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         displayMetrics.heightPixels
     }
 
-    private val cornerRadiusInPixels by lazy {
-        resources.getDimensionPixelSize(R.dimen.corner_radius)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.camera_activity_container)
+        setContentView(co.netguru.android.carrecognition.R.layout.camera_activity_container)
         setPresenter(createPresenter())
 
 //        arSceneView.planeRenderer.isEnabled = false
@@ -59,7 +56,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         bottomSheetBehavior.setBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                animateBottomSheet(bottomSheet, slideOffset)
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -76,15 +72,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         val startX = carListButton.left + (carListButton.width / 2)
         val startY = carListButton.bottom + (carListButton.height / 2)
         CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
-    }
-
-    private fun animateBottomSheet(bottomSheet: View, slideOffset: Float) {
-        val shape = bottomSheet.background.current as GradientDrawable
-
-        if (slideOffset > 0) {
-            val radius = (1 - slideOffset) * cornerRadiusInPixels
-            shape.cornerRadius = radius
-        }
     }
 
     override fun onResume() {
@@ -149,11 +136,62 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 //                    }
     }
 
-    override fun showDetails(label: Car) {
+    override fun showDetails(car: Car) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         recognitionIndicator.visibility = View.GONE
 
-        bs_title.text = label.name
+        car_model.text = car.getModel(this)
+        car_maker.text = car.getMaker(this)
+        miniImage.setImageDrawable(car.getMiniImage(this))
+
+        createAnimator(car.topSpeed.toFloat() / Car.TOP_SPEED_MAX) {
+            top_speed_bar.progress = it
+        }
+
+        createAnimator(car.topSpeed) {
+            top_speed_value.text = getString(R.string.top_speed_value, it)
+        }
+
+        val zeroToSixtyProgressValue =
+            1 - car.zeroToSixty / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
+        createAnimator(zeroToSixtyProgressValue) {
+            zero_to_sixty_bar.progress = it
+        }
+
+        createAnimator(car.zeroToSixty.toInt()) {
+            zero_to_sixty_value.text = getString(R.string.zero_to_sixty_value, it)
+        }
+
+        createAnimator(car.horsePower.toFloat() / Car.HORSEPOWER_MAX) {
+            power_bar.progress = it
+        }
+
+        createAnimator(car.horsePower) {
+            power_value.text = getString(R.string.horsePowerValue, it)
+        }
+
+        createAnimator(car.engine.toFloat() / Car.ENGINE_MAX) {
+            engine_bar.progress = it
+        }
+
+        createAnimator(car.engine) {
+            engine_value.text = getString(R.string.engineValue, it)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
+        val animator = when (topValue) {
+            is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)
+            is Int -> ValueAnimator.ofInt(0, topValue)
+            else -> throw IllegalArgumentException("value must be Int of Float")
+        }
+        animator.duration = 1000
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.addUpdateListener {
+            onUpdate(it.animatedValue as T)
+        }
+        animator.start()
     }
 
     override fun frameStreamEnabled(enabled: Boolean) {
