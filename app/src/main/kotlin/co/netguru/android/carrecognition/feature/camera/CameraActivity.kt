@@ -95,17 +95,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         presenter.detachView()
         recognitionIndicatorAnimator?.cancel()
         recognitionIndicatorAnimator = null
-        if (arSceneView != null) {
-            arSceneView.pause()
-        }
+
+        arSceneView.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.destroy()
-        if (arSceneView != null) {
-            arSceneView.destroy()
-        }
+        arSceneView.destroy()
     }
 
     override fun createPresenter(): CameraContract.Presenter {

@@ -96,18 +96,17 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     }
 
     private fun onFrameProcessed() {
-        if (recognitionData.isFull()) {
-            ifViewAttached {
-                val bestRecognition = getAverageBestRecognition()
-                val combinedResult =
-                    getViewfinderSize(getAverageBestRecognition())
-                it.updateViewFinder(combinedResult)
+        if (!recognitionData.isFull()) return
 
-                if (combinedResult > RECOGNITION_THRESHOLD) {
-                    it.frameStreamEnabled(false)
-                    it.showDetails(bestRecognition.title ?: Car.NOT_CAR)
-                    it.tryAttachPin()
-                }
+        ifViewAttached {
+            val bestRecognition = getAverageBestRecognition()
+            val combinedResult = getViewfinderSize(getAverageBestRecognition())
+            it.updateViewFinder(combinedResult)
+
+            if (combinedResult > RECOGNITION_THRESHOLD) {
+                it.frameStreamEnabled(false)
+                it.showDetails(bestRecognition.title ?: Car.NOT_CAR)
+                it.tryAttachPin()
             }
         }
     }
