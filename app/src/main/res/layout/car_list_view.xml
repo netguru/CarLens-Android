@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/backArrow"
+                android:id="@+id/back_arrow"
                 android:layout_width="@dimen/up_arrow_size"
                 android:layout_height="@dimen/up_arrow_size"
                 android:layout_gravity="center_vertical|start"
@@ -35,39 +35,36 @@
                 android:layout_gravity="center"
                 android:text="@string/discovered"
                 android:textAllCaps="true"
+                android:fontFamily="@font/gligoth"
                 android:textColor="@color/title_text_color"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/counter"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="26dp"
-                android:tint="@color/title_text_color"
-                app:srcCompat="@drawable/car_list_button" />
+            <include layout="@layout/circle_progress_bar_with_label"
+                android:layout_height="80dp"
+                android:layout_width="80dp"
+                android:layout_gravity="end"/>
         </FrameLayout>
 
         <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
+            android:id="@+id/view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-
-            app:layout_constraintBottom_toTopOf="@id/button"
+            android:layout_marginTop="50dp"
+            app:layout_constraintBottom_toTopOf="@id/camera_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/button"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/camera_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/margin_xsmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/car_list_button" />
+            app:srcCompat="@drawable/rescan_button" />
 
     </android.support.constraint.ConstraintLayout>
 

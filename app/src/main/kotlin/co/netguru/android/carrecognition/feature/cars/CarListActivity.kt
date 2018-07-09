@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
@@ -11,7 +12,7 @@ import co.netguru.android.carrecognition.R
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.car_list_view.*
-import timber.log.Timber
+import kotlinx.android.synthetic.main.circle_progress_bar_with_label.*
 import javax.inject.Inject
 
 
@@ -19,6 +20,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
 
     @Inject
     lateinit var carListPresenter: CarListContract.Presenter
+    private var currentVisibleItem = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -32,6 +34,15 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
                 initViewPager()
                 showCircularAnimation(false)
             }
+        }
+
+        //TODO: get proper values for progress
+        progressBar.apply {
+            max = 9
+            progress = 3
+        }
+        progressText.apply {
+            text = "3/9"
         }
     }
 
@@ -48,13 +59,28 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     }
 
     private fun initViewPager() {
-        viewPager.apply {
-            offscreenPageLimit = 2
-            pageMargin = -rootView.width / 10
-            Timber.d("pageMargin $pageMargin")
-            adapter = CarsPagerAdapter()
+        view_pager.apply {
+            offscreenPageLimit = 3
+            pageMargin = -rootView.width / 10 //set side pages to be visible in 10%
+            val carId = getCarIdOpt(0)
+            adapter = CarsPagerAdapter(carId)
+            onPageSelected { position ->
+                if (position == currentVisibleItem) return@onPageSelected
+                currentVisibleItem = position
+                (adapter as CarsPagerAdapter).showAnimation(position)
+            }
             setPageTransformer(false, CarListPageTransformer())
+            currentItem = carId
         }
+    }
+
+    private fun ViewPager.onPageSelected(onPosition: (Int) -> Unit) {
+        addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float,
+                                        positionOffsetPixels: Int) {}
+            override fun onPageSelected(position: Int) { onPosition(position) }
+        })
     }
 
     private fun showCircularAnimation(hide: Boolean) {
@@ -66,6 +92,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
                 startRadius, finalRadius).apply {
             if (hide) finishOnAnimationEnd()
             else root_layout.visibility = View.VISIBLE
+            duration = REVEAL_ANIM_DURATION
             start()
         }
     }
@@ -89,17 +116,22 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     override fun createPresenter(): CarListContract.Presenter = carListPresenter
 
     companion object {
+        private const val REVEAL_ANIM_DURATION = 400L
         private const val START_X = "startX"
         private const val START_Y = "startY"
-        fun startActivityWithCircleAnimation(activity: Activity, startX: Int, startY: Int) {
+        private const val CAR_ID = "carId"
+        fun startActivityWithCircleAnimation(activity: Activity, startX: Int, startY: Int,
+                                             carId: Int? = null) {
             activity.startActivity(
                     Intent(activity, CarListActivity::class.java).apply {
                         putExtra(START_X, startX)
                         putExtra(START_Y, startY)
+                        carId?.also { putExtra(CAR_ID, it) }
                     })
         }
 
         private fun Activity.getStartXOpt(default: Int) = intent.getIntExtra(START_X, default)
         private fun Activity.getStartYOpt(default: Int) = intent.getIntExtra(START_Y, default)
+        private fun Activity.getCarIdOpt(default: Int) = intent.getIntExtra(CAR_ID, default)
     }
 }
