@@ -12,10 +12,12 @@ interface CameraContract {
         fun createAnchor(hitPoint: HitResult, car: Car)
         fun acquireFrame(): Image?
         fun updateViewFinder(viewfinderSize: Float)
-        fun showViewFinder()
+        fun showViewFinder(visible: Boolean)
         fun frameStreamEnabled(enabled: Boolean)
         fun showDetails(car: Car)
-        fun tryAttachPin()
+        fun tryAttachPin(randomFieldPercentage: Int)
+        fun updateRecognitionIndicatorLabel(status: CameraPresenter.RecognitionLabel)
+        fun showCouldNotAttachPinError()
     }
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)
