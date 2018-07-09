@@ -35,4 +35,6 @@
     <string name="power">power</string>
     <string name="horsePowerValue">%d hp</string>
     <string name="engineValue">%d</string>
+
+    <string name="tiguan_description">The Volkswagen Tiguan is a compact crossover vehicle (CUV). Introduced in 2007, it uses the PQ35 platform of the Volkswagen Golf.</string>
 </resources>

@@ -45,8 +45,13 @@ class CarsPagerAdapter(private var initialPosition: Int) : PagerAdapter() {
 
     private fun showDetails(view: View, car: Car, position: Int) {
         view.car_model.text = car.getModel(view.context)
+        view.description.text = car.getDescription(view.context)
         view.car_image.setImageDrawable(car.getMiniImage(view.context))
         view.car_logo.setImageDrawable(car.getLogoImage(view.context))
+
+        createAnimator(position, car.stars / 5f) {
+            view.rating_bar.progress = it
+        }
 
         createAnimator(position, car.topSpeed.toFloat() / Car.TOP_SPEED_MAX) {
             view.top_speed_bar.progress = it

@@ -143,24 +143,21 @@
                     android:id="@+id/star_div_left"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/margin_xsmall"
-                    android:background="@color/subtitle"
+                    android:layout_marginBottom="@dimen/margin_xxsmall"
+                    android:background="@color/car_list_background"
                     app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/rating_bar"
                     app:layout_constraintTop_toTopOf="@+id/rating_bar" />
 
-                <android.support.v7.widget.AppCompatRatingBar
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/rating_bar"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="15dp"
                     android:layout_margin="@dimen/margin_small"
-                    android:numStars="5"
-                    android:orientation="horizontal"
-                    android:progressDrawable="@drawable/rating_bar"
-                    android:rating="3"
-                    android:stepSize="1"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="rating_bar.json"
+                    app:lottie_loop="false"
                     app:layout_constraintLeft_toRightOf="@+id/star_div_left"
                     app:layout_constraintRight_toLeftOf="@+id/star_div_right"
                     app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_label" />
@@ -169,8 +166,8 @@
                     android:id="@+id/star_div_right"
                     android:layout_width="0dp"
                     android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/margin_xsmall"
-                    android:background="@color/subtitle"
+                    android:layout_marginBottom="@dimen/margin_xxsmall"
+                    android:background="@color/car_list_background"
                     app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
                     app:layout_constraintLeft_toRightOf="@+id/rating_bar"
                     app:layout_constraintRight_toRightOf="parent"
@@ -181,11 +178,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
-                    android:text="The Volkswagen Tiguan is a compact crossover vehicle (CUV). Introduced in 2007, it uses the PQ35 platform of the Volkswagen Golf."
                     android:textColor="@color/card_text"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+                    tools:text="@string/tiguan_description" />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/power_bar"
