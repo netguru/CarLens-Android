@@ -10,6 +10,7 @@
         android:id="@+id/arSceneView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,17 +20,26 @@
         android:id="@+id/recognitionIndicator"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_small"
-        app:lottie_fileName="lottie_viewfinder_animation.json"
-        app:lottie_loop="false"
-        app:lottie_autoPlay="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/viewfinder"
+        app:layout_constraintBottom_toBottomOf="@+id/arSceneView"
+        app:layout_constraintEnd_toEndOf="@+id/arSceneView"
         app:layout_constraintStart_toStartOf="@+id/arSceneView"
         app:layout_constraintTop_toTopOf="@+id/arSceneView"
-        android:contentDescription="@string/viewfinder" />
+        app:layout_constraintVertical_bias="0.40"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="lottie_viewfinder_animation.json"
+        app:lottie_loop="false" />
+
+    <TextView
+        android:id="@+id/recognitionIndicationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:fontFamily="@font/gligoth"
+        android:text="@string/recognition_indicator_put_car_in_center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/recognitionIndicator"
+        app:layout_constraintStart_toStartOf="@+id/recognitionIndicator"
+        app:layout_constraintTop_toBottomOf="@+id/recognitionIndicator" />
 
 </android.support.constraint.ConstraintLayout>

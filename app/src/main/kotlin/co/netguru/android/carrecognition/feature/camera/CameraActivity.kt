@@ -7,6 +7,7 @@ import android.support.design.widget.BottomSheetBehavior
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
@@ -20,10 +21,13 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.camera_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.camera_activity_container.*
 import kotlinx.android.synthetic.main.camera_activity_content.*
+import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
+
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
@@ -132,7 +136,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun showDetails(car: Car) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        recognitionIndicator.visibility = View.GONE
+
+        showViewFinder(false)
 
         car_model.text = car.getModel(this)
         car_maker.text = car.getMaker(this)
@@ -197,21 +202,41 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
                 }
                 presenter.frameUpdated()
             }
-            showViewFinder()
         } else {
             arSceneView.scene.setOnUpdateListener(null)
         }
     }
 
-    override fun showViewFinder() {
-        recognitionIndicator.visibility = View.VISIBLE
+    override fun showViewFinder(visible: Boolean) {
+        recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
+        recognitionIndicationLabel.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    override fun tryAttachPin() {
+    override fun tryAttachPin(randomFieldPercentage: Int) {
         val frame = arSceneView.arFrame ?: return
-        val hitPoint = frame.hitTest(cameraWidth / 2f, cameraHeight / 2f).firstOrNull()
 
-        presenter.processHitResult(hitPoint)
+        with(Random()) {
+
+            val randomPointX =
+                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
+            val randomPointY =
+                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
+
+            val hitPoint =
+                frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
+                    .firstOrNull()
+
+            Timber.d("hitpoint = (${(cameraWidth / 2f) + randomPointX}, ${(cameraHeight / 2f) + randomPointY})")
+            presenter.processHitResult(hitPoint)
+        }
+    }
+
+    override fun updateRecognitionIndicatorLabel(status: CameraPresenter.RecognitionLabel) {
+        recognitionIndicationLabel.text = getString(status.labelId)
+    }
+
+    override fun showCouldNotAttachPinError() {
+        Toast.makeText(this, R.string.could_not_attach_pin_error, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

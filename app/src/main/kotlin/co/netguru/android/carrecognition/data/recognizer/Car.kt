@@ -15,6 +15,17 @@ enum class Car(
     val horsePower: Int,
     val engine: Int
 ) {
+
+    OTHER_CAR(
+        R.string.not_car,
+        R.string.not_car,
+        R.mipmap.fordfiesta,
+        R.mipmap.volkswagen_logo,
+        100,
+        0.0f,
+        0,
+        0
+    ),
     NOT_CAR(
         R.string.not_car,
         R.string.not_car,
