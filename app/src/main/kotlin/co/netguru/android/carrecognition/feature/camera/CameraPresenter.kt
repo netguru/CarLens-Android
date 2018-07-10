@@ -9,6 +9,7 @@ import co.netguru.android.carrecognition.common.extensions.applyComputationSched
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
+import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import io.reactivex.disposables.CompositeDisposable
@@ -17,6 +18,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 import toMultiMap
 import javax.inject.Inject
+import kotlin.math.sqrt
 
 @ActivityScope
 class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer)
@@ -32,6 +34,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     private val compositeDisposable = CompositeDisposable()
 
     private val recognitionData = LimitedList<Recognition>(SAMPLE_SIZE)
+    private var anchors = emptyList<Anchor>()
     private var processing = false
     private var nrOfTries = NR_OF_TRIES
 
@@ -74,7 +77,26 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         } else {
             nrOfTries = NR_OF_TRIES
             ifViewAttached {
-                it.createAnchor(hitPoint, getAverageBestRecognition().title)
+
+                //get first anchor that distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS
+                val isLegal = anchors.asSequence()
+                    .map {
+                        val pose =
+                            it.pose //cache pose (anchor.pose is mutable and can be changed by ar core)
+                        val dx = pose.tx() - hitPoint.hitPose.tx()
+                        val dy = pose.ty() - hitPoint.hitPose.ty()
+                        val dz = pose.tz() - hitPoint.hitPose.tz()
+                        sqrt(dx * dx + dy * dy + dz * dz) //map into distance from anchor to hitpoint
+                    }
+                    .filter { it < MINIMUM_DISTANCE_BETWEEN_ANCHORS }
+                    .firstOrNull()
+
+                //if anchor does not exits than we can add new anchor
+                if (isLegal == null) {
+                    anchors += it.createAnchor(hitPoint, getAverageBestRecognition().title)
+                } else {
+                    Timber.d("tried to add anchor, but it is to close to others ")
+                }
             }
         }
     }
@@ -153,5 +175,6 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         private const val RECOGNITION_THRESHOLD_MIDDLE = 0.50
         private const val SAMPLE_SIZE = 30
         private const val NR_OF_TRIES = 5
+        private const val MINIMUM_DISTANCE_BETWEEN_ANCHORS = 2
     }
 }

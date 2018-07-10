@@ -14,6 +14,7 @@ import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.recognizer.Car
+import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
 import com.google.ar.core.exceptions.NotYetAvailableException
@@ -114,10 +115,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         ArActivityUtils.processPermissionResult(this)
     }
 
-    override fun createAnchor(hitPoint: HitResult, car: Car) {
+    override fun createAnchor(hitPoint: HitResult, car: Car): Anchor {
         val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
         anchor.setParent(arSceneView.scene)
         anchor.addChild(StickerNode(car, this) { showDetails(car) })
+        return anchor.anchor
     }
 
     override fun acquireFrame(): Image? {
