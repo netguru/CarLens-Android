@@ -35,6 +35,9 @@ class StickerNode(
                 logoImage.setImageDrawable(car.getLogoImage(context))
                 renderable = it
             }
+
+        localPosition = Vector3(0f, 0.5f, -1.5f)
+        localScale = Vector3(2f, 2f, 2f)
     }
 
     override fun onUpdate(frameTime: FrameTime?) {
