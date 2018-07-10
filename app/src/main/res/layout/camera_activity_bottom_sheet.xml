@@ -52,19 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/bottom_bar"
-        android:layout_width="135dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_bar"
-        android:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/car_model"
         android:layout_width="wrap_content"
@@ -185,34 +172,44 @@
         app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
         app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar" />
 
-    <ImageView
+    <Button
         android:id="@+id/googleButton"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
-        app:layout_constraintEnd_toStartOf="@+id/right_margin"
-        app:srcCompat="@drawable/google_button" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="45dp"
         android:layout_marginBottom="8dp"
-        android:padding="16dp"
+        android:background="@drawable/google_button_background"
+        android:contentDescription="@null"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scanButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scanButton" />
+
+    <Button
+        android:id="@+id/carListButton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="45dp"
+        android:background="@drawable/car_list_button_background"
+        android:contentDescription="@null"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scanButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scanButton" />
+
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rescan_button_background"
+        android:contentDescription="@null"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/googleButton"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:srcCompat="@drawable/rescan_button" />
+        app:layout_constraintStart_toEndOf="@+id/carListButton"
+        app:layout_constraintTop_toBottomOf="@+id/power_bar" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
-        app:layout_constraintStart_toStartOf="@+id/left_margin"
-        app:srcCompat="@drawable/car_list_button" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/power_bar"

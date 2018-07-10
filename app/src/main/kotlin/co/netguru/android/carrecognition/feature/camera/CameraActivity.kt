@@ -1,7 +1,9 @@
 package co.netguru.android.carrecognition.feature.camera
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.util.DisplayMetrics
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.camera_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.camera_activity_container.*
 import kotlinx.android.synthetic.main.camera_activity_content.*
 import timber.log.Timber
+import java.net.URLEncoder
 import java.util.*
 import javax.inject.Inject
 
@@ -71,6 +74,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         })
 
         ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
+
+        carListButton.setOnClickListener { }
+
+        scanButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 
     override fun onResume() {
@@ -175,6 +184,15 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         createAnimator(car.engine) {
             engine_value.text = getString(R.string.engineValue, it)
+        }
+
+        googleButton.setOnClickListener {
+            val query =
+                getString(R.string.maker_model_template, car.getMaker(this), car.getModel(this))
+            val escapedQuery = URLEncoder.encode(query, "UTF-8")
+            val uri = Uri.parse(getString(R.string.google_query_string, escapedQuery))
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
         }
     }
 
