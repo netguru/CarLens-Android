@@ -4,11 +4,11 @@ import android.animation.Animator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
-import android.view.ViewTreeObserver
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.extensions.onGlobalLayout
+import co.netguru.android.carrecognition.common.extensions.onPageSelected
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.car_list_view.*
@@ -46,18 +46,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         }
     }
 
-    private fun onGlobalLayout(block: () -> Unit) {
-        val viewTreeObserver = root_layout.viewTreeObserver
-        if (viewTreeObserver.isAlive) {
-            viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    block()
-                    root_layout.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                }
-            })
-        }
-    }
-
     private fun initViewPager() {
         view_pager.apply {
             offscreenPageLimit = 3
@@ -72,15 +60,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
             setPageTransformer(false, CarListPageTransformer())
             currentItem = carId
         }
-    }
-
-    private fun ViewPager.onPageSelected(onPosition: (Int) -> Unit) {
-        addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageScrolled(position: Int, positionOffset: Float,
-                                        positionOffsetPixels: Int) {}
-            override fun onPageSelected(position: Int) { onPosition(position) }
-        })
     }
 
     private fun showCircularAnimation(hide: Boolean) {

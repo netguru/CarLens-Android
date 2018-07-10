@@ -259,13 +259,13 @@
 
         <ImageView
             android:id="@+id/car_logo"
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="50dp"
             android:elevation="6dp"
             app:layout_constraintBottom_toTopOf="@id/card"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/card"
-            tools:src="@mipmap/volkswagen_logo" />
+            tools:src="@mipmap/ford" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

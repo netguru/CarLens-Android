@@ -3,6 +3,6 @@
     android:useLevel="true"
     android:innerRadiusRatio="3"
     android:shape="ring"
-    android:thickness="5dp">
+    android:thickness="3dp">
     <gradient android:startColor="@color/orange" android:endColor="@color/pink"/>
 </shape>

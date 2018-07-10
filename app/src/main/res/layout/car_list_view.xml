@@ -10,51 +10,49 @@
         android:layout_height="match_parent"
         android:background="@color/car_list_background">
 
-        <FrameLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/padding_small"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_bar_indicator"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/progress_bar_indicator"
+            app:srcCompat="@drawable/ic_arrow" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gligoth"
+            android:text="@string/discovered"
+            android:textAllCaps="true"
+            android:textColor="@color/title_text_color"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_bar_indicator"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/progress_bar_indicator" />
 
-            <ImageView
-                android:id="@+id/back_arrow"
-                android:layout_width="@dimen/up_arrow_size"
-                android:layout_height="@dimen/up_arrow_size"
-                android:layout_gravity="center_vertical|start"
-                android:layout_marginStart="10dp"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="@dimen/padding_small"
-                app:srcCompat="@drawable/baseline_arrow_back" />
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/discovered"
-                android:textAllCaps="true"
-                android:fontFamily="@font/gligoth"
-                android:textColor="@color/title_text_color"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <include layout="@layout/circle_progress_bar_with_label"
-                android:layout_height="80dp"
-                android:layout_width="80dp"
-                android:layout_gravity="end"/>
-        </FrameLayout>
+        <include
+            android:id="@+id/progress_bar_indicator"
+            layout="@layout/circle_progress_bar_with_label"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="50dp"
             app:layout_constraintBottom_toTopOf="@id/camera_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar_indicator" />
 
         <ImageView
             android:id="@+id/camera_button"

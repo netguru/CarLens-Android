@@ -18,5 +18,4 @@
     <dimen name="corner_radius">20dp</dimen>
 
     <dimen name="car_list_button_size">45dp</dimen>
-    <dimen name="up_arrow_size">42dp</dimen>
 </resources>

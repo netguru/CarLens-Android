@@ -1,13 +1,15 @@
 package co.netguru.android.carrecognition.feature.cars
 
 import android.animation.Animator
-import android.animation.ValueAnimator
+import android.app.Activity
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.AnimationUtils
+import co.netguru.android.carrecognition.common.extensions.getDisplayMetrics
 import co.netguru.android.carrecognition.data.recognizer.Car
 import kotlinx.android.synthetic.main.car_list_item_view.view.*
 
@@ -21,7 +23,7 @@ class CarsPagerAdapter(private var initialPosition: Int) : PagerAdapter() {
                 .inflate(R.layout.car_list_item_view, container, false)
         it.addView(view)
         animatorMap[position] = mutableListOf()
-        showDetails(view, Car.values()[position + 1], position)
+        showDetails(view, Car.getCarsOnly()[position], position)
         if (initialPosition == position) {
             showAnimation(position)
             initialPosition = -1 //clear that position after animation
@@ -41,13 +43,19 @@ class CarsPagerAdapter(private var initialPosition: Int) : PagerAdapter() {
 
     override fun isViewFromObject(view: View, `object`: Any) = `object` is View && view == `object`
 
-    override fun getCount(): Int = Car.values().size - 1
+    override fun getCount(): Int = Car.getCarsOnly().size
 
     private fun showDetails(view: View, car: Car, position: Int) {
         view.car_model.text = car.getModel(view.context)
         view.description.text = car.getDescription(view.context)
         view.car_image.setImageDrawable(car.getMiniImage(view.context))
         view.car_logo.setImageDrawable(car.getLogoImage(view.context))
+
+        if (canShowDescription(view.context as Activity)) {
+            view.description.text = car.getDescription(view.context)
+        } else {
+            view.description.visibility = View.GONE
+        }
 
         createAnimator(position, car.stars / 5f) {
             view.rating_bar.progress = it
@@ -88,19 +96,15 @@ class CarsPagerAdapter(private var initialPosition: Int) : PagerAdapter() {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
+    private fun canShowDescription(activity: Activity) = activity.getDisplayMetrics().let {
+        it.heightPixels / it.widthPixels > 16/9
+    }
+
     private fun <T> createAnimator(position: Int, topValue: T, onUpdate: (T) -> Unit) {
-        when (topValue) {
-            is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)
-            is Int -> ValueAnimator.ofInt(0, topValue)
-            else -> throw IllegalArgumentException("value must be Int of Float")
-        }.apply {
-            duration = 1000
-            interpolator = AccelerateDecelerateInterpolator()
-            addUpdateListener {
-                onUpdate(it.animatedValue as T)
-            }
-            animatorMap[position]?.add(this)
-        }
+        animatorMap[position]?.add(
+                AnimationUtils.createAnimator(topValue, onUpdate) {
+                    duration = 1000
+                    interpolator = AccelerateDecelerateInterpolator()
+                })
     }
 }

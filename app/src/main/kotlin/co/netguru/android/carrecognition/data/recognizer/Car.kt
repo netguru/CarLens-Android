@@ -22,7 +22,7 @@ enum class Car(
         R.string.not_car,
         R.string.tiguan_description,
         R.mipmap.fordfiesta,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.ford,
         100,
         0.0f,
         0,
@@ -34,7 +34,7 @@ enum class Car(
         R.string.fiesta,
         R.string.tiguan_description,
         R.mipmap.fordfiesta,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.ford,
         90,
         12f,
         90,
@@ -46,7 +46,7 @@ enum class Car(
         R.string.civic,
         R.string.tiguan_description,
         R.mipmap.hondacivic,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.honda,
         90,
         12f,
         90,
@@ -58,7 +58,7 @@ enum class Car(
         R.string.qashqai,
         R.string.tiguan_description,
         R.mipmap.nissanqashqai,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.nissan,
         100,
         10f,
         130,
@@ -70,7 +70,7 @@ enum class Car(
         R.string.camry,
         R.string.tiguan_description,
         R.mipmap.toyotacamry,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.toyota,
         120,
         9f,
         130,
@@ -82,7 +82,7 @@ enum class Car(
         R.string.corolla,
         R.string.tiguan_description,
         R.mipmap.toyotacorolla,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.toyota,
         120,
         10f,
         100,
@@ -94,7 +94,7 @@ enum class Car(
         R.string.golf,
         R.string.tiguan_description,
         R.mipmap.volkswagengolf,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.volskwagen,
         90,
         4f,
         200,
@@ -106,7 +106,7 @@ enum class Car(
         R.string.passat,
         R.string.tiguan_description,
         R.mipmap.volkswagenpassat,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.volskwagen,
         120,
         7f,
         120,
@@ -118,7 +118,7 @@ enum class Car(
         R.string.tiguan,
         R.string.tiguan_description,
         R.mipmap.volkswagentiguan,
-        R.mipmap.volkswagen_logo,
+        R.mipmap.volskwagen,
         120,
         13f,
         200,
@@ -133,6 +133,8 @@ enum class Car(
         const val HORSEPOWER_MAX = 200
         const val ENGINE_MAX = 3500
         fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
+
+        fun getCarsOnly() = values().filter { it.engine != 0 }
     }
 
     fun getMaker(context: Context) = context.getString(makerId)!!

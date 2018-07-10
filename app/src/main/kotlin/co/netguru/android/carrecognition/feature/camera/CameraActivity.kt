@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
@@ -177,19 +178,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
-        val animator = when (topValue) {
-            is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)
-            is Int -> ValueAnimator.ofInt(0, topValue)
-            else -> throw IllegalArgumentException("value must be Int of Float")
-        }
-        animator.duration = 1000
-        animator.interpolator = AccelerateDecelerateInterpolator()
-        animator.addUpdateListener {
-            onUpdate(it.animatedValue as T)
-        }
-        animator.start()
+        AnimationUtils.createAnimator(topValue, onUpdate) {
+            duration = 1000
+            interpolator = AccelerateDecelerateInterpolator()
+        }.start()
     }
 
     override fun frameStreamEnabled(enabled: Boolean) {
