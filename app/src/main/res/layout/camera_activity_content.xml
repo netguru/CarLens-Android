@@ -3,12 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
-
-    <!--<fragment-->
-        <!--android:id="@+id/sceneform_fragment"-->
-        <!--android:name="com.google.ar.sceneform.ux.ArFragment"-->
+    <!--<com.google.ar.sceneform.ArSceneView-->
+        <!--android:id="@+id/arSceneView"-->
         <!--android:layout_width="0dp"-->
         <!--android:layout_height="0dp"-->
         <!--app:layout_constraintBottom_toBottomOf="parent"-->
@@ -16,17 +15,22 @@
         <!--app:layout_constraintStart_toStartOf="parent"-->
         <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/makePhotoButton"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:focusable="true"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/recognitionIndicator"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
+        app:lottie_fileName="lottie_viewfinder_animation.json"
+        app:lottie_loop="false"
+        app:lottie_autoPlay="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/viewfinder" />
 
     <ImageView
         android:id="@+id/carListButton"

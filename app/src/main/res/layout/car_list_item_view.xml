@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/car_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gligoth"
+        android:textAllCaps="true"
+        android:textColor="@color/subtitle"
+        android:textSize="102sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="PASSAT" />
+
+    <ImageView
+        android:id="@+id/car_image"
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/volkswagenpassat" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:elevation="5dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_medium">
+
+                <co.netguru.android.carrecognition.feature.camera.GradientProgress
+                    android:id="@+id/top_speed_bar"
+                    android:layout_width="126dp"
+                    android:layout_height="126dp"
+                    android:paddingBottom="4dp"
+                    app:backCircleColor="@color/light_gray"
+                    app:gradientEnd="@color/orange"
+                    app:gradientStart="@color/pink"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lineWidth="15.0"
+                    app:maxSweep="240.0"
+                    app:minAngle="60.0" />
+
+                <TextView
+                    android:id="@+id/top_speed_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/top_speed"
+                    android:textAllCaps="true"
+                    android:textColor="@color/subtitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
+                    app:layout_constraintStart_toStartOf="@+id/top_speed_bar" />
+
+                <TextView
+                    android:id="@+id/top_speed_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/top_speed_value"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
+                    app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
+                    app:layout_constraintTop_toTopOf="@+id/top_speed_bar" />
+
+                <TextView
+                    android:id="@+id/zero_to_sixty_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/zero_to_sixty_value"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintTop_toTopOf="@+id/zero_to_sixty_bar" />
+
+                <co.netguru.android.carrecognition.feature.camera.GradientProgress
+                    android:id="@+id/zero_to_sixty_bar"
+                    android:layout_width="126dp"
+                    android:layout_height="126dp"
+                    android:paddingBottom="4dp"
+                    app:backCircleColor="@color/light_gray"
+                    app:gradientEnd="@color/orange"
+                    app:gradientStart="@color/pink"
+                    app:layout_constraintLeft_toRightOf="@+id/top_speed_bar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lineWidth="15.0"
+                    app:maxSweep="240.0"
+                    app:minAngle="60.0" />
+
+                <TextView
+                    android:id="@+id/zero_to_sixty_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/zero_to_sixty_label"
+                    android:textAllCaps="true"
+                    android:textColor="@color/subtitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
+                    app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar" />
+
+                <View
+                    android:id="@+id/star_div_left"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/margin_xxsmall"
+                    android:background="@color/car_list_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/rating_bar"
+                    app:layout_constraintTop_toTopOf="@+id/rating_bar" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/rating_bar"
+                    android:layout_width="80dp"
+                    android:layout_height="15dp"
+                    android:layout_margin="@dimen/margin_small"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="rating_bar.json"
+                    app:lottie_loop="false"
+                    app:layout_constraintLeft_toRightOf="@+id/star_div_left"
+                    app:layout_constraintRight_toLeftOf="@+id/star_div_right"
+                    app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_label" />
+
+                <View
+                    android:id="@+id/star_div_right"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="@dimen/margin_xxsmall"
+                    android:background="@color/car_list_background"
+                    app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
+                    app:layout_constraintLeft_toRightOf="@+id/rating_bar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/rating_bar" />
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_xsmall"
+                    android:textColor="@color/card_text"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+                    tools:text="@string/tiguan_description" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/power_bar"
+                    android:layout_width="125dp"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/engine_bar"
+                    app:layout_constraintTop_toBottomOf="@+id/description"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="progress-bar.json"
+                    app:lottie_loop="false" />
+
+                <TextView
+                    android:id="@+id/power_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/power"
+                    android:textAllCaps="true"
+                    android:textColor="@color/subtitle"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/power_bar"
+                    app:layout_constraintLeft_toLeftOf="@+id/power_bar" />
+
+                <TextView
+                    android:id="@+id/power_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gligoth"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/power_bar"
+                    app:layout_constraintTop_toTopOf="@+id/power_bar"
+                    tools:text="115 hp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/engine_bar"
+                    android:layout_width="125dp"
+                    android:layout_height="26dp"
+                    app:layout_constraintLeft_toRightOf="@+id/power_bar"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/power_bar"
+                    app:lottie_autoPlay="false"
+                    app:lottie_fileName="progress-bar.json"
+                    app:lottie_loop="false" />
+
+                <TextView
+                    android:id="@+id/engine_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gligoth"
+                    android:text="@string/engine"
+                    android:textAllCaps="true"
+                    android:textColor="@color/subtitle"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/engine_bar"
+                    app:layout_constraintStart_toStartOf="@+id/engine_bar" />
+
+                <TextView
+                    android:id="@+id/engine_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gligoth"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/engine_bar"
+                    app:layout_constraintTop_toTopOf="@+id/engine_bar"
+                    tools:text="1158" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <ImageView
+            android:id="@+id/car_logo"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:elevation="6dp"
+            app:layout_constraintBottom_toTopOf="@id/card"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/card"
+            tools:src="@mipmap/ford" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

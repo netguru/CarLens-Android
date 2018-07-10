@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GradientProgress">
+        <attr name="gradientStart" format="color" />
+        <attr name="gradientEnd" format="color" />
+        <attr name="backCircleColor" format="color" />
+        <attr name="minAngle" format="float" />
+        <attr name="maxSweep" format="float" />
+        <attr name="lineWidth" format="float" />
+    </declare-styleable>
+</resources>

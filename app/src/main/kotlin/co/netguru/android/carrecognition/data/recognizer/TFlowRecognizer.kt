@@ -25,14 +25,14 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
-        const val CONFIDENCE_THRESHOLD = 50
+        const val NR_OF_RETURNED_RECOGNITIONS = 3
     }
 
     private val imgData = ByteBuffer
-            .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
-            .apply {
-                order(ByteOrder.nativeOrder())
-            }
+        .allocateDirect(DIM_BATCH_SIZE * INPUT_WIDTH * INPUT_HEIGHT * DIM_PIXEL_SIZE) //this values depends on model input so this should be configurable
+        .apply {
+            order(ByteOrder.nativeOrder())
+        }
 
 
     fun classify(frame: Image): Single<List<Recognition>> {
@@ -60,9 +60,14 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                 }
 
                 finalResult = result[0]
-                    .mapIndexed { index, confidence -> Recognition(labels[index], confidence) }
-                    .filter { it.confidence > CONFIDENCE_THRESHOLD }
+                    .mapIndexed { index, confidence ->
+                        Recognition(
+                            Car.of(labels[index]),
+                            confidence.toFloat() / Byte.MAX_VALUE
+                        )
+                    }
                     .sortedByDescending { it.confidence }
+                    .take(NR_OF_RETURNED_RECOGNITIONS)
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult

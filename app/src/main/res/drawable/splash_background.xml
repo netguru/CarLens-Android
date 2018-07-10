@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@color/ic_launcher_background"/>
-
-    <item>
-        <bitmap
-            android:gravity="center"
-            android:src="@mipmap/ic_launcher_foreground"/>
+    <item
+        android:width="375dp"
+        android:height="812dp">
+        <shape>
+            <gradient
+                android:startColor="@color/orange"
+                android:endColor="@color/pink"
+                android:angle="-90" />
+        </shape>
     </item>
+
+    <item
+        android:drawable="@drawable/pointer"
+        android:width="110dp"
+        android:height="110dp"
+        android:gravity="center" />
+
+    <item
+        android:drawable="@drawable/poweredby"
+        android:width="120dp"
+        android:height="59dp"
+        android:bottom="168dp"
+        android:gravity="bottom|center" />
+
+    <item
+        android:drawable="@drawable/rounded_bar"
+        android:gravity="bottom|center"
+        android:bottom="9dp"
+        android:width="134dp"
+        android:height="5dp" />
 </layer-list>

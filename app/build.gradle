@@ -168,6 +168,7 @@ dependencies {
     // Support
     implementation libs.appCompat
     implementation libs.recyclerView
+    implementation libs.cardView
     implementation libs.constraintLayout
     implementation libs.design
 
@@ -237,4 +238,5 @@ dependencies {
 
     //sceneform and arcore
     implementation libs.sceneform
+    implementation libs.lottie
 }
