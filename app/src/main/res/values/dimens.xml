@@ -18,4 +18,7 @@
     <dimen name="corner_radius">20dp</dimen>
 
     <dimen name="car_list_button_size">45dp</dimen>
+    <dimen name="progress_bar_indicator_size">68dp</dimen>
+    <dimen name="card_gradient_progress_size">110dp</dimen>
+    <dimen name="camera_button_size">90dp</dimen>
 </resources>
