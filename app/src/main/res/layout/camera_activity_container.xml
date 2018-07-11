@@ -5,15 +5,20 @@
     android:layout_height="match_parent"
     tools:context="co.netguru.android.carrecognition.feature.camera.CameraActivity">
 
-
     <!-- include main content -->
     <include
-        android:id="@+id/content"
+        android:id="@+id/camera_content"
         layout="@layout/camera_activity_content" />
 
     <!-- include bottom sheet -->
     <include
         android:id="@+id/bottom_sheet"
         layout="@layout/camera_activity_bottom_sheet" />
+
+    <!-- include permission content -->
+    <include
+        android:id="@+id/permissions"
+        android:visibility="gone"
+        layout="@layout/camera_activity_permission" />
 
 </android.support.design.widget.CoordinatorLayout>

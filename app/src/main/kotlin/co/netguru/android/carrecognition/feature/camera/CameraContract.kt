@@ -18,10 +18,14 @@ interface CameraContract {
         fun tryAttachPin(randomFieldPercentage: Int)
         fun updateRecognitionIndicatorLabel(status: CameraPresenter.RecognitionLabel)
         fun showCouldNotAttachPinError()
+        fun showRecognitionUi()
+        fun showPermissionUi()
     }
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)
         fun frameUpdated()
         fun bottomSheetHidden()
+        fun onPermissionGranted()
+        fun onPermissionDeclined()
     }
 }

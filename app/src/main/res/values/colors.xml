@@ -12,4 +12,8 @@
     <color name="subtitle">#9BB3C6</color>
     <color name="black">#000</color>
     <color name="pin_background_color">#c0ffffff</color>
+
+    <color name="permission_background">#2F3031</color>
+    <color name="permission_font_color">#FFFFFF</color>
+    <color name="permission_grant_font_color">#FF6163</color>
 </resources>

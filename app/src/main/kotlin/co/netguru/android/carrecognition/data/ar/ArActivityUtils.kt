@@ -119,20 +119,26 @@ object ArActivityUtils {
         return session
     }
 
-    fun processPermissionResult(activity: Activity) {
+    fun processPermissionResult(
+            activity: Activity,
+            onPermissionGranted: () -> Unit,
+            onPermissionDenied: () -> Unit
+    )
+    {
+        if (hasCameraPermission(activity)) {
+            onPermissionGranted()
+        } else {
+            onPermissionDenied()
+        }
+    }
+
+    fun requestPermissionWithRationale(activity: Activity, requestCode: Int) {
         if (!hasCameraPermission(activity)) {
             if (!shouldShowRequestPermissionRationale(activity)) {
-                // Permission denied with checking "Do not ask again".
                 launchPermissionSettings(activity)
             } else {
-                //TODO: change this according to design when design is available
-                Toast.makeText(
-                    activity,
-                    "Camera permission is needed to run this application",
-                    Toast.LENGTH_LONG
-                ).show()
+                requestCameraPermission(activity, requestCode)
             }
-            activity.finish()
         }
     }
 
@@ -148,7 +154,7 @@ object ArActivityUtils {
     /**
      * Check to see we have the necessary permissions for this app.
      */
-    private fun hasCameraPermission(activity: Activity): Boolean {
+    fun hasCameraPermission(activity: Activity): Boolean {
         return ContextCompat.checkSelfPermission(
             activity,
             Manifest.permission.CAMERA

@@ -106,6 +106,18 @@ class CameraPresenterTest {
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
     }
 
+    @Test
+    fun `Should show recognition ui on permission granted`() {
+        presenter.onPermissionGranted()
+        verify(view).showRecognitionUi()
+    }
+
+    @Test
+    fun `Should show permission ui on premission declined`() {
+        presenter.onPermissionDeclined()
+        verify(view).showPermissionUi()
+    }
+
     private fun generateRecognitions(recognition: Recognition) {
         val frame = mock<Image>()
         tflow.stub {

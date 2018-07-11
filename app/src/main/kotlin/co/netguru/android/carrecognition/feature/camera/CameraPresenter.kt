@@ -89,6 +89,18 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         }
     }
 
+    override fun onPermissionGranted() {
+        ifViewAttached {
+            it.showRecognitionUi()
+        }
+    }
+
+    override fun onPermissionDeclined() {
+        ifViewAttached {
+            it.showPermissionUi()
+        }
+    }
+
     private fun processFrame(image: Image) {
         if (processing) {
             return
