@@ -14,6 +14,7 @@
     <string name="zero_to_sixty_value">%d sec.</string>
     <string name="top_speed_value">%d mph</string>
     <string name="maker_model_template">%1$s %2$s</string>
+    <string name="google_query_string">http://www.google.com/#q=%s</string>
 
     <string name="not_car">not a car</string>
     <string name="ford">Ford</string>

@@ -13,52 +13,43 @@ class ImageUtils {
 
     companion object {
 
-        /**
-         * Transforms passed [yuvImage] (YUV420888 format) with given [width] and [height]
-         * to RGB image, rotates it with for [rotation] degrees and
-         * scales to size of [inputSize] x [inputSize] pixels
-         */
         fun prepareBitmap(
             context: Context, image: Image, width: Int,
             height: Int, rotation: Int, inputSize: Int
         ): IntArray {
             return rotateAndScaleBitmap(
-                yuv420888toRbgBitmap(context, image, width, height),
+                camera2apiImageToBitmap(context, image, width, height),
                 -rotation, inputSize
             ).getPixels(inputSize * inputSize)
         }
 
-        /**
-         * Transforms passed [yuvImage] (NV21 format) with given [width] and [height]
-         * to RGB image, rotates it with for [rotation] degrees and
-         * scales to size of [inputSize] x [inputSize] pixels
-         */
         fun prepareBitmap(
                 context: Context, yuvImage: ByteArray, width: Int,
                 height: Int, rotation: Int, inputSize: Int
         ): IntArray {
             return rotateAndScaleBitmap(
-                    yuvToRgbBitmap(context, yuvImage, width, height),
+                camera1ApiImageToBitmap(context, yuvImage, width, height),
                     -rotation, inputSize
             ).getPixels(inputSize * inputSize)
         }
 
-        /**
-         * Converts passed NV21 [yuvImage] with given [width] and [height] to RGB bitmap
-         */
-        private fun yuvToRgbBitmap(context: Context, yuvImage: ByteArray, width: Int, height: Int): Bitmap {
+        private fun camera1ApiImageToBitmap(
+            context: Context,
+            yuvImage: ByteArray,
+            width: Int,
+            height: Int
+        ): Bitmap {
             val rs = RenderScript.create(context)
-
-            val yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
-
-            val yuvType = Type.Builder(rs, Element.U8(rs)).setX(yuvImage.size)
-            val input = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
 
             val rgbaType = Type.Builder(rs, Element.RGBA_8888(rs)).setX(width).setY(height)
             val output = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT)
 
+            val yuvType = Type.Builder(rs, Element.U8(rs)).setX(yuvImage.size)
+            val input = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
+
             input.copyFrom(yuvImage)
 
+            val yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
             yuvToRgbIntrinsic.setInput(input)
             yuvToRgbIntrinsic.forEach(output)
 
@@ -68,9 +59,6 @@ class ImageUtils {
             return bitmap
         }
 
-        /**
-         * Rotates [inputBitmap] for [rotation] degrees and scales it to size of [desiredSize] x [desiredSize]
-         */
         private fun rotateAndScaleBitmap(
                 inputBitmap: Bitmap,
                 rotation: Int,
@@ -88,17 +76,6 @@ class ImageUtils {
             return croppedBitmap
         }
 
-        /**
-         * Returns a transformation matrix from one reference frame into another.
-         * Handles cropping maintaining aspect ratio and rotation.
-         *
-         * @param srcWidth Width of source frame.
-         * @param srcHeight Height of source frame.
-         * @param dstWidth Width of destination frame.
-         * @param dstHeight Height of destination frame.
-         * @param rotation Amount of rotation to apply from one frame to another.\
-         * @return The transformation fulfilling the desired requirements.
-         */
         private fun getTransformationMatrix(
                 srcWidth: Int,
                 srcHeight: Int,
@@ -114,19 +91,18 @@ class ImageUtils {
             }
 
             val transpose = (Math.abs(rotation) + 90) % 180 == 0
-
             val inWidth = if (transpose) srcHeight else srcWidth
             val inHeight = if (transpose) srcWidth else srcHeight
+
+            if (rotation != 0) {
+                matrix.postTranslate(dstWidth / 2.0f, dstHeight / 2.0f)
+            }
 
             if (inWidth != dstWidth || inHeight != dstHeight) {
                 val scaleFactorX = dstWidth / inWidth.toFloat()
                 val scaleFactorY = dstHeight / inHeight.toFloat()
                 val scaleFactor = Math.max(scaleFactorX, scaleFactorY)
                 matrix.postScale(scaleFactor, scaleFactor)
-            }
-
-            if (rotation != 0) {
-                matrix.postTranslate(dstWidth / 2.0f, dstHeight / 2.0f)
             }
 
             return matrix
@@ -138,7 +114,7 @@ class ImageUtils {
             return intArray
         }
 
-        private fun yuv420888toRbgBitmap(
+        private fun camera2apiImageToBitmap(
             context: Context,
             image: Image,
             width: Int,
@@ -165,7 +141,6 @@ class ImageUtils {
                 planes[1].rowStride  // we know from   documentation that RowStride is the same for u and v.
             val uvPixelStride =
                 planes[1].pixelStride  // we know from   documentation that PixelStride is the same for u and v.
-
 
             // rs creation just for demo. Create rs just once in onCreate and use it again.
             val rs = RenderScript.create(context)
@@ -208,7 +183,7 @@ class ImageUtils {
             )
 
             val lo = Script.LaunchOptions()
-// by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
+            // by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
             lo.setX(0, width)
             lo.setY(0, height)
 
@@ -218,5 +193,4 @@ class ImageUtils {
             return outBitmap
         }
     }
-
 }

@@ -104,7 +104,12 @@ object ArActivityUtils {
         var session: Session? = null
         // if we have the camera permission, create the session
         if (hasCameraPermission(activity)) {
-            when (ArCoreApk.getInstance().requestInstall(activity, !installRequested)) {
+            when (ArCoreApk.getInstance().requestInstall(
+                activity,
+                !installRequested,
+                ArCoreApk.InstallBehavior.REQUIRED,
+                ArCoreApk.UserMessageType.USER_ALREADY_INFORMED
+            )) {
                 ArCoreApk.InstallStatus.INSTALL_REQUESTED -> return null
                 ArCoreApk.InstallStatus.INSTALLED -> {
                 }
