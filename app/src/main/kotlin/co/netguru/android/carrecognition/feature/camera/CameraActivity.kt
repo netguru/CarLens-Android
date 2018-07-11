@@ -54,7 +54,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         setContentView(co.netguru.android.carrecognition.R.layout.camera_activity_container)
         setPresenter(createPresenter())
 
-
         arSceneView.planeRenderer.isEnabled = false
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
