@@ -94,7 +94,7 @@ enum class Car(
         R.string.golf,
         R.string.tiguan_description,
         R.mipmap.volkswagengolf,
-        R.mipmap.volskwagen,
+        R.mipmap.volkswagen,
         90,
         4f,
         200,
@@ -106,7 +106,7 @@ enum class Car(
         R.string.passat,
         R.string.tiguan_description,
         R.mipmap.volkswagenpassat,
-        R.mipmap.volskwagen,
+        R.mipmap.volkswagen,
         120,
         7f,
         120,
@@ -118,7 +118,7 @@ enum class Car(
         R.string.tiguan,
         R.string.tiguan_description,
         R.mipmap.volkswagentiguan,
-        R.mipmap.volskwagen,
+        R.mipmap.volkswagen,
         120,
         13f,
         200,
@@ -130,7 +130,7 @@ enum class Car(
         const val TOP_SPEED_MAX = 200
         const val ZERO_TO_SIXTY_MIN = 2.9f
         const val ZERO_TO_SIXTY_MAX = 20f
-        const val HORSEPOWER_MAX = 200
+        const val HORSEPOWER_MAX = 300
         const val ENGINE_MAX = 3500
         fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
 
