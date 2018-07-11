@@ -36,6 +36,8 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
             }
         }
 
+        back_arrow.setOnClickListener { showCircularAnimation(true) }
+
         //TODO: get proper values for progress
         progressBar.apply {
             max = 9

@@ -82,6 +82,7 @@ class GradientProgress : View {
 
         paint.strokeWidth = paintStrokeWidth
         backPaint.strokeWidth = paintStrokeWidth
+        backPaint.color = backCircleColor
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
