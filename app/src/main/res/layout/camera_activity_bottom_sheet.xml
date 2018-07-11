@@ -220,7 +220,7 @@
         app:layout_constraintStart_toStartOf="@id/left_margin"
         app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
         app:lottie_autoPlay="false"
-        app:lottie_fileName="progress-bar.json"
+        app:lottie_fileName="progress-bar-linear.json"
         app:lottie_loop="false" />
 
     <TextView
@@ -255,7 +255,7 @@
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/power_bar"
         app:lottie_autoPlay="false"
-        app:lottie_fileName="progress-bar.json"
+        app:lottie_fileName="progress-bar-linear.json"
         app:lottie_loop="false" />
 
     <TextView
