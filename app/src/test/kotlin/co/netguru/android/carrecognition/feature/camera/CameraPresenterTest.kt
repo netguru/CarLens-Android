@@ -5,7 +5,9 @@ import co.netguru.android.carrecognition.RxSchedulersOverrideRule
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
+import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
+import com.google.ar.core.Pose
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
 import org.junit.Before
@@ -25,7 +27,7 @@ class CameraPresenterTest {
     @Before
     fun before() {
         reset(tflow, view)
-        presenter = CameraPresenter()
+        presenter = CameraPresenter(tflow)
         presenter.attachView(view)
     }
 
@@ -37,15 +39,154 @@ class CameraPresenterTest {
     }
 
     @Test
-    fun `Should show details on 30 frame`() {
+    fun `Should not create anchor when distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
+
+        val pose1 = mock<Pose> {
+            on { tx() } doReturn 0f
+            on { ty() } doReturn 0f
+            on { tz() } doReturn 0f
+        }
+
+        val result1 = mock<HitResult> {
+            on { hitPose } doReturn pose1
+        }
+
+        val pose2 = mock<Pose> {
+            on { tx() } doReturn 1f
+            on { ty() } doReturn 1f
+            on { tz() } doReturn 1f
+        }
+        val result2 = mock<HitResult> {
+            on { hitPose } doReturn pose2
+        }
+
+        val anchor = mock<Anchor> {
+            on { pose } doReturn pose1
+        }
+
+        view.stub {
+            on { createAnchor(result1, Car.NOT_CAR) } doReturn anchor
+        }
+
+        presenter.processHitResult(result1)
+        verify(view).createAnchor(result1, Car.NOT_CAR)
+
+        presenter.processHitResult(result2)
+        verifyZeroInteractions(view)
+    }
+
+    @Test
+    fun `Should create anchor when distance is higher then MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
+        val pose1 = mock<Pose> {
+            on { tx() } doReturn 0f
+            on { ty() } doReturn 0f
+            on { tz() } doReturn 0f
+        }
+
+        val result1 = mock<HitResult> {
+            on { hitPose } doReturn pose1
+        }
+
+        val pose2 = mock<Pose> {
+            on { tx() } doReturn 5f
+            on { ty() } doReturn 5f
+            on { tz() } doReturn 5f
+        }
+        val result2 = mock<HitResult> {
+            on { hitPose } doReturn pose2
+        }
+
+        val anchor = mock<Anchor> {
+            on { pose } doReturn pose1
+        }
+
+        view.stub {
+            on { createAnchor(result1, Car.NOT_CAR) } doReturn anchor
+        }
+
+        presenter.processHitResult(result1)
+        verify(view).createAnchor(result1, Car.NOT_CAR)
+
+        presenter.processHitResult(result2)
+        verify(view).createAnchor(result2, Car.NOT_CAR)
+    }
+
+    @Test
+    fun `Should try attach pin with increasing random field`() {
+        presenter.processHitResult(null)
+        verify(view).tryAttachPin(1)
+        presenter.processHitResult(null)
+        verify(view).tryAttachPin(2)
+        presenter.processHitResult(null)
+        verify(view).tryAttachPin(3)
+        presenter.processHitResult(null)
+        verify(view).tryAttachPin(4)
+        presenter.processHitResult(null)
+        verify(view).tryAttachPin(5)
+        presenter.processHitResult(null)
+        verify(view).showCouldNotAttachPinError()
+        verifyNoMoreInteractions(view)
+    }
+
+    @Test
+    fun `Should show details on 30 frame when recognition is high`() {
+        generateRecognitions(
+            Recognition(
+                Car.VOLKSWAGEN_PASSAT,
+                0.8f
+            )
+        )
+
+        verify(view).updateViewFinder(0.8f)
+        verify(view).frameStreamEnabled(false)
+        verify(view).showDetails(Car.VOLKSWAGEN_PASSAT)
+        verify(view).tryAttachPin(0)
+        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.FOUND)
+    }
+
+    @Test
+    fun `Should change label to recognizing on middle threshold`() {
+        generateRecognitions(
+            Recognition(
+                Car.VOLKSWAGEN_PASSAT,
+                0.6f
+            )
+        )
+
+        verify(view).updateViewFinder(0.6f)
+        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.IN_PROGRESS)
+    }
+
+    @Test
+    fun `Should show proper label on not car`() {
+        generateRecognitions(Recognition(Car.NOT_CAR, 1f))
+        verify(view).updateViewFinder(0f)
+        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
+
+    }
+
+    @Test
+    fun `Should show proper label on other car`() {
+        generateRecognitions(Recognition(Car.OTHER_CAR, 1f))
+        verify(view).updateViewFinder(0f)
+        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.FOUND_UNKNOWN)
+    }
+
+    @Test
+    fun `Should show view finder and enable frame stream on discarding bottom sheet`() {
+        presenter.bottomSheetHidden()
+        verify(view).updateViewFinder(0f)
+        verify(view).frameStreamEnabled(true)
+        verify(view).showViewFinder(true)
+        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
+    }
+
+    private fun generateRecognitions(recognition: Recognition) {
         val frame = mock<Image>()
         tflow.stub {
             on { classify(any()) } doReturn Single.just(
                 listOf(
-                    Recognition(
-                        Car.VOLKSWAGEN_PASSAT,
-                        0.6f
-                    )
+                    recognition
                 )
             )
         }
@@ -57,18 +198,5 @@ class CameraPresenterTest {
         for (i in 0..29) {
             presenter.frameUpdated()
         }
-
-//        verify(view).updateViewFinder(0.6f)
-//        verify(view).frameStreamEnabled(false)
-//        verify(view).showDetails(Car.VOLKSWAGEN_PASSAT)
-//        verify(view).tryAttachPin()
-    }
-
-    @Test
-    fun `Should show view finder and enable frame stream on discarding bottom sheet`() {
-        presenter.bottomSheetHidden()
-        verify(view).updateViewFinder(0f)
-        verify(view).frameStreamEnabled(true)
-        verify(view).showViewFinder()
     }
 }

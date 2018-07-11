@@ -11,7 +11,6 @@ ext {
     ankoVersion = '0.10.4'
     permissionDispatcherVersion = '3.2.0'
     roomVersion = '1.1.1'
-    lifecycleVersion = '1.1.1'
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -20,19 +19,19 @@ ext {
             ankoCommonsSupportV4    : "org.jetbrains.anko:anko-support-v4-commons:$ankoVersion",
             appCompat               : "com.android.support:appcompat-v7:$supportLibraryVersion",
             recyclerView            : "com.android.support:recyclerview-v7:$supportLibraryVersion",
-            cardView        : "com.android.support:cardview-v7:$supportLibraryVersion",
-            gridLayout      : "com.android.support:gridlayout-v7:$supportLibraryVersion",
-            mediaRouter     : "com.android.support:mediarouter-v7:$supportLibraryVersion",
-            palette         : "com.android.support:palette-v7:$supportLibraryVersion",
-            preference      : "com.android.support:preference-v7:$supportLibraryVersion",
-            annotations     : "com.android.support:support-annotations:$supportLibraryVersion",
-            constraintLayout: "com.android.support.constraint:constraint-layout:1.1.2",
-            design          : "com.android.support:design:$supportLibraryVersion",
-            mosby           : "com.hannesdorfmann.mosby3:mvp:$mosbyVersion",
-            mosbyMvi        : "com.hannesdorfmann.mosby3:mvi:$mosbyVersion",
-            mosbyViewState  : "com.hannesdorfmann.mosby3:viewstate:$mosbyVersion",
-            mosbyLce        : "com.hannesdorfmann.mosby3:mvp-lce:$mosbyVersion",
-            mosbyNullObject : "com.hannesdorfmann.mosby3:mvp-nullobject-presenter:$mosbyVersion",
+            cardView                : "com.android.support:cardview-v7:$supportLibraryVersion",
+            gridLayout              : "com.android.support:gridlayout-v7:$supportLibraryVersion",
+            mediaRouter             : "com.android.support:mediarouter-v7:$supportLibraryVersion",
+            palette                 : "com.android.support:palette-v7:$supportLibraryVersion",
+            preference              : "com.android.support:preference-v7:$supportLibraryVersion",
+            annotations             : "com.android.support:support-annotations:$supportLibraryVersion",
+            constraintLayout        : "com.android.support.constraint:constraint-layout:1.0.2",
+            design                  : "com.android.support:design:$supportLibraryVersion",
+            mosby                   : "com.hannesdorfmann.mosby3:mvp:$mosbyVersion",
+            mosbyMvi                : "com.hannesdorfmann.mosby3:mvi:$mosbyVersion",
+            mosbyViewState          : "com.hannesdorfmann.mosby3:viewstate:$mosbyVersion",
+            mosbyLce                : "com.hannesdorfmann.mosby3:mvp-lce:$mosbyVersion",
+            mosbyNullObject         : "com.hannesdorfmann.mosby3:mvp-nullobject-presenter:$mosbyVersion",
             rxJava2                 : "io.reactivex.rxjava2:rxjava:2.1.12",
             rxKotlin2               : "io.reactivex.rxjava2:rxkotlin:2.2.0",
             rxAndroid2              : "io.reactivex.rxjava2:rxandroid:2.0.2",
@@ -62,8 +61,7 @@ ext {
             sceneform           : "com.google.ar.sceneform.ux:sceneform-ux:1.3.0",
             lottie              : 'com.airbnb.android:lottie:2.5.5',
             roomRx              : "android.arch.persistence.room:rxjava2:$roomVersion",
-            room                : "android.arch.persistence.room:runtime:$roomVersion",
-            liveData            : "android.arch.lifecycle:livedata:$lifecycleVersion",
+            room                : "android.arch.persistence.room:runtime:$roomVersion"
     ]
 
     proc = [

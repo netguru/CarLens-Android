@@ -1,27 +1,37 @@
 package co.netguru.android.carrecognition.feature.camera
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import co.netguru.android.carrecognition.R
-import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
+import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.recognizer.Car
-import co.netguru.android.carrecognition.feature.cars.CarListActivity
+import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
+import com.google.ar.core.TrackingState
+import com.google.ar.core.exceptions.NotYetAvailableException
+import com.google.ar.sceneform.AnchorNode
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.camera_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.camera_activity_container.*
 import kotlinx.android.synthetic.main.camera_activity_content.*
+import timber.log.Timber
+import java.net.URLEncoder
+import java.util.*
 import javax.inject.Inject
 
 
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
+
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
@@ -48,10 +58,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         setContentView(co.netguru.android.carrecognition.R.layout.camera_activity_container)
         setPresenter(createPresenter())
 
-//        arSceneView.planeRenderer.isEnabled = false
+        arSceneView.planeRenderer.isEnabled = false
 
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         carListButton.setOnClickListener { showCarList() }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -65,7 +75,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             }
         })
 
-//        ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
+        ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
+
+        carListButton.setOnClickListener { }
+
+        scanButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 
     private fun showCarList() {
@@ -77,7 +93,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onResume() {
         super.onResume()
         presenter.attachView(this)
-//        installRequested = ArActivityUtils.initARView(arSceneView, this, installRequested)
+        installRequested = ArActivityUtils.initARView(arSceneView, this, installRequested)
         frameStreamEnabled(true)
     }
 
@@ -87,13 +103,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         recognitionIndicatorAnimator?.cancel()
         recognitionIndicatorAnimator = null
 
-//        arSceneView.pause()
+        arSceneView.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.destroy()
-//        arSceneView.destroy()
+        arSceneView.destroy()
     }
 
     override fun createPresenter(): CameraContract.Presenter {
@@ -106,38 +122,40 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         ArActivityUtils.processPermissionResult(this)
     }
 
-    override fun createAnchor(hitPoint: HitResult, car: Car) {
-//        val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
-//        anchor.setParent(arSceneView.scene)
-//        anchor.addChild(StickerNode(car, this) { showDetails(car) })
+    override fun createAnchor(hitPoint: HitResult, car: Car): Anchor {
+        val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
+        anchor.setParent(arSceneView.scene)
+        anchor.addChild(StickerNode(car, this) { showDetails(car) })
+        return anchor.anchor
     }
 
-    override fun acquireFrame(): Image? = null
-//        val frame = arSceneView.arFrame ?: return null
-//        if (frame.camera.trackingState != TrackingState.TRACKING) {
-//            return null
-//        }
-//        return try {
-//            arSceneView.arFrame.acquireCameraImage()
-//        } catch (e: NotYetAvailableException) {
-//            null
-//        }
-//    }
+    override fun acquireFrame(): Image? {
+        val frame = arSceneView.arFrame ?: return null
+        if (frame.camera.trackingState != TrackingState.TRACKING) {
+            return null
+        }
+        return try {
+            arSceneView.arFrame.acquireCameraImage()
+        } catch (e: NotYetAvailableException) {
+            null
+        }
+    }
 
     override fun updateViewFinder(viewfinderSize: Float) {
-//        recognitionIndicatorAnimator =
-//                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
-//                    .apply {
-//                        addUpdateListener { animation ->
-//                            recognitionIndicator.progress = animation.animatedValue as Float
-//                        }
-//                        start()
-//                    }
+        recognitionIndicatorAnimator =
+                ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
+                    .apply {
+                        addUpdateListener { animation ->
+                            recognitionIndicator.progress = animation.animatedValue as Float
+                        }
+                        start()
+                    }
     }
 
     override fun showDetails(car: Car) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        recognitionIndicator.visibility = View.GONE
+
+        showViewFinder(false)
 
         car_model.text = car.getModel(this)
         car_maker.text = car.getMaker(this)
@@ -162,7 +180,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.horsePower.toFloat() / Car.HORSEPOWER_MAX) {
-//            power_bar.progress = it
+            power_bar.progress = it
         }
 
         createAnimator(car.horsePower) {
@@ -170,48 +188,86 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.engine.toFloat() / Car.ENGINE_MAX) {
-//            engine_bar.progress = it
+            engine_bar.progress = it
         }
 
         createAnimator(car.engine) {
             engine_value.text = getString(R.string.engineValue, it)
         }
+
+        googleButton.setOnClickListener {
+            val query =
+                getString(R.string.maker_model_template, car.getMaker(this), car.getModel(this))
+            val escapedQuery = URLEncoder.encode(query, "UTF-8")
+            val uri = Uri.parse(getString(R.string.google_query_string, escapedQuery))
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
-        AnimationUtils.createAnimator(topValue, onUpdate) {
-            duration = 1000
-            interpolator = AccelerateDecelerateInterpolator()
-        }.start()
+        val animator = when (topValue) {
+            is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)
+            is Int -> ValueAnimator.ofInt(0, topValue)
+            else -> throw IllegalArgumentException("value must be Int of Float")
+        }
+        animator.duration = 1000
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.addUpdateListener {
+            onUpdate(it.animatedValue as T)
+        }
+        animator.start()
     }
 
     override fun frameStreamEnabled(enabled: Boolean) {
-//        if (enabled) {
-//            arSceneView.scene.setOnUpdateListener {
-//                val frame = arSceneView.arFrame ?: return@setOnUpdateListener
-//                if (frame.camera.trackingState != TrackingState.TRACKING) {
-//                    return@setOnUpdateListener
-//                }
-//                presenter.frameUpdated()
-//            }
-//            showViewFinder()
-//        } else {
-//            arSceneView.scene.setOnUpdateListener(null)
-//        }
+        if (enabled) {
+            arSceneView.scene.setOnUpdateListener {
+                val frame = arSceneView.arFrame ?: return@setOnUpdateListener
+                if (frame.camera.trackingState != TrackingState.TRACKING) {
+                    return@setOnUpdateListener
+                }
+                presenter.frameUpdated()
+            }
+        } else {
+            arSceneView.scene.setOnUpdateListener(null)
+        }
     }
 
-    override fun showViewFinder() {
-        recognitionIndicator.visibility = View.VISIBLE
+    override fun showViewFinder(visible: Boolean) {
+        recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
+        recognitionIndicationLabel.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    override fun tryAttachPin() {
-//        val frame = arSceneView.arFrame ?: return
-//        val hitPoint = frame.hitTest(cameraWidth / 2f, cameraHeight / 2f).firstOrNull()
-//
-//        presenter.processHitResult(hitPoint)
+    override fun tryAttachPin(randomFieldPercentage: Int) {
+        val frame = arSceneView.arFrame ?: return
+
+        with(Random()) {
+
+            val randomPointX =
+                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
+            val randomPointY =
+                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
+
+            val hitPoint =
+                frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
+                    .firstOrNull()
+
+            Timber.d("hitpoint = (${(cameraWidth / 2f) + randomPointX}, ${(cameraHeight / 2f) + randomPointY})")
+            presenter.processHitResult(hitPoint)
+        }
+    }
+
+    override fun updateRecognitionIndicatorLabel(status: CameraPresenter.RecognitionLabel) {
+        recognitionIndicationLabel.text = getString(status.labelId)
+    }
+
+    override fun showCouldNotAttachPinError() {
+        Toast.makeText(this, R.string.could_not_attach_pin_error, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
         private const val RC_PERMISSIONS = 0x123
     }
 }
+
