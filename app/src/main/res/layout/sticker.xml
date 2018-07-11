@@ -38,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/model_label"
         app:layout_constraintEnd_toEndOf="@+id/model_label"
         app:layout_constraintTop_toTopOf="@+id/model_label"
-        app:srcCompat="@mipmap/volskwagen"
+        app:srcCompat="@mipmap/volkswagen"
         android:contentDescription="@null" />
 
 </android.support.constraint.ConstraintLayout>

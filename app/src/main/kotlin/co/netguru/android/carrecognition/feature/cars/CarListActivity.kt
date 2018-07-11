@@ -9,8 +9,10 @@ import android.view.ViewAnimationUtils
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.extensions.onGlobalLayout
 import co.netguru.android.carrecognition.common.extensions.onPageSelected
+import co.netguru.android.carrecognition.data.db.Cars
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.car_list_view.*
 import kotlinx.android.synthetic.main.circle_progress_bar_with_label.*
 import javax.inject.Inject
@@ -21,6 +23,8 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     @Inject
     lateinit var carListPresenter: CarListContract.Presenter
     private var currentVisibleItem = -1
+    private lateinit var carAdapter: CarsPagerAdapter
+    private val carsSource = BehaviorSubject.create<List<Cars>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -37,14 +41,11 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         }
 
         back_arrow.setOnClickListener { showCircularAnimation(true) }
+        camera_button.setOnClickListener { showCircularAnimation(true) }
 
-        //TODO: get proper values for progress
-        progressBar.apply {
-            max = 9
-            progress = 3
-        }
-        progressText.apply {
-            text = "3/9"
+        presenter.apply {
+            attachView(this@CarListActivity)
+            getCars()
         }
     }
 
@@ -52,15 +53,15 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         view_pager.apply {
             offscreenPageLimit = 3
             pageMargin = -rootView.width / 10 //set side pages to be visible in 10%
-            val carId = getCarIdOpt(0)
-            adapter = CarsPagerAdapter(carId)
+            carAdapter = CarsPagerAdapter(getCarIdOpt())
+            carsSource.subscribe { onCarsChanged(it) }
+            adapter = carAdapter
             onPageSelected { position ->
                 if (position == currentVisibleItem) return@onPageSelected
                 currentVisibleItem = position
-                (adapter as CarsPagerAdapter).showAnimation(position)
+                carAdapter.showAnimation(position)
             }
             setPageTransformer(false, CarListPageTransformer())
-            currentItem = carId
         }
     }
 
@@ -90,6 +91,41 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         })
     }
 
+    override fun showLoading(show: Boolean) {
+        loading_bar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    override fun populate(cars: List<Cars>) {
+        showLoading(false)
+        setSeenCarsProgress(cars.count { it.seen }, cars.size)
+        carsSource.apply {
+            onNext(cars)
+            onComplete()
+        }
+    }
+
+    private fun onCarsChanged(cars: List<Cars>?) {
+        cars ?: return
+        carAdapter.populate(cars)
+        view_pager.currentItem = cars.find { it.id == getCarIdOpt() }?.let {
+            cars.indexOf(it)
+        } ?: 0
+    }
+
+    override fun onError(throwable: Throwable) {
+        showLoading(false)
+    }
+
+    private fun setSeenCarsProgress(seen: Int, carsSize: Int) {
+        progressBar.apply {
+            max = carsSize
+            progress = seen
+        }
+        progressText.apply {
+            text = ("$seen/$carsSize")
+        }
+    }
+
     override fun onBackPressed() {
         showCircularAnimation(true)
     }
@@ -102,7 +138,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         private const val START_Y = "startY"
         private const val CAR_ID = "carId"
         fun startActivityWithCircleAnimation(activity: Activity, startX: Int, startY: Int,
-                                             carId: Int? = null) {
+                                             carId: String? = null) {
             activity.startActivity(
                     Intent(activity, CarListActivity::class.java).apply {
                         putExtra(START_X, startX)
@@ -113,6 +149,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
 
         private fun Activity.getStartXOpt(default: Int) = intent.getIntExtra(START_X, default)
         private fun Activity.getStartYOpt(default: Int) = intent.getIntExtra(START_Y, default)
-        private fun Activity.getCarIdOpt(default: Int) = intent.getIntExtra(CAR_ID, default)
+        private fun Activity.getCarIdOpt() = intent.getStringExtra(CAR_ID)
     }
 }

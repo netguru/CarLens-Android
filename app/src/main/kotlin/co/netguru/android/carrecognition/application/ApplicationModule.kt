@@ -1,7 +1,9 @@
 package co.netguru.android.carrecognition.application
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import co.netguru.android.carrecognition.application.scope.AppScope
+import co.netguru.android.carrecognition.data.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import org.tensorflow.lite.Interpreter
@@ -45,5 +47,11 @@ class ApplicationModule {
     fun provideLabels(context: Context): List<String> {
         val stream = context.assets.open(LABELS_PATH)
         return stream.bufferedReader().use(BufferedReader::readText).split("\n")
+    }
+
+    @Provides
+    @AppScope
+    fun provideDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "cars.db").build()
     }
 }
