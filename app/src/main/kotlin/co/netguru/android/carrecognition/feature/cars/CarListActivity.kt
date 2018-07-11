@@ -121,11 +121,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         showCircularAnimation(true)
     }
 
-    override fun onDestroy() {
-        presenter.onActivityDestroy()
-        super.onDestroy()
-    }
-
     override fun createPresenter(): CarListContract.Presenter = carListPresenter
 
     companion object {
