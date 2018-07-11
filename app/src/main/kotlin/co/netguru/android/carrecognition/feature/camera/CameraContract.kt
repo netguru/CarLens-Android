@@ -23,5 +23,6 @@ interface CameraContract {
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)
         fun frameUpdated()
+        fun bottomSheetHidden()
     }
 }

@@ -36,6 +36,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     private val recognitionData = LimitedList<Recognition>(SAMPLE_SIZE)
     private var anchors = emptyList<Anchor>()
     private var processing = false
+    private var nrOfTries = NR_OF_TRIES
 
     override fun destroy() {
         super.destroy()

@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/recognitionIndicator" />
 
     <ImageView
-        android:id="@+id/carListButton"
+        android:id="@+id/carListButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
         android:layout_marginBottom="44dp"

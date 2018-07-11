@@ -14,6 +14,7 @@ import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.recognizer.Car
+import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
@@ -60,7 +61,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         arSceneView.planeRenderer.isEnabled = false
 
-        carListButton.setOnClickListener { showCarList() }
+        carListButtonMain.setOnClickListener { showCarList() }
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         bottomSheetBehavior.setBottomSheetCallback(object :
