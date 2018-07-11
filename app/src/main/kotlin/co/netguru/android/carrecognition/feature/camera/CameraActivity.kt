@@ -24,6 +24,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.camera_activity_bottom_sheet.*
 import kotlinx.android.synthetic.main.camera_activity_container.*
 import kotlinx.android.synthetic.main.camera_activity_content.*
+import kotlinx.android.synthetic.main.camera_activity_permission.*
 import timber.log.Timber
 import java.net.URLEncoder
 import java.util.*
@@ -31,7 +32,6 @@ import javax.inject.Inject
 
 
 class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter>(), CameraContract.View {
-
 
     @Inject
     lateinit var cameraPresenter: CameraPresenter
@@ -74,6 +74,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             }
         })
 
+        permissionButton.setOnClickListener {
+            ArActivityUtils.requestPermissionWithRationale(this, RC_PERMISSIONS)
+        }
+
         ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
 
         carListButton.setOnClickListener { }
@@ -85,17 +89,17 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun onResume() {
         super.onResume()
-        presenter.attachView(this)
+        if (ArActivityUtils.hasCameraPermission(this)) {
+            presenter.onPermissionGranted()
+        }
         installRequested = ArActivityUtils.initARView(arSceneView, this, installRequested)
         frameStreamEnabled(true)
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.detachView()
         recognitionIndicatorAnimator?.cancel()
         recognitionIndicatorAnimator = null
-
         arSceneView.pause()
     }
 
@@ -112,7 +116,19 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, results: IntArray
     ) {
-        ArActivityUtils.processPermissionResult(this)
+        ArActivityUtils.processPermissionResult(this, presenter::onPermissionGranted, presenter::onPermissionDeclined)
+    }
+
+    override fun showRecognitionUi() {
+        permissions.visibility = View.GONE
+        bottom_sheet.visibility = View.VISIBLE
+        camera_content.visibility = View.VISIBLE
+    }
+
+    override fun showPermissionUi() {
+        bottom_sheet.visibility = View.GONE
+        camera_content.visibility = View.GONE
+        permissions.visibility = View.VISIBLE
     }
 
     override fun createAnchor(hitPoint: HitResult, car: Car): Anchor {
@@ -263,4 +279,3 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         private const val RC_PERMISSIONS = 0x123
     }
 }
-

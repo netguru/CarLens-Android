@@ -41,4 +41,8 @@
     <string name="recognition_indicator_detection_in_progress">Recognizing</string>
     <string name="recognition_indicator_put_car_in_center">Put car in the center</string>
     <string name="could_not_attach_pin_error">Could not attach pin, please try again</string>
+
+
+    <string name="permission_camera_button">Allow Camera Access</string>
+    <string name="permission_camera_text">Recognize cars and unlock\nthem in the Gallery</string>
 </resources>
