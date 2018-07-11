@@ -12,19 +12,18 @@ import co.netguru.android.carrecognition.common.extensions.onPageSelected
 import co.netguru.android.carrecognition.data.db.Cars
 import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import dagger.android.AndroidInjection
-import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.car_list_view.*
 import kotlinx.android.synthetic.main.circle_progress_bar_with_label.*
 import javax.inject.Inject
 
 
-class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presenter>(), CarListContract.View {
+class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presenter>(),
+        CarListContract.View {
 
     @Inject
     lateinit var carListPresenter: CarListContract.Presenter
     private var currentVisibleItem = -1
     private lateinit var carAdapter: CarsPagerAdapter
-    private val carsSource = BehaviorSubject.create<List<Cars>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -54,8 +53,8 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
             offscreenPageLimit = 3
             pageMargin = -rootView.width / 10 //set side pages to be visible in 10%
             carAdapter = CarsPagerAdapter(getCarIdOpt())
-            carsSource.subscribe { onCarsChanged(it) }
             adapter = carAdapter
+            presenter.onAdapterReady()
             onPageSelected { position ->
                 if (position == currentVisibleItem) return@onPageSelected
                 currentVisibleItem = position
@@ -98,14 +97,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     override fun populate(cars: List<Cars>) {
         showLoading(false)
         setSeenCarsProgress(cars.count { it.seen }, cars.size)
-        carsSource.apply {
-            onNext(cars)
-            onComplete()
-        }
-    }
-
-    private fun onCarsChanged(cars: List<Cars>?) {
-        cars ?: return
         carAdapter.populate(cars)
         view_pager.currentItem = cars.find { it.id == getCarIdOpt() }?.let {
             cars.indexOf(it)
@@ -128,6 +119,11 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
 
     override fun onBackPressed() {
         showCircularAnimation(true)
+    }
+
+    override fun onDestroy() {
+        presenter.onActivityDestroy()
+        super.onDestroy()
     }
 
     override fun createPresenter(): CarListContract.Presenter = carListPresenter

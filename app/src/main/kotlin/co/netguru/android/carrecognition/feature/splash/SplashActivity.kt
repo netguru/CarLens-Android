@@ -17,8 +17,10 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        startActivity<CameraActivity>()
         DatabaseInitializer.checkIfInit(this, database)
-                .subscribe { finish() }
+                .subscribe {
+                    startActivity<CameraActivity>()
+                    finish()
+                }
     }
 }

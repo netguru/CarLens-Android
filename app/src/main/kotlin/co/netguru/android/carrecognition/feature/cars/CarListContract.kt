@@ -13,6 +13,7 @@ interface CarListContract {
     }
     interface Presenter : MvpPresenter<View> {
         fun getCars()
-        fun setCarSeen(car: Cars)
+        fun onAdapterReady()
+        fun onActivityDestroy()
     }
 }

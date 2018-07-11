@@ -5,8 +5,6 @@ import co.netguru.android.carrecognition.common.extensions.applyIoSchedulers
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.CompletableSource
-import java.io.IOException
-import java.nio.charset.Charset
 
 
 object DatabaseInitializer {
@@ -25,18 +23,7 @@ object DatabaseInitializer {
     }
 
     private fun loadJSONFromCarsAsset(context: Context): String? {
-        val json: String?
-        try {
-            val inputStream = context.assets.open("cars.json")
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            inputStream.close()
-            json = String(buffer, Charset.forName("UTF-8"))
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            return null
-        }
-        return json
+        val inputStream = context.assets.open("cars.json")
+        return inputStream.bufferedReader().use { it.readText() }
     }
 }

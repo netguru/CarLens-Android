@@ -20,6 +20,7 @@ class ApplicationModule {
         const val MODEL_PATH = "converted.tflite"
         const val LABELS_PATH = "labels.txt"
         const val LABELS_BINDING = "labels"
+        const val DATABASE_NAME = "cars.db"
     }
 
     @Provides
@@ -52,6 +53,6 @@ class ApplicationModule {
     @Provides
     @AppScope
     fun provideDatabase(context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "cars.db").build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
     }
 }

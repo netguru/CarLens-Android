@@ -12,6 +12,7 @@ import android.widget.TextView
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.common.extensions.getDisplayMetrics
+import co.netguru.android.carrecognition.common.extensions.getMipMapIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
 import kotlinx.android.synthetic.main.car_list_item_view.view.*
@@ -71,12 +72,10 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     }
 
     private fun showUnseenCarDetails(view: View, car: Cars) {
-        view.car_image.setImageResource(view.context.resources.getIdentifier(
-                car.image_locked.toLowerCase(),
-                "mipmap", view.context.packageName))
-        view.car_logo.setImageResource(view.context.resources.getIdentifier(
-                car.brand_logo_image_locked.toLowerCase(),
-                "mipmap", view.context.packageName))
+        view.car_image.setImageResource(view.context.getMipMapIdentifier(
+                car.image_locked.toLowerCase()))
+        view.car_logo.setImageResource(view.context.getMipMapIdentifier(
+                car.brand_logo_image_locked.toLowerCase()))
 
         view.top_speed_bar.progress = 0f
         view.top_speed_value.setAsUnseen(Car.TOP_SPEED_MAX, R.string.top_speed_value)
@@ -97,11 +96,9 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     }
 
     private fun showSeenCarDetails(view: View, car: Cars, position: Int) {
-        view.car_image.setImageResource(view.context.resources.getIdentifier(car.image.toLowerCase(),
-                "mipmap", view.context.packageName))
-        view.car_logo.setImageResource(view.context.resources.getIdentifier(
-                car.brand_logo_image.toLowerCase(),
-                "mipmap", view.context.packageName))
+        view.car_image.setImageResource(view.context.getMipMapIdentifier(car.image.toLowerCase()))
+        view.car_logo.setImageResource(view.context.getMipMapIdentifier(
+                car.brand_logo_image.toLowerCase()))
 
         createAnimator(position, car.stars / MAX_STARS) { view.rating_bar.progress = it }
 
