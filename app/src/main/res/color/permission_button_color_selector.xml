@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/permission_font_color" android:state_pressed="true" />
+    <item android:color="@color/permission_grant_font_color" />
+</selector>
