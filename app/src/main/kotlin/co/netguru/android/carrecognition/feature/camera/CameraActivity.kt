@@ -86,8 +86,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     private fun showCarList() {
-        val startX = carListButton.left + (carListButton.width / 2)
-        val startY = carListButton.bottom + (carListButton.height / 2)
+        val startX = carListButtonMain.left + (carListButtonMain.width / 2)
+        val startY = carListButtonMain.top + (carListButtonMain.height / 2)
         CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
     }
 
