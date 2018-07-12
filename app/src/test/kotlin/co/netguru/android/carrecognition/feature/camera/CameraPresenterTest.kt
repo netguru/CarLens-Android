@@ -2,6 +2,9 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
+import co.netguru.android.carrecognition.data.db.AppDatabase
+import co.netguru.android.carrecognition.data.db.Cars
+import co.netguru.android.carrecognition.data.db.CarsDao
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
@@ -9,15 +12,20 @@ import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.Pose
 import com.nhaarman.mockito_kotlin.*
+import io.reactivex.Maybe
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito
 
 class CameraPresenterTest {
 
     private val view = mock<CameraContract.View>()
     private val tflow = mock<TFlowRecognizer>()
+    private val database = mock<AppDatabase>()
+    private val carsDao = mock<CarsDao>()
+    private val car = mock<Cars>()
     private lateinit var presenter: CameraPresenter
 
     @Rule
@@ -26,20 +34,27 @@ class CameraPresenterTest {
 
     @Before
     fun before() {
-        reset(tflow, view)
-        presenter = CameraPresenter(tflow)
+        reset(tflow, view, database, carsDao, car)
+        Mockito.`when`(database.carDao()).thenReturn(carsDao)
+        presenter = CameraPresenter(tflow, database)
         presenter.attachView(view)
     }
 
     @Test
     fun `Should create anchor on hit result`() {
+        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
+                .thenReturn(Maybe.create { it.onSuccess(car) })
         val result = mock<HitResult>()
+
         presenter.processHitResult(result)
-        verify(view).createAnchor(result, Car.NOT_CAR)
+
+        verify(view).createAnchor(result, car)
     }
 
     @Test
     fun `Should not create anchor when distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
+        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
+                .thenReturn(Maybe.create { it.onSuccess(car) })
 
         val pose1 = mock<Pose> {
             on { tx() } doReturn 0f
@@ -65,11 +80,11 @@ class CameraPresenterTest {
         }
 
         view.stub {
-            on { createAnchor(result1, Car.NOT_CAR) } doReturn anchor
+            on { createAnchor(result1, car) } doReturn anchor
         }
 
         presenter.processHitResult(result1)
-        verify(view).createAnchor(result1, Car.NOT_CAR)
+        verify(view).createAnchor(result1, car)
 
         presenter.processHitResult(result2)
         verifyZeroInteractions(view)
@@ -77,6 +92,9 @@ class CameraPresenterTest {
 
     @Test
     fun `Should create anchor when distance is higher then MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
+        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
+                .thenReturn(Maybe.create { it.onSuccess(car) })
+
         val pose1 = mock<Pose> {
             on { tx() } doReturn 0f
             on { ty() } doReturn 0f
@@ -101,14 +119,14 @@ class CameraPresenterTest {
         }
 
         view.stub {
-            on { createAnchor(result1, Car.NOT_CAR) } doReturn anchor
+            on { createAnchor(result1, car) } doReturn anchor
         }
 
         presenter.processHitResult(result1)
-        verify(view).createAnchor(result1, Car.NOT_CAR)
+        verify(view).createAnchor(result1, car)
 
         presenter.processHitResult(result2)
-        verify(view).createAnchor(result2, Car.NOT_CAR)
+        verify(view).createAnchor(result2, car)
     }
 
     @Test
@@ -130,6 +148,9 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show details on 30 frame when recognition is high`() {
+        Mockito.`when`(carsDao.findById(Car.VOLKSWAGEN_PASSAT.id))
+                .thenReturn(Maybe.create { it.onSuccess(car) })
+
         generateRecognitions(
             Recognition(
                 Car.VOLKSWAGEN_PASSAT,
@@ -139,7 +160,7 @@ class CameraPresenterTest {
 
         verify(view).updateViewFinder(0.8f)
         verify(view).frameStreamEnabled(false)
-        verify(view).showDetails(Car.VOLKSWAGEN_PASSAT)
+        verify(view).showDetails(car)
         verify(view).tryAttachPin(0)
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.FOUND)
     }
