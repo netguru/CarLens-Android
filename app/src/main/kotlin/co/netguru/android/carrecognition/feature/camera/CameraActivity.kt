@@ -12,8 +12,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
+import co.netguru.android.carrecognition.common.extensions.getMipMapIdentifier
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
+import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.Anchor
@@ -139,7 +141,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         permissions.visibility = View.VISIBLE
     }
 
-    override fun createAnchor(hitPoint: HitResult, car: Car): Anchor {
+    override fun createAnchor(hitPoint: HitResult, car: Cars): Anchor {
         val anchor = AnchorNode(arSceneView.session.createAnchor(hitPoint.hitPose))
         anchor.setParent(arSceneView.scene)
         anchor.addChild(StickerNode(car, this) { showDetails(car) })
@@ -169,38 +171,38 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
                     }
     }
 
-    override fun showDetails(car: Car) {
+    override fun showDetails(car: Cars) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         showViewFinder(false)
 
-        car_model.text = car.getModel(this)
-        car_maker.text = car.getMaker(this)
-        miniImage.setImageDrawable(car.getMiniImage(this))
+        car_model.text = car.model
+        car_maker.text = car.brand
+        miniImage.setImageResource(getMipMapIdentifier(car.image))
 
-        createAnimator(car.topSpeed.toFloat() / Car.TOP_SPEED_MAX) {
+        createAnimator(car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
             top_speed_bar.progress = it
         }
 
-        createAnimator(car.topSpeed) {
+        createAnimator(car.speed_mph) {
             top_speed_value.text = getString(R.string.top_speed_value, it)
         }
 
         val zeroToSixtyProgressValue =
-            1 - car.zeroToSixty / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
+            1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
         createAnimator(zeroToSixtyProgressValue) {
             zero_to_sixty_bar.progress = it
         }
 
-        createAnimator(car.zeroToSixty.toInt()) {
+        createAnimator(car.acceleration_mph.toInt()) {
             zero_to_sixty_value.text = getString(R.string.zero_to_sixty_value, it)
         }
 
-        createAnimator(car.horsePower.toFloat() / Car.HORSEPOWER_MAX) {
+        createAnimator(car.power.toFloat() / Car.HORSEPOWER_MAX) {
             power_bar.progress = it
         }
 
-        createAnimator(car.horsePower) {
+        createAnimator(car.power) {
             power_value.text = getString(R.string.horsePowerValue, it)
         }
 
@@ -214,7 +216,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         googleButton.setOnClickListener {
             val query =
-                getString(R.string.maker_model_template, car.getMaker(this), car.getModel(this))
+                getString(R.string.maker_model_template, car.brand, car.model)
             val escapedQuery = URLEncoder.encode(query, "UTF-8")
             val uri = Uri.parse(getString(R.string.google_query_string, escapedQuery))
             val intent = Intent(Intent.ACTION_VIEW, uri)

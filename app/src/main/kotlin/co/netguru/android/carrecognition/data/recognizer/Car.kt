@@ -1,121 +1,19 @@
 package co.netguru.android.carrecognition.data.recognizer
 
-import android.content.Context
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
-import co.netguru.android.carrecognition.R
-
 enum class Car(
-    @StringRes private val makerId: Int,
-    @StringRes private val modelId: Int,
-    @DrawableRes private val miniImage: Int,
-    @DrawableRes private val logoImage: Int,
-    val topSpeed: Int,
-    val zeroToSixty: Float,
-    val horsePower: Int,
-    val engine: Int
+    val id: String
 ) {
 
-    OTHER_CAR(
-        R.string.not_car,
-        R.string.not_car,
-        R.mipmap.fordfiesta,
-        R.mipmap.volkswagen_logo,
-        100,
-        0.0f,
-        0,
-        0
-    ),
-    NOT_CAR(
-        R.string.not_car,
-        R.string.not_car,
-        R.mipmap.fordfiesta,
-        R.mipmap.volkswagen_logo,
-        100,
-        0.0f,
-        0,
-        0
-    ),
-    FORD_FIESTA(
-        R.string.ford,
-        R.string.fiesta,
-        R.mipmap.fordfiesta,
-        R.mipmap.volkswagen_logo,
-        90,
-        12f,
-        90,
-        1400
-    ),
-    HONDA_CIVIC(
-        R.string.honda,
-        R.string.civic,
-        R.mipmap.hondacivic,
-        R.mipmap.volkswagen_logo,
-        90,
-        12f,
-        90,
-        1400
-    ),
-    NISSAN_QASHQAI(
-        R.string.nissan,
-        R.string.qashqai,
-        R.mipmap.nissanqashqai,
-        R.mipmap.volkswagen_logo,
-        100,
-        10f,
-        130,
-        2000
-    ),
-    TOYOTA_CAMRY(
-        R.string.toyota,
-        R.string.camry,
-        R.mipmap.toyotacamry,
-        R.mipmap.volkswagen_logo,
-        120,
-        9f,
-        130,
-        2000
-    ),
-    TOYOTA_COROLLA(
-        R.string.toyota,
-        R.string.corolla,
-        R.mipmap.toyotacorolla,
-        R.mipmap.volkswagen_logo,
-        120,
-        10f,
-        100,
-        1400
-    ),
-    VOLKSWAGEN_GOLF(
-        R.string.volkswagen,
-        R.string.golf,
-        R.mipmap.volkswagengolf,
-        R.mipmap.volkswagen_logo,
-        90,
-        4f,
-        200,
-        1100
-    ),
-    VOLKSWAGEN_PASSAT(
-        R.string.volkswagen,
-        R.string.passat,
-        R.mipmap.volkswagenpassat,
-        R.mipmap.volkswagen_logo,
-        120,
-        7f,
-        120,
-        1900
-    ),
-    VOLKSWAGEN_TIGUAN(
-        R.string.volkswagen,
-        R.string.tiguan,
-        R.mipmap.volkswagentiguan,
-        R.mipmap.volkswagen_logo,
-        120,
-        13f,
-        200,
-        2500
-    );
+    OTHER_CAR("OtherCar"),
+    NOT_CAR("NotCar"),
+    FORD_FIESTA("FordFiesta"),
+    HONDA_CIVIC("HondaCivic"),
+    NISSAN_QASHQAI("NissanQashqai"),
+    TOYOTA_CAMRY("ToyotaCamry"),
+    TOYOTA_COROLLA("ToyotaCorolla"),
+    VOLKSWAGEN_GOLF("VolkswagenGolf"),
+    VOLKSWAGEN_PASSAT("VolkswagenPassat"),
+    VOLKSWAGEN_TIGUAN("VolkswagenTiguan");
 
     companion object {
         const val TOP_SPEED_MAX = 200
@@ -125,9 +23,4 @@ enum class Car(
         const val ENGINE_MAX = 3500
         fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
     }
-
-    fun getMaker(context: Context) = context.getString(makerId)!!
-    fun getModel(context: Context) = context.getString(modelId)!!
-    fun getMiniImage(context: Context) = context.getDrawable(miniImage)!!
-    fun getLogoImage(context: Context) = context.getDrawable(logoImage)!!
 }
