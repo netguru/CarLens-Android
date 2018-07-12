@@ -12,7 +12,6 @@ apply from: '../buildsystem/sonarqube.gradle'
 ext {
 
     secrets = [
-            // define your app secrets, for example:
             hockeyAppId: keyProperty("HOCKEY_APP_ID")
     ]
 }
@@ -29,6 +28,10 @@ android {
         versionName '0.1.0'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                HOCKEY_APP_ID    : secrets.hockeyAppId
+        ]
     }
 
     buildTypes {
@@ -245,7 +248,12 @@ dependencies {
     }
     kapt proc.permissiondispatcher
 
-    //sceneform and arcore
+    // Sceneform and arcore
     implementation libs.sceneform
+
+    // Lottie
     implementation libs.lottie
+
+    // HockeyApp
+    implementation libs.hockeyApp
 }

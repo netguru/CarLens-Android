@@ -41,5 +41,9 @@
             android:name=".feature.cars.CarListActivity"
             android:label="@string/discovered"
             android:theme="@style/Theme.Transparent" />
+
+        <meta-data
+            android:name="net.hockeyapp.android.appIdentifier"
+            android:value="${HOCKEY_APP_ID}"/>
     </application>
 </manifest>
