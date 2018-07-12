@@ -42,6 +42,8 @@
     <string name="recognition_indicator_put_car_in_center">Put car in the center</string>
     <string name="could_not_attach_pin_error">Could not attach pin, please try again</string>
 
+    <string name="tiguan_description">The Volkswagen Tiguan is a compact crossover vehicle (CUV). Introduced in 2007, it uses the PQ35 platform of the Volkswagen Golf.</string>
+    <string name="discovered">Discovered</string>
 
     <string name="permission_camera_button">Allow Camera Access</string>
     <string name="permission_camera_text">Recognize cars and unlock\nthem in the Gallery</string>

@@ -11,9 +11,11 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.recognizer.Car
+import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.google.ar.core.TrackingState
@@ -61,7 +63,6 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         arSceneView.planeRenderer.isEnabled = false
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
         bottomSheetBehavior.setBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -80,11 +81,18 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
 
-        carListButton.setOnClickListener { }
+        carListButtonMain.setOnClickListener { showCarList() }
+        carListButton.setOnClickListener { showCarList() }
 
         scanButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
+    }
+
+    private fun showCarList() {
+        val startX = carListButtonMain.left + (carListButtonMain.width / 2)
+        val startY = carListButtonMain.top + (carListButtonMain.height / 2)
+        CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
     }
 
     override fun onResume() {
@@ -214,19 +222,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
-        val animator = when (topValue) {
-            is Float -> ValueAnimator.ofFloat(0f, 1f * topValue)
-            is Int -> ValueAnimator.ofInt(0, topValue)
-            else -> throw IllegalArgumentException("value must be Int of Float")
+        AnimationUtils.createAnimator(topValue, onUpdate) {
+            duration = 1000
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
         }
-        animator.duration = 1000
-        animator.interpolator = AccelerateDecelerateInterpolator()
-        animator.addUpdateListener {
-            onUpdate(it.animatedValue as T)
-        }
-        animator.start()
     }
 
     override fun frameStreamEnabled(enabled: Boolean) {

@@ -37,5 +37,9 @@
             android:label="@string/camera"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".feature.cars.CarListActivity"
+            android:label="@string/discovered"
+            android:theme="@style/Theme.Transparent" />
     </application>
 </manifest>

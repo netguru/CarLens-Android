@@ -183,7 +183,7 @@ class ImageUtils {
             )
 
             val lo = Script.LaunchOptions()
-            // by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
+// by this we ignore the y’s padding zone, i.e. the right side of x between width and yRowStride
             lo.setX(0, width)
             lo.setY(0, height)
 

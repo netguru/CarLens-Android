@@ -17,7 +17,7 @@ inline fun <reified T : Activity> Context.startActivity() {
 fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
 fun Context.getDrawableCompat(@DrawableRes drawable: Int) =
-    ContextCompat.getDrawable(this, drawable)
+        ContextCompat.getDrawable(this, drawable)
 
 fun Context.getAttributeColor(@AttrRes attrColor: Int): Int {
     val typedValue = TypedValue()
@@ -30,3 +30,8 @@ fun Context.getAttributeDrawable(@AttrRes attrDrawableRes: Int): Int {
     theme.resolveAttribute(attrDrawableRes, typedValue, true)
     return typedValue.resourceId
 }
+
+fun Context.getResourceIdentifier(name: String, defType: String) = resources.getIdentifier(name,
+        defType, packageName)
+
+fun Context.getMipMapIdentifier(name: String) = getResourceIdentifier(name, "mipmap")

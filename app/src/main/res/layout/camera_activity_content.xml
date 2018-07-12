@@ -43,4 +43,16 @@
         app:layout_constraintStart_toStartOf="@+id/recognitionIndicator"
         app:layout_constraintTop_toBottomOf="@+id/recognitionIndicator" />
 
+    <ImageView
+        android:id="@+id/carListButtonMain"
+        android:layout_width="@dimen/car_list_button_size"
+        android:layout_height="@dimen/car_list_button_size"
+        android:layout_marginBottom="44dp"
+        android:layout_marginStart="45dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/car_list_button" />
+
 </android.support.constraint.ConstraintLayout>

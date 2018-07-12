@@ -168,6 +168,7 @@ dependencies {
     // Support
     implementation libs.appCompat
     implementation libs.recyclerView
+    implementation libs.cardView
     implementation libs.constraintLayout
     implementation libs.design
 
@@ -202,12 +203,21 @@ dependencies {
     implementation libs.retrofitGsonConverter
     implementation libs.retrofitRxJava2Adapter
 
+    //Gson
+    implementation libs.gson
+
     // PaperParcel
     implementation libs.paperParcel
     kapt proc.paperParcel
 
     // Timber
     implementation libs.timber
+
+    //Room
+    implementation libs.room
+    implementation libs.roomRx
+    kapt proc.roomAnnotation
+    testImplementation test.roomTest
 
     // Stetho
     debugImplementation libs.stetho
