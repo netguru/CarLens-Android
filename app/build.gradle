@@ -49,7 +49,7 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
-            useProguard true
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
@@ -58,7 +58,7 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
-            useProguard true
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
