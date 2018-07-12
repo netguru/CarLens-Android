@@ -96,14 +96,23 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
                 //if anchor does not exits than we can add new anchor
                 if (isLegal == null) {
-                    compositeDisposable.add(
-                            database.carDao().findById(getAverageBestRecognition().title.id)
-                                    .applyIoSchedulers()
-                                    .subscribe { anchors += view.createAnchor(hitPoint, it) })
+                    addAnchorToCar(view, hitPoint)
                 } else {
                     Timber.d("tried to add anchor, but it is to close to others ")
                 }
             }
+        }
+    }
+
+    private fun addAnchorToCar(view: CameraContract.View, hitPoint: HitResult) {
+        val car = getAverageBestRecognition().title
+        if (car != Car.NOT_CAR && car != Car.OTHER_CAR) {
+            compositeDisposable.add(
+                    database.carDao().findById(car.id)
+                            .applyIoSchedulers()
+                            .subscribe { anchors += view.createAnchor(hitPoint, it) })
+        } else {
+            Timber.d("tried to add anchor to NOT_CAR or OTHER_CAR ")
         }
     }
 

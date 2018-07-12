@@ -42,8 +42,17 @@ class CameraPresenterTest {
 
     @Test
     fun `Should create anchor on hit result`() {
-        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
-                .thenReturn(Maybe.create { it.onSuccess(car) })
+        carsDao.stub {
+            on { findById(Car.VOLKSWAGEN_PASSAT.id) } doReturn Maybe.create { it.onSuccess(car) }
+        }
+
+        generateRecognitions(
+                Recognition(
+                        Car.VOLKSWAGEN_PASSAT,
+                        0.8f
+                )
+        )
+
         val result = mock<HitResult>()
 
         presenter.processHitResult(result)
@@ -53,8 +62,9 @@ class CameraPresenterTest {
 
     @Test
     fun `Should not create anchor when distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
-        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
-                .thenReturn(Maybe.create { it.onSuccess(car) })
+        carsDao.stub {
+            on { findById(Car.VOLKSWAGEN_PASSAT.id) } doReturn Maybe.create { it.onSuccess(car) }
+        }
 
         val pose1 = mock<Pose> {
             on { tx() } doReturn 0f
@@ -83,17 +93,25 @@ class CameraPresenterTest {
             on { createAnchor(result1, car) } doReturn anchor
         }
 
+        generateRecognitions(
+                Recognition(
+                        Car.VOLKSWAGEN_PASSAT,
+                        0.8f
+                )
+        )
+
         presenter.processHitResult(result1)
         verify(view).createAnchor(result1, car)
 
         presenter.processHitResult(result2)
-        verifyZeroInteractions(view)
+        verify(view, times(0)).createAnchor(result2, car)
     }
 
     @Test
     fun `Should create anchor when distance is higher then MINIMUM_DISTANCE_BETWEEN_ANCHORS`() {
-        Mockito.`when`(carsDao.findById(Car.NOT_CAR.id))
-                .thenReturn(Maybe.create { it.onSuccess(car) })
+        carsDao.stub {
+            on { findById(Car.VOLKSWAGEN_PASSAT.id) } doReturn Maybe.create { it.onSuccess(car) }
+        }
 
         val pose1 = mock<Pose> {
             on { tx() } doReturn 0f
@@ -122,6 +140,13 @@ class CameraPresenterTest {
             on { createAnchor(result1, car) } doReturn anchor
         }
 
+        generateRecognitions(
+                Recognition(
+                        Car.VOLKSWAGEN_PASSAT,
+                        0.8f
+                )
+        )
+
         presenter.processHitResult(result1)
         verify(view).createAnchor(result1, car)
 
@@ -148,8 +173,9 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show details on 30 frame when recognition is high`() {
-        Mockito.`when`(carsDao.findById(Car.VOLKSWAGEN_PASSAT.id))
-                .thenReturn(Maybe.create { it.onSuccess(car) })
+        carsDao.stub {
+            on { findById(Car.VOLKSWAGEN_PASSAT.id) } doReturn Maybe.create { it.onSuccess(car) }
+        }
 
         generateRecognitions(
             Recognition(
