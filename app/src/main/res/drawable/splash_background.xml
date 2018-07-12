@@ -21,11 +21,4 @@
         android:height="59dp"
         android:bottom="168dp"
         android:gravity="bottom|center" />
-
-    <item
-        android:drawable="@drawable/rounded_bar"
-        android:gravity="bottom|center"
-        android:bottom="9dp"
-        android:width="134dp"
-        android:height="5dp" />
 </layer-list>
