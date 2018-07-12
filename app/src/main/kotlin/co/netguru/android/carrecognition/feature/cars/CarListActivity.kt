@@ -33,8 +33,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
 
         if (savedInstanceState == null) {
             root_layout.visibility = View.INVISIBLE
-            onGlobalLayout {
-                initViewPager()
+            onGlobalLayout(root_layout) {
                 showCircularAnimation(false)
             }
         }
@@ -42,16 +41,16 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         back_arrow.setOnClickListener { showCircularAnimation(true) }
         camera_button.setOnClickListener { showCircularAnimation(true) }
 
+        initViewPager()
         presenter.getCars()
     }
 
     private fun initViewPager() {
         view_pager.apply {
             offscreenPageLimit = 2
-            pageMargin = -rootView.width / 10 //set side pages to be visible in 10%
+            pageMargin = resources.getDimensionPixelSize(R.dimen.page_overlap_margin)
             carAdapter = CarsPagerAdapter(getCarIdOpt())
             adapter = carAdapter
-            presenter.onAdapterReady()
             onPageSelected { position ->
                 if (position == currentVisibleItem) return@onPageSelected
                 currentVisibleItem = position
@@ -133,8 +132,8 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
                         putExtra(START_X, startX)
                         putExtra(START_Y, startY)
                         carId?.also { putExtra(CAR_ID, it) }
+                        addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     })
-            activity.overridePendingTransition(0, 0)
         }
 
         private fun Activity.getStartXOpt(default: Int) = intent.getIntExtra(START_X, default)

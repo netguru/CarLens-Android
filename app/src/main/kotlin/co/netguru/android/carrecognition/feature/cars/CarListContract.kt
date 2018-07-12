@@ -13,6 +13,5 @@ interface CarListContract {
     }
     interface Presenter : MvpPresenter<View> {
         fun getCars()
-        fun onAdapterReady()
     }
 }
