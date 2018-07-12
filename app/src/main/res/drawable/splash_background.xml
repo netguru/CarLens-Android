@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:width="375dp"
-        android:height="812dp">
+    <item>
         <shape>
             <gradient
                 android:startColor="@color/orange"
@@ -23,11 +21,4 @@
         android:height="59dp"
         android:bottom="168dp"
         android:gravity="bottom|center" />
-
-    <item
-        android:drawable="@drawable/rounded_bar"
-        android:gravity="bottom|center"
-        android:bottom="9dp"
-        android:width="134dp"
-        android:height="5dp" />
 </layer-list>
