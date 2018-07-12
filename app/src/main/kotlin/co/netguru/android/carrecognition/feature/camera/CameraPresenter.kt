@@ -6,6 +6,8 @@ import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.LimitedList
 import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
+import co.netguru.android.carrecognition.common.extensions.applyIoSchedulers
+import co.netguru.android.carrecognition.data.db.AppDatabase
 import co.netguru.android.carrecognition.data.recognizer.Car
 import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
@@ -21,7 +23,8 @@ import javax.inject.Inject
 import kotlin.math.sqrt
 
 @ActivityScope
-class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer)
+class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer,
+                                          private val database: AppDatabase)
     : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
 
     enum class RecognitionLabel(@StringRes val labelId: Int) {
@@ -45,11 +48,11 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
     private fun getAverageBestRecognition(): Recognition {
         val best = recognitionData.toList()
-            .toMultiMap { Pair(it.title, it.confidence) }
-            .mapValues { (_, value) -> value.average() }
-            .toList()
-            .sortedByDescending { it.second }
-            .firstOrNull()
+                .toMultiMap { Pair(it.title, it.confidence) }
+                .mapValues { (_, value) -> value.average() }
+                .toList()
+                .sortedByDescending { it.second }
+                .firstOrNull()
         return Recognition(best?.first ?: Car.NOT_CAR, best?.second?.toFloat() ?: 0.0f)
     }
 
@@ -76,24 +79,26 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
             }
         } else {
             nrOfTries = NR_OF_TRIES
-            ifViewAttached {
+            ifViewAttached { view ->
 
                 //get first anchor that distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS
                 val isLegal = anchors.asSequence()
-                    .map {
-                        val pose =
-                            it.pose //cache pose (anchor.pose is mutable and can be changed by ar core)
-                        val dx = pose.tx() - hitPoint.hitPose.tx()
-                        val dy = pose.ty() - hitPoint.hitPose.ty()
-                        val dz = pose.tz() - hitPoint.hitPose.tz()
-                        sqrt(dx * dx + dy * dy + dz * dz) //map into distance from anchor to hitpoint
-                    }
-                    .filter { it < MINIMUM_DISTANCE_BETWEEN_ANCHORS }
-                    .firstOrNull()
+                        .map {
+                            val pose =
+                                    it.pose //cache pose (anchor.pose is mutable and can be changed by ar core)
+                            val dx = pose.tx() - hitPoint.hitPose.tx()
+                            val dy = pose.ty() - hitPoint.hitPose.ty()
+                            val dz = pose.tz() - hitPoint.hitPose.tz()
+                            sqrt(dx * dx + dy * dy + dz * dz) //map into distance from anchor to hitpoint
+                        }
+                        .filter { it < MINIMUM_DISTANCE_BETWEEN_ANCHORS }
+                        .firstOrNull()
 
                 //if anchor does not exits than we can add new anchor
                 if (isLegal == null) {
-                    anchors += it.createAnchor(hitPoint, getAverageBestRecognition().title)
+                    database.carDao().findById(getAverageBestRecognition().title.id)
+                            .applyIoSchedulers()
+                            .subscribe { anchors += view.createAnchor(hitPoint, it) }
                 } else {
                     Timber.d("tried to add anchor, but it is to close to others ")
                 }
@@ -130,20 +135,20 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         processing = true
 
         compositeDisposable += tFlowRecognizer.classify(image)
-            .applyComputationSchedulers()
-            .doFinally {
-                image.close()
-                processing = false
-            }
-            .subscribeBy(
-                onSuccess = { result ->
-                    recognitionData.addAll(result)
-                    onFrameProcessed()
-                },
-                onError = { error ->
-                    Timber.e(error)
+                .applyComputationSchedulers()
+                .doFinally {
+                    image.close()
+                    processing = false
                 }
-            )
+                .subscribeBy(
+                        onSuccess = { result ->
+                            recognitionData.addAll(result)
+                            onFrameProcessed()
+                        },
+                        onError = { error ->
+                            Timber.e(error)
+                        }
+                )
     }
 
     private fun onFrameProcessed() {
@@ -172,7 +177,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                         }
                         else -> {
                             it.frameStreamEnabled(false)
-                            it.showDetails(bestRecognition.title)
+                            it.getModelAndShowDetails(bestRecognition.title)
                             it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND)
                             it.tryAttachPin(0)
                         }
@@ -180,6 +185,14 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                 }
             }
         }
+    }
+
+    private fun CameraContract.View.getModelAndShowDetails(car: Car) {
+        database.carDao().findById(car.id).applyIoSchedulers()
+                .subscribe {
+                    database.carDao().update(it.apply { seen = true })
+                    showDetails(it)
+                }
     }
 
     companion object {
