@@ -4,7 +4,8 @@ import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import co.netguru.android.carrecognition.R
-import co.netguru.android.carrecognition.data.recognizer.Car
+import co.netguru.android.carrecognition.common.extensions.getMipMapIdentifier
+import co.netguru.android.carrecognition.data.db.Cars
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.FrameTime
 import com.google.ar.sceneform.math.Quaternion
@@ -12,7 +13,7 @@ import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ViewRenderable
 
 class StickerNode(
-    private val car: Car,
+    private val car: Cars,
     private val context: Context,
     private val onClickCallback: () -> Unit
 ) : AnchorNode() {
@@ -27,12 +28,12 @@ class StickerNode(
                 val textView = view.findViewById<TextView>(R.id.model_label)
                 textView.text = context.getString(
                     R.string.maker_model_template,
-                    car.getMaker(context),
-                    car.getModel(context)
+                    car.brand,
+                    car.model
                 )
 
                 val logoImage = view.findViewById<ImageView>(R.id.model_maker_logo_image)
-                logoImage.setImageDrawable(car.getLogoImage(context))
+                logoImage.setImageResource(context.getMipMapIdentifier(car.brand_logo_image))
                 renderable = it
             }
 
