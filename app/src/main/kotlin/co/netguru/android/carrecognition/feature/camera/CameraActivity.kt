@@ -84,17 +84,16 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
 
         carListButtonMain.setOnClickListener { showCarList() }
-        carListButton.setOnClickListener { showCarList() }
 
         scanButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
-    private fun showCarList() {
+    private fun showCarList(carId: String? = null) {
         val startX = carListButtonMain.left + (carListButtonMain.width / 2)
         val startY = carListButtonMain.top + (carListButtonMain.height / 2)
-        CarListActivity.startActivityWithCircleAnimation(this, startX, startY)
+        CarListActivity.startActivityWithCircleAnimation(this, startX, startY, carId)
     }
 
     override fun onResume() {
@@ -222,6 +221,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
+
+        carListButton.setOnClickListener { showCarList(car.id) }
     }
 
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
