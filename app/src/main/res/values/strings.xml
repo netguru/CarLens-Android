@@ -39,7 +39,7 @@
     <string name="recognition_indicator_car_out_of_base">Car has been detected but does not belong to our data base</string>
     <string name="recognition_indicator_car_has_been_found">Car has been found</string>
     <string name="recognition_indicator_detection_in_progress">Recognizing</string>
-    <string name="recognition_indicator_put_car_in_center">Put car in the center</string>
+    <string name="recognition_indicator_put_car_in_center">Point the camera at a car</string>
     <string name="could_not_attach_pin_error">Could not attach pin, please try again</string>
 
     <string name="tiguan_description">The Volkswagen Tiguan is a compact crossover vehicle (CUV). Introduced in 2007, it uses the PQ35 platform of the Volkswagen Golf.</string>
