@@ -12,7 +12,6 @@ apply from: '../buildsystem/sonarqube.gradle'
 ext {
 
     secrets = [
-            // define your app secrets, for example:
             hockeyAppId: keyProperty("HOCKEY_APP_ID")
     ]
 }
@@ -42,6 +41,17 @@ android {
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro', 'proguard-rules-test.pro'
+        }
+        staging {
+            versionNameSuffix "-STAGING"
+            applicationIdSuffix ".staging"
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
         }
         release {
             debuggable false
