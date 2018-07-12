@@ -18,7 +18,7 @@ object DatabaseInitializer {
     private fun populateDatabase(context: Context, database: AppDatabase) = Completable.create {
         val jsonString = loadJSONFromCarsAsset(context)
         val carsList = Gson().fromJson(jsonString, CarsList::class.java)
-        database.carDao().insertAll(*carsList.cars)
+        carsList.cars.forEach { database.carDao().insertAll(it) }
         it.onComplete()
     }
 
