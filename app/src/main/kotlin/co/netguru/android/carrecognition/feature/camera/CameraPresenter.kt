@@ -96,9 +96,10 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
                 //if anchor does not exits than we can add new anchor
                 if (isLegal == null) {
-                    database.carDao().findById(getAverageBestRecognition().title.id)
-                            .applyIoSchedulers()
-                            .subscribe { anchors += view.createAnchor(hitPoint, it) }
+                    compositeDisposable.add(
+                            database.carDao().findById(getAverageBestRecognition().title.id)
+                                    .applyIoSchedulers()
+                                    .subscribe { anchors += view.createAnchor(hitPoint, it) })
                 } else {
                     Timber.d("tried to add anchor, but it is to close to others ")
                 }
@@ -177,7 +178,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                         }
                         else -> {
                             it.frameStreamEnabled(false)
-                            it.getModelAndShowDetails(bestRecognition.title)
+                            getModelAndShowDetails(bestRecognition.title, view)
                             it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND)
                             it.tryAttachPin(0)
                         }
@@ -187,12 +188,13 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         }
     }
 
-    private fun CameraContract.View.getModelAndShowDetails(car: Car) {
-        database.carDao().findById(car.id).applyIoSchedulers()
-                .subscribe {
-                    database.carDao().update(it.apply { seen = true })
-                    showDetails(it)
-                }
+    private fun getModelAndShowDetails(car: Car, view: CameraContract.View) {
+        compositeDisposable.add(
+                database.carDao().findById(car.id).applyIoSchedulers()
+                        .subscribe {
+                            database.carDao().update(it.apply { seen = true })
+                            view.showDetails(it)
+                        })
     }
 
     companion object {
