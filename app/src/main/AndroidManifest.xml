@@ -40,7 +40,6 @@
         <activity
             android:name=".feature.cars.CarListActivity"
             android:label="@string/discovered"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent" />
     </application>
 </manifest>
