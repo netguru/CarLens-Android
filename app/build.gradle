@@ -46,51 +46,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro', 'proguard-rules-test.pro'
         }
+        staging {
+            versionNameSuffix "-STAGING"
+            applicationIdSuffix ".staging"
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
-            useProguard true
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
     }
 
-    flavorDimensions "api"
-
-    productFlavors {
-        mock {
-            versionNameSuffix "-MOCK"
-            applicationIdSuffix ".mock"
-            dimension "api"
-
-            // put your secrets in the BuildConfig.java class, for example:
-            buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
-        }
-        production {
-            dimension "api"
-            // inherit
-        }
-    }
-
     aaptOptions {
         noCompress '.tflite'
-    }
-
-    variantFilter { variant ->
-        def buildName = variant.buildType.name
-        def flavorName = variant.getFlavors().get(0).name
-        // remove unnecessary variants
-        ['release'].each {
-            if (buildName == it) {
-                ['mock'].each {
-                    if (flavorName == it) {
-                        variant.setIgnore(true)
-                    }
-                }
-            }
-        }
     }
 
     // Always show the result of every unit test, even if it passes.
