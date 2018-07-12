@@ -3,7 +3,6 @@ package co.netguru.android.carrecognition.feature.cars
 import android.animation.Animator
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -27,7 +26,6 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
     private lateinit var carAdapter: CarsPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.car_list_view)
