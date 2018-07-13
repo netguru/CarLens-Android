@@ -7,6 +7,7 @@ import co.netguru.android.carrecognition.data.db.AppDatabase
 import co.netguru.android.carrecognition.data.db.DatabaseInitializer
 import co.netguru.android.carrecognition.feature.camera.CameraActivity
 import dagger.android.AndroidInjection
+import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
@@ -18,9 +19,14 @@ class SplashActivity : AppCompatActivity() {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         DatabaseInitializer.checkIfInit(this, database)
-                .subscribe {
-                    startActivity<CameraActivity>()
-                    finish()
-                }
+                .subscribeBy(
+                        onComplete = {
+                            startActivity<CameraActivity>()
+                            finish()
+                        },
+                        onError = {
+                            it.printStackTrace()
+                        }
+                )
     }
 }
