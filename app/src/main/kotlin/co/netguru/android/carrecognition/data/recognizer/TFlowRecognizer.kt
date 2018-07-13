@@ -25,7 +25,6 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
         const val INPUT_HEIGHT = 224
         const val DIM_BATCH_SIZE = 1
         const val DIM_PIXEL_SIZE = 3
-        const val NR_OF_RETURNED_RECOGNITIONS = 3
     }
 
     private val imgData = ByteBuffer
@@ -63,11 +62,10 @@ class TFlowRecognizer @Inject constructor(private val tflow: Interpreter,
                     .mapIndexed { index, confidence ->
                         Recognition(
                             Car.of(labels[index]),
-                            confidence.toFloat() / Byte.MAX_VALUE
+                            (confidence.toInt() and 0xFF).toFloat() / 0xFF
                         )
                     }
-                    .sortedByDescending { it.confidence }
-                    .take(NR_OF_RETURNED_RECOGNITIONS)
+                    .filter { it.confidence > 0 }
             }
             Timber.d("classification and processing time = $time, tf time = $tflowTime")
             return@fromCallable finalResult
