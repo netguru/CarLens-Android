@@ -221,8 +221,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
-
-        carListButton.setOnClickListener { showCarList(car.id) }
+        
+        carListButtonRipple.visibility = if (!car.seen) View.VISIBLE else View.GONE
+        carListButton.setOnClickListener {
+            carListButtonRipple.visibility = View.GONE
+            showCarList(car.id)
+        }
     }
 
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {

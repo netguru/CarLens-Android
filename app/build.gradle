@@ -28,6 +28,10 @@ android {
         versionName '0.1.0'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                HOCKEY_APP_ID    : secrets.hockeyAppId
+        ]
     }
 
     buildTypes {
@@ -47,18 +51,18 @@ android {
             applicationIdSuffix ".staging"
             debuggable false
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             zipAlignEnabled true
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
         release {
             debuggable false
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             zipAlignEnabled true
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
@@ -223,7 +227,12 @@ dependencies {
     }
     kapt proc.permissiondispatcher
 
-    //sceneform and arcore
+    // Sceneform and arcore
     implementation libs.sceneform
+
+    // Lottie
     implementation libs.lottie
+
+    // HockeyApp
+    implementation libs.hockeyApp
 }

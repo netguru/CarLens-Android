@@ -22,9 +22,10 @@
 -dontskipnonpubliclibraryclasses
 -dontskipnonpubliclibraryclassmembers
 -dontpreverify
+-printmapping mapping.txt
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -keepattributes LineNumberTable,SourceFile,Signature,*Annotation*,Exceptions,InnerClasses
-
+-dontwarn org.checkerframework.**
 # Keep native methods
 -keepclassmembers class * {
     native <methods>;
@@ -42,6 +43,7 @@
 # TODO 07.09.2017 Rule should be adjusted to current project - all models used with GSON should keep their members name
 # TODO 07.09.2017 or all their members should be annotated with @SerializedName().
 -keepclassmembernames class co.netguru.android.carrecognition.data.**.model.** { *; }
+-keepclassmembernames class co.netguru.android.carrecognition.data.db.** { *; }
 
 # app compat-v7
 -keep class android.support.v7.widget.SearchView { *; }
