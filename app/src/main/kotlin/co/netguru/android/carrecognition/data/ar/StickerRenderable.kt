@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import co.netguru.android.carrecognition.R
-import co.netguru.android.carrecognition.common.extensions.getMipMapIdentifier
+import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.FrameTime
@@ -33,7 +33,7 @@ class StickerNode(
                 )
 
                 val logoImage = view.findViewById<ImageView>(R.id.model_maker_logo_image)
-                logoImage.setImageResource(context.getMipMapIdentifier(car.brand_logo_image))
+                logoImage.setImageResource(context.getDrawableIdentifier(car.brand_logo_image))
                 renderable = it
             }
 
