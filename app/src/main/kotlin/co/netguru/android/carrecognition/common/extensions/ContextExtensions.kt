@@ -34,4 +34,4 @@ fun Context.getAttributeDrawable(@AttrRes attrDrawableRes: Int): Int {
 fun Context.getResourceIdentifier(name: String, defType: String) = resources.getIdentifier(name,
         defType, packageName)
 
-fun Context.getMipMapIdentifier(name: String) = getResourceIdentifier(name, "mipmap")
+fun Context.getDrawableIdentifier(name: String) = getResourceIdentifier(name.toLowerCase(), "drawable")
