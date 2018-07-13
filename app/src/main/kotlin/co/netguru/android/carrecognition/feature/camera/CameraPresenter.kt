@@ -187,7 +187,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                         }
                         else -> {
                             it.frameStreamEnabled(false)
-                            getModelAndShowDetails(bestRecognition.title, view)
+                            getModelAndShowDetails(bestRecognition.title, it)
                             it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND)
                             it.tryAttachPin(0)
                         }
@@ -204,9 +204,13 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                     database.carDao().insertAll(it.copy().apply { seen = true })
                 }
                 .applyIoSchedulers()
-                .subscribe {
-                            view.showDetails(it)
-                        })
+                .subscribeBy(
+                    onSuccess = {
+                        view.showDetails(it)
+                    }, onError = {
+                        Timber.e(it)
+                    })
+        )
     }
 
     companion object {

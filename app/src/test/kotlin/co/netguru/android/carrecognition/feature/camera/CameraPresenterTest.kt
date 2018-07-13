@@ -173,6 +173,9 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show details on 30 frame when recognition is high`() {
+        car.stub {
+            on { copy() } doReturn mock<Cars>()
+        }
         carsDao.stub {
             on { findById(Car.VOLKSWAGEN_PASSAT.id) } doReturn Maybe.create { it.onSuccess(car) }
         }
