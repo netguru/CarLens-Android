@@ -12,7 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
-import co.netguru.android.carrecognition.common.extensions.getMipMapIdentifier
+import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.db.Cars
@@ -177,7 +177,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         car_model.text = car.model
         car_maker.text = car.brand
-        miniImage.setImageResource(getMipMapIdentifier(car.image))
+        miniImage.setImageResource(getDrawableIdentifier(car.image))
 
         createAnimator(car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
             top_speed_bar.progress = it

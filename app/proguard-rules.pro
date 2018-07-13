@@ -106,3 +106,10 @@
 
 #dagger
 -dontwarn com.google.errorprone.annotations.*
+
+#Keep the R
+-keepattributes InnerClasses
+-keep class **.R
+-keep class **.R$* {
+    <fields>;
+}

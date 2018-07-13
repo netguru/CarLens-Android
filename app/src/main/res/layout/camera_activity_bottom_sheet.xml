@@ -81,7 +81,7 @@
         android:contentDescription="@null"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/top_margin"
-        tools:srcCompat="@mipmap/fordfiesta" />
+        tools:src="@drawable/hondacivic" />
 
     <co.netguru.android.carrecognition.feature.camera.GradientProgress
         android:id="@+id/top_speed_bar"
