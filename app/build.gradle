@@ -47,18 +47,18 @@ android {
             applicationIdSuffix ".staging"
             debuggable false
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             zipAlignEnabled true
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
         release {
             debuggable false
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             zipAlignEnabled true
-            useProguard false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
