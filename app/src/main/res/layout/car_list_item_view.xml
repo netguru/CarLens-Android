@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,12 +9,11 @@
         android:id="@+id/car_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:fontFamily="@font/gligoth"
         android:textAllCaps="true"
         android:textColor="@color/car_list_model_text"
         android:textSize="100sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         tools:text="PASSAT" />
 
     <ImageView
@@ -23,12 +22,9 @@
         android:layout_height="160dp"
         android:layout_marginTop="49dp"
         android:scaleType="fitCenter"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/car_model"
-        app:srcCompat="@mipmap/volkswagentiguan" />
+        tools:src="@mipmap/volkswagentiguan" />
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,14 +36,12 @@
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginEnd="25dp"
             android:layout_marginStart="25dp"
             android:elevation="5dp"
-            app:cardCornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:cardCornerRadius="10dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -157,9 +151,9 @@
                     android:id="@+id/rating_bar"
                     android:layout_width="80dp"
                     android:layout_height="15dp"
-                    android:layout_marginTop="@dimen/margin_medium"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginRight="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
                     app:layout_constraintLeft_toRightOf="@+id/star_div_left"
                     app:layout_constraintRight_toLeftOf="@+id/star_div_right"
                     app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
@@ -270,11 +264,10 @@
             android:id="@+id/car_logo"
             android:layout_width="80dp"
             android:layout_height="50dp"
+            android:layout_alignTop="@+id/card"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-25dp"
             android:elevation="6dp"
-            app:layout_constraintBottom_toTopOf="@id/card"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/card"
             tools:src="@mipmap/ford" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+</FrameLayout>

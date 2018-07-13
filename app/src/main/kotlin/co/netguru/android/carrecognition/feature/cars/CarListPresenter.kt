@@ -5,7 +5,7 @@ import co.netguru.android.carrecognition.common.extensions.applyIoSchedulers
 import co.netguru.android.carrecognition.data.db.AppDatabase
 import co.netguru.android.carrecognition.data.db.Cars
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -15,36 +15,27 @@ class CarListPresenter @Inject constructor(private val database: AppDatabase)
     : MvpBasePresenter<CarListContract.View>(), CarListContract.Presenter {
 
     private val carsSource = BehaviorSubject.create<List<Cars>>()
-    private var disposable = CompositeDisposable()
+    private var disposable: Disposable? = null
 
     override fun getCars() {
         ifViewAttached { view ->
             view.showLoading()
-            disposable.add(database.carDao().getAll()
+            disposable = database.carDao().getAll()
                     .applyIoSchedulers()
                     .subscribeBy(
                             onSuccess = {
                                 carsSource.apply {
-                                    onNext(it)
-                                    onComplete()
+                                    view.populate(it)
                                 }
                             },
                             onError = { view.onError(it) }
-                    ))
-        }
-    }
-
-    override fun onAdapterReady() {
-        ifViewAttached { view ->
-            disposable.add(
-                    carsSource.applyIoSchedulers()
-                            .subscribe { view.populate(it) })
+                    )
         }
     }
 
     override fun destroy() {
         super.destroy()
-        if (disposable.isDisposed) return
-        disposable.dispose()
+        if (disposable?.isDisposed != false) return
+        disposable?.dispose()
     }
 }
