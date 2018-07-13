@@ -200,7 +200,9 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     private fun getModelAndShowDetails(car: Car, view: CameraContract.View) {
         compositeDisposable.add(
             database.carDao().findById(car.id)
-                .doOnSuccess { database.carDao().update(it.apply { seen = true }) }
+                .doOnSuccess {
+                    database.carDao().insertAll(it.copy().apply { seen = true })
+                }
                 .applyIoSchedulers()
                 .subscribe {
                             view.showDetails(it)

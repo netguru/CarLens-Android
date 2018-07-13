@@ -185,6 +185,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scanButton" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/carListButtonRipple"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="@+id/carListButton"
+        app:layout_constraintEnd_toEndOf="@+id/carListButton"
+        app:layout_constraintStart_toStartOf="@+id/carListButton"
+        app:layout_constraintTop_toTopOf="@+id/carListButton"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="button_ripple.json"
+        app:lottie_loop="true" />
+
     <Button
         android:id="@+id/carListButton"
         android:layout_width="45dp"
