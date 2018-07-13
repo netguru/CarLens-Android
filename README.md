@@ -23,13 +23,6 @@
 ## About
 Welcome to the **Car Regonition** project. It's an internal application made for detecting cars and showing informations about them.
 
-## Team
-
-* [Miłosz Szyński](mailto:milosz.szynski@netguru.pl) - Project Manager
-* [Paweł Bocheński](mailto:pawel.bochenski@netguru.pl) - Senior Android developer
-* [Marcin Oziemski](mailto:marcin.oziemski@netguru.pl) - Android Developer
-* [Marcin Stramowski](mailto:pawel.bochenski@netguru.pl) - Android Developer
-
 ## Testing
 <!-- Describe the project's testing methodology -->
 <!-- Examples: TDD? Using Espresso for views? What parts must be tested? etc -->
@@ -47,7 +40,7 @@ Welcome to the **Car Regonition** project. It's an internal application made for
 	git@github.com:netguru/car-recognition-android.git
 	```
 2. Place `secrets.properties` file in application root folder:
-   ```
+   ```bash
    HockeyAppId=ACTUAL_KEY
    # (...)
    ```  
