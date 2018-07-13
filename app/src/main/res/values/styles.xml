@@ -2,22 +2,14 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/pink</item>
-        <item name="colorPrimaryDark">@color/orange</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/light_gray</item>
         <item name="colorAccent">@color/green</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
-    <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
-        <item name="android:statusBarColor">@color/light_gray</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
 </resources>

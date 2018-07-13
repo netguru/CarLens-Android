@@ -40,7 +40,7 @@
         <activity
             android:name=".feature.cars.CarListActivity"
             android:label="@string/discovered"
-            android:theme="@style/Theme.Transparent" />
+            android:theme="@style/AppTheme" />
 
         <meta-data
             android:name="net.hockeyapp.android.appIdentifier"
