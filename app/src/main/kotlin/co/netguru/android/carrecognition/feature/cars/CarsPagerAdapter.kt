@@ -136,7 +136,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     }
 
     private fun canShowDescription(activity: Activity) = activity.getDisplayMetrics().let {
-        it.heightPixels / it.widthPixels > SMALL_RATIO //screen ratio higher ten SMALL_RATIO
+        it.heightPixels.toFloat() / it.widthPixels.toFloat() > SMALL_RATIO //screen ratio higher ten SMALL_RATIO
     }
 
     private fun <T> createAnimator(position: Int, topValue: T, onUpdate: (T) -> Unit) {
@@ -149,6 +149,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
     companion object {
         private const val MAX_STARS = 5f
-        private const val SMALL_RATIO = 16 / 9
+        private const val SMALL_RATIO = 16f / 9f
     }
 }
