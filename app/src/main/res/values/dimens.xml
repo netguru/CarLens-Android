@@ -22,4 +22,5 @@
     <dimen name="progress_bar_indicator_size">68dp</dimen>
     <dimen name="card_gradient_progress_size">110dp</dimen>
     <dimen name="camera_button_size">90dp</dimen>
+    <dimen name="page_overlap_margin">-40dp</dimen>
 </resources>
