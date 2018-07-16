@@ -47,7 +47,7 @@
         android:id="@+id/carListButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginStart="45dp"
         android:clickable="true"
         android:focusable="true"
