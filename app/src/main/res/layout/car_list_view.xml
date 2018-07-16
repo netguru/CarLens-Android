@@ -18,7 +18,7 @@
             android:layout_marginStart="10dp"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/padding_small"
             app:layout_constraintBottom_toBottomOf="@+id/progress_bar_indicator"
             app:layout_constraintLeft_toLeftOf="parent"
