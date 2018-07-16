@@ -13,6 +13,13 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
+    <style name="RecognitionTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="Theme.Transparent" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentStatus">false</item>
