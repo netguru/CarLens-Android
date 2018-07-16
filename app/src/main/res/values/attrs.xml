@@ -8,4 +8,7 @@
         <attr name="maxSweep" format="float" />
         <attr name="lineWidth" format="float" />
     </declare-styleable>
+    <declare-styleable name="RecognitionTextSwitcher">
+        <attr name="initText" format="reference" />
+    </declare-styleable>
 </resources>
