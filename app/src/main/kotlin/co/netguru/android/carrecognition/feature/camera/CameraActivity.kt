@@ -253,7 +253,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun showViewFinder(visible: Boolean) {
         recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
-        recognitionIndicationLabel.visibility = if (visible) View.VISIBLE else View.GONE
+        recognitionLabelSwitcher.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun tryAttachPin(randomFieldPercentage: Int) {
@@ -276,7 +276,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun updateRecognitionIndicatorLabel(status: CameraPresenter.RecognitionLabel) {
-        recognitionIndicationLabel.text = getString(status.labelId)
+        val currentText = recognitionLabelSwitcher.getText()
+        val futureText = getString(status.labelId)
+        if (currentText != futureText) {
+            recognitionLabelSwitcher.setText(futureText)
+        }
     }
 
     override fun showCouldNotAttachPinError() {

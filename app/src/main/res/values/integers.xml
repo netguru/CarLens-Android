@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="recognition_animation_translate_duration">300</integer>
+    <integer name="recognition_animation_alpha_duration">150</integer>
+    <integer name="recognition_animation_duration">300</integer>
+</resources>
