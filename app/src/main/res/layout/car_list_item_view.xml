@@ -86,7 +86,6 @@
                     android:text="@string/top_speed_value"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
                     app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
                     app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
@@ -101,7 +100,6 @@
                     android:text="@string/zero_to_sixty_value"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
                     app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
                     app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
@@ -153,7 +151,7 @@
                     android:layout_height="15dp"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginRight="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toRightOf="@+id/star_div_left"
                     app:layout_constraintRight_toLeftOf="@+id/star_div_right"
                     app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
@@ -176,7 +174,7 @@
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginTop="16dp"
                     android:textColor="@color/car_list_item_info_text_color"
                     android:textSize="12sp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -184,14 +182,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/rating_bar"
                     tools:text="@string/tiguan_description" />
 
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5"/>
+
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/power_bar"
-                    android:layout_width="125dp"
-                    android:layout_height="26dp"
-                    android:layout_marginTop="@dimen/margin_xxlarge"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/engine_bar"
+                    app:layout_constraintRight_toLeftOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/description"
                     app:lottie_autoPlay="false"
                     app:lottie_fileName="progress-bar.json"
@@ -206,7 +212,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/power_bar"
+                    app:layout_constraintBottom_toTopOf="@+id/power_value"
                     app:layout_constraintLeft_toLeftOf="@+id/power_bar" />
 
                 <TextView
@@ -216,19 +222,18 @@
                     android:fontFamily="@font/gligoth"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/power_bar"
                     app:layout_constraintStart_toStartOf="@+id/power_bar"
                     app:layout_constraintTop_toTopOf="@+id/power_bar"
                     tools:text="115 hp" />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/engine_bar"
-                    android:layout_width="125dp"
-                    android:layout_height="26dp"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/power_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="8dp"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toTopOf="@+id/power_bar"
                     app:lottie_autoPlay="false"
                     app:lottie_fileName="progress-bar.json"
@@ -243,8 +248,8 @@
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
                     android:textSize="12sp"
-                    app:layout_constraintBottom_toTopOf="@+id/engine_bar"
-                    app:layout_constraintStart_toStartOf="@+id/engine_bar" />
+                    app:layout_constraintBottom_toTopOf="@+id/engine_value"
+                    app:layout_constraintStart_toStartOf="@+id/engine_value" />
 
                 <TextView
                     android:id="@+id/engine_value"
@@ -253,7 +258,7 @@
                     android:fontFamily="@font/gligoth"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/engine_bar"
                     app:layout_constraintTop_toTopOf="@+id/engine_bar"
                     tools:text="1158" />
