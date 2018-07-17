@@ -34,7 +34,6 @@
             android:textAllCaps="true"
             android:textColor="@color/title_text_color"
             android:textSize="23sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/progress_bar_indicator"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
