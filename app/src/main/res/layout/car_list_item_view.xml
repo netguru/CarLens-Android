@@ -11,17 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/gligoth"
-        android:letterSpacing="-0.0127"
+        android:letterSpacing="@dimen/car_model_letter_spacing"
         android:textAllCaps="true"
         android:textColor="@color/car_list_model_text"
-        android:textSize="100sp"
+        android:textSize="@dimen/car_model_text_size"
         tools:text="PASSAT" />
 
     <ImageView
         android:id="@+id/car_image"
         android:layout_width="wrap_content"
-        android:layout_height="160dp"
-        android:layout_marginTop="49dp"
+        android:layout_height="@dimen/car_image_height"
+        android:layout_marginTop="@dimen/car_margin_top"
         android:scaleType="fitCenter"
         tools:src="@drawable/volkswagentiguan" />
 
@@ -41,8 +41,8 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_xlarge"
             android:layout_marginStart="@dimen/margin_xlarge"
-            android:elevation="5dp"
-            app:cardCornerRadius="10dp">
+            android:elevation="@dimen/car_details_card_elevation"
+            app:cardCornerRadius="@dimen/car_details_card_cornerRadius">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -64,17 +64,17 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/zero_to_sixty_bar"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:lineWidth="20.0"
-                    app:maxSweep="240.0"
-                    app:minAngle="60.0" />
+                    app:lineWidth="@dimen/car_progress_width"
+                    app:maxSweep="@dimen/car_progress_sweep"
+                    app:minAngle="@dimen/car_progress_min_angle" />
 
                 <TextView
                     android:id="@+id/top_speed_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:text="@string/top_speed"
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
@@ -86,12 +86,12 @@
                     android:id="@+id/top_speed_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:text="@string/top_speed_value"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/car_progress_value_text_size"
                     app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
                     app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
                     app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
@@ -101,12 +101,12 @@
                     android:id="@+id/zero_to_sixty_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:text="@string/zero_to_sixty_value"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/car_progress_value_text_size"
                     app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
                     app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
                     app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
@@ -124,17 +124,17 @@
                     app:layout_constraintLeft_toRightOf="@+id/top_speed_bar"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:lineWidth="20.0"
-                    app:maxSweep="240.0"
-                    app:minAngle="60.0" />
+                    app:lineWidth="@dimen/car_progress_width"
+                    app:maxSweep="@dimen/car_progress_sweep"
+                    app:minAngle="@dimen/car_progress_min_angle" />
 
                 <TextView
                     android:id="@+id/zero_to_sixty_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/margin_small"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:text="@string/zero_to_sixty_label"
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
@@ -145,7 +145,7 @@
                 <View
                     android:id="@+id/star_div_left"
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/car_details_stars_divider_height"
                     android:layout_marginBottom="@dimen/margin_xxsmall"
                     android:background="@color/car_list_item_background"
                     app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
@@ -155,11 +155,11 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/rating_bar"
-                    android:layout_width="80dp"
-                    android:layout_height="15dp"
+                    android:layout_width="@dimen/car_details_stars_width"
+                    android:layout_height="@dimen/car_details_stars_height"
                     android:layout_marginLeft="@dimen/margin_medium"
                     android:layout_marginRight="@dimen/margin_medium"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/margin_small"
                     app:layout_constraintLeft_toRightOf="@+id/star_div_left"
                     app:layout_constraintRight_toLeftOf="@+id/star_div_right"
                     app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
@@ -170,7 +170,7 @@
                 <View
                     android:id="@+id/star_div_right"
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/car_details_stars_divider_height"
                     android:layout_marginBottom="@dimen/margin_xxsmall"
                     android:background="@color/car_list_item_background"
                     app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
@@ -183,9 +183,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_medium"
-                    android:lineSpacingMultiplier="1.2"
+                    android:lineSpacingMultiplier="@dimen/car_details_description_spacing"
                     android:textColor="@color/car_list_item_info_text_color"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/car_details_description_size"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/rating_bar"
@@ -193,7 +193,7 @@
 
                 <android.support.constraint.Guideline
                     android:id="@+id/middle_guideline"
-                    android:layout_width="1dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
@@ -220,7 +220,7 @@
                     android:text="@string/power"
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/car_details_progress_label_text_size"
                     app:layout_constraintBottom_toTopOf="@+id/power_value"
                     app:layout_constraintLeft_toLeftOf="@+id/power_bar" />
 
@@ -229,9 +229,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/car_details_progress_value_text_size"
                     app:layout_constraintBottom_toBottomOf="@+id/power_bar"
                     app:layout_constraintStart_toStartOf="@+id/power_bar"
                     app:layout_constraintTop_toTopOf="@+id/power_bar"
@@ -257,7 +257,7 @@
                     android:text="@string/engine"
                     android:textAllCaps="true"
                     android:textColor="@color/subtitle"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/car_details_progress_label_text_size"
                     app:layout_constraintBottom_toTopOf="@+id/engine_value"
                     app:layout_constraintStart_toStartOf="@+id/engine_value" />
 
@@ -266,9 +266,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gligoth"
-                    android:letterSpacing="-0.0465"
+                    android:letterSpacing="@dimen/car_details_label_text_spacing"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/car_details_progress_value_text_size"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/engine_bar"
                     app:layout_constraintTop_toTopOf="@+id/engine_bar"
@@ -279,10 +279,10 @@
         <ImageView
             android:id="@+id/car_logo"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/car_details_logo_height"
             android:layout_alignTop="@+id/card"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="-25dp"
+            android:layout_marginTop="@dimen/car_details_logo_margin"
             android:elevation="@dimen/margin_xlarge"
             android:scaleType="fitCenter"
             tools:src="@drawable/ford" />
