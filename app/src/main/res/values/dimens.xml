@@ -83,4 +83,7 @@
     <dimen name="bottom_sheet_horizontal_progress_text_size">18sp</dimen>
     <dimen name="bottom_sheet_horizontal_progress_label_text_size">12sp</dimen>
 
+    <!-- circle_progress_bar_with_label -->
+    <dimen name="circle_progress_bar_label_text_size">20sp</dimen>
+
 </resources>

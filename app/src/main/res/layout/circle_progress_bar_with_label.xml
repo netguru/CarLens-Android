@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/margin_xsmall"
         android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="@dimen/circle_progress_bar_label_text_size"
         android:textStyle="bold"
         tools:text="3/8" />
 </FrameLayout>
