@@ -53,7 +53,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                 .toList()
                 .sortedByDescending { it.second }
                 .firstOrNull()
-        return Recognition(best?.first ?: Car.NOT_CAR, best?.second?.toFloat() ?: 0.0f)
+        return Recognition(best?.first ?: Car.NOT_A_CAR, best?.second?.toFloat() ?: 0.0f)
     }
 
     override fun bottomSheetHidden() {
@@ -106,13 +106,13 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
     private fun addAnchorToCar(view: CameraContract.View, hitPoint: HitResult) {
         val car = getAverageBestRecognition().title
-        if (car != Car.NOT_CAR && car != Car.OTHER_CAR) {
+        if (car != Car.NOT_A_CAR && car != Car.OTHER_CAR) {
             compositeDisposable.add(
                     database.carDao().findById(car.id)
                             .applyIoSchedulers()
                             .subscribe { anchors += view.createAnchor(hitPoint, it) })
         } else {
-            Timber.d("tried to add anchor to NOT_CAR or OTHER_CAR ")
+            Timber.d("tried to add anchor to NOT_A_CAR or OTHER_CAR ")
         }
     }
 
@@ -168,7 +168,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
             val bestRecognition = getAverageBestRecognition()
 
             when (bestRecognition.title) {
-                Car.NOT_CAR -> {
+                Car.NOT_A_CAR -> {
                     it.updateViewFinder(0f)
                     it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
                 }
@@ -214,9 +214,9 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     }
 
     companion object {
-        private const val RECOGNITION_THRESHOLD = 0.70
-        private const val RECOGNITION_THRESHOLD_MIDDLE = 0.50
-        private const val SAMPLE_SIZE = 30
+        private const val RECOGNITION_THRESHOLD = 0.75
+        private const val RECOGNITION_THRESHOLD_MIDDLE = 0.40
+        private const val SAMPLE_SIZE = 5
         private const val NR_OF_TRIES = 5
         private const val MINIMUM_DISTANCE_BETWEEN_ANCHORS = 2
     }

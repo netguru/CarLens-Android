@@ -23,42 +23,6 @@ class ImageUtils {
             ).getPixels(inputSize * inputSize)
         }
 
-        fun prepareBitmap(
-                context: Context, yuvImage: ByteArray, width: Int,
-                height: Int, rotation: Int, inputSize: Int
-        ): IntArray {
-            return rotateAndScaleBitmap(
-                camera1ApiImageToBitmap(context, yuvImage, width, height),
-                    -rotation, inputSize
-            ).getPixels(inputSize * inputSize)
-        }
-
-        private fun camera1ApiImageToBitmap(
-            context: Context,
-            yuvImage: ByteArray,
-            width: Int,
-            height: Int
-        ): Bitmap {
-            val rs = RenderScript.create(context)
-
-            val rgbaType = Type.Builder(rs, Element.RGBA_8888(rs)).setX(width).setY(height)
-            val output = Allocation.createTyped(rs, rgbaType.create(), Allocation.USAGE_SCRIPT)
-
-            val yuvType = Type.Builder(rs, Element.U8(rs)).setX(yuvImage.size)
-            val input = Allocation.createTyped(rs, yuvType.create(), Allocation.USAGE_SCRIPT)
-
-            input.copyFrom(yuvImage)
-
-            val yuvToRgbIntrinsic = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs))
-            yuvToRgbIntrinsic.setInput(input)
-            yuvToRgbIntrinsic.forEach(output)
-
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            output.copyTo(bitmap)
-
-            return bitmap
-        }
-
         private fun rotateAndScaleBitmap(
                 inputBitmap: Bitmap,
                 rotation: Int,

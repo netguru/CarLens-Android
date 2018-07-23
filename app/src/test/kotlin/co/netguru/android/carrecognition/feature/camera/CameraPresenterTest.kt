@@ -209,7 +209,7 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show proper label on not car`() {
-        generateRecognitions(Recognition(Car.NOT_CAR, 1f))
+        generateRecognitions(Recognition(Car.NOT_A_CAR, 1f))
         verify(view).updateViewFinder(0f)
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
 
