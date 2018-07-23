@@ -1,7 +1,6 @@
 package co.netguru.android.carrecognition.feature.cars
 
 import android.animation.Animator
-import android.app.Activity
 import android.support.annotation.StringRes
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
-import co.netguru.android.carrecognition.common.extensions.getDisplayMetrics
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
@@ -59,7 +57,8 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     private fun showDetails(view: View, car: Cars, position: Int) {
         view.car_model.text = car.model
 
-        if (canShowDescription(view.context as Activity)) {
+        if ((view.parent as View).height > SMALL_SCREEN) {
+            view.description.visibility = View.VISIBLE
             view.description.text = car.description
         } else {
             view.description.visibility = View.GONE
@@ -135,10 +134,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
     }
 
-    private fun canShowDescription(activity: Activity) = activity.getDisplayMetrics().let {
-        it.heightPixels.toFloat() / it.widthPixels.toFloat() > SMALL_RATIO //screen ratio higher ten SMALL_RATIO
-    }
-
     private fun <T> createAnimator(position: Int, topValue: T, onUpdate: (T) -> Unit) {
         animatorMap[position]?.add(
                 AnimationUtils.createAnimator(topValue, onUpdate) {
@@ -149,6 +144,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
     companion object {
         private const val MAX_STARS = 5f
-        private const val SMALL_RATIO = 16f / 9f
+        private const val SMALL_SCREEN = 1550
     }
 }
