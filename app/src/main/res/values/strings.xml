@@ -11,7 +11,7 @@
     <string name="error_failed_to_create_session">Failed to create AR session</string>
     <string name="top_speed">top speed</string>
     <string name="zero_to_sixty_label">0 to 60 MPS</string>
-    <string name="zero_to_sixty_value">%d sec.</string>
+    <string name="zero_to_sixty_value">%d sec</string>
     <string name="top_speed_value">%d mph</string>
     <string name="maker_model_template">%1$s %2$s</string>
     <string name="google_query_string">http://www.google.com/#q=%s</string>

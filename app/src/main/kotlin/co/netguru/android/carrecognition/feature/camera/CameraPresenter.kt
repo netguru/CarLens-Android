@@ -173,8 +173,8 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
                     it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
                 }
                 Car.OTHER_CAR -> {
-                    it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND_UNKNOWN)
                     it.updateViewFinder(0f)
+                    it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND_UNKNOWN)
                 }
                 else -> {
                     it.updateViewFinder(bestRecognition.confidence)
