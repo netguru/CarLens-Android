@@ -5,6 +5,8 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.common.extensions.getColorCompat
+import org.jetbrains.anko.dimen
 
 class GradientProgress : View {
     constructor(context: Context) : super(context)
@@ -71,13 +73,28 @@ class GradientProgress : View {
 
     private fun applyAttributes(context: Context, attrs: AttributeSet) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GradientProgress)
-        gradientStart = typedArray.getColor(R.styleable.GradientProgress_gradientStart, Color.BLUE)
-        gradientEnd = typedArray.getColor(R.styleable.GradientProgress_gradientEnd, Color.RED)
+        gradientStart =
+                typedArray.getColor(
+                    R.styleable.GradientProgress_gradientStart,
+                    context.getColorCompat(R.color.pink)
+                )
+        gradientEnd =
+                typedArray.getColor(
+                    R.styleable.GradientProgress_gradientEnd,
+                    context.getColorCompat(R.color.orange)
+                )
         backCircleColor =
-                typedArray.getColor(R.styleable.GradientProgress_backCircleColor, Color.LTGRAY)
+                typedArray.getColor(
+                    R.styleable.GradientProgress_backCircleColor,
+                    context.getColorCompat(R.color.light_gray)
+                )
         minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, DEFAULT_MIN_ANGLE)
         maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, DEFAULT_MAX_SWEEP)
-        paintStrokeWidth = typedArray.getDimension(R.styleable.GradientProgress_lineWidth, 50f)
+
+        paintStrokeWidth = typedArray.getDimension(
+            R.styleable.GradientProgress_lineWidth,
+            context.dimen(R.dimen.progress_line_width).toFloat()
+        )
         typedArray.recycle()
 
         paint.strokeWidth = paintStrokeWidth
