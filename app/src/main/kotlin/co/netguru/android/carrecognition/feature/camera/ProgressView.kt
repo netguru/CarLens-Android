@@ -75,9 +75,9 @@ class GradientProgress : View {
         gradientEnd = typedArray.getColor(R.styleable.GradientProgress_gradientEnd, Color.RED)
         backCircleColor =
                 typedArray.getColor(R.styleable.GradientProgress_backCircleColor, Color.LTGRAY)
-        minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, 60f)
-        maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, 240f)
-        paintStrokeWidth = typedArray.getFloat(R.styleable.GradientProgress_lineWidth, 20f)
+        minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, DEFAULT_MIN_ANGLE)
+        maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, DEFAULT_MAX_SWEEP)
+        paintStrokeWidth = typedArray.getFloat(R.styleable.GradientProgress_lineWidth, DEFAULT_PAINT_STROKE)
         typedArray.recycle()
 
         paint.strokeWidth = paintStrokeWidth
@@ -134,8 +134,8 @@ class GradientProgress : View {
     }
 
     companion object {
-        const val DEFAULT_MIN_ANGLE = 40f
-        const val DEFAULT_MAX_SWEEP = 280f
-        const val DEFAULT_PAINT_STROKE = 50f
+        const val DEFAULT_MIN_ANGLE = 60f
+        const val DEFAULT_MAX_SWEEP = 240f
+        const val DEFAULT_PAINT_STROKE = 30f
     }
 }

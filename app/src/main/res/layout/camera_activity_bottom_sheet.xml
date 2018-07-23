@@ -88,8 +88,7 @@
         app:gradientEnd="@color/orange"
         app:gradientStart="@color/pink"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
-        app:lineWidth="@dimen/car_progress_width" />
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
     <TextView
         android:id="@+id/top_speed_label"
@@ -141,8 +140,7 @@
         app:gradientEnd="@color/orange"
         app:gradientStart="@color/pink"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
-        app:lineWidth="@dimen/car_progress_width" />
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
     <TextView
         android:id="@+id/zero_to_sixty_label"

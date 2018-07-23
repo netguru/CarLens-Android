@@ -63,8 +63,7 @@
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lineWidth="@dimen/car_progress_width" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/top_speed_label"
@@ -121,8 +120,7 @@
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintLeft_toRightOf="@+id/top_speed_bar"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:lineWidth="@dimen/car_progress_width" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/zero_to_sixty_label"
