@@ -254,6 +254,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun showViewFinder(visible: Boolean) {
         recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
         recognitionLabelSwitcher.visibility = if (visible) View.VISIBLE else View.GONE
+        cameraDim.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun tryAttachPin(randomFieldPercentage: Int) {
