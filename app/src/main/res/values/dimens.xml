@@ -16,6 +16,8 @@
     <dimen name="margin_xsmall">4dp</dimen>
     <dimen name="margin_xxsmall">2dp</dimen>
 
+    <dimen name="default_toolbar_title_size">23sp</dimen>
+
     <dimen name="corner_radius">20dp</dimen>
 
     <dimen name="car_list_button_size">45dp</dimen>
@@ -35,8 +37,6 @@
     <dimen name="car_details_card_cornerRadius">10dp</dimen>
 
     <dimen name="car_progress_width">20.0</dimen>
-    <dimen name="car_progress_sweep">240.0</dimen>
-    <dimen name="car_progress_min_angle">60.0</dimen>
     <dimen name="car_progress_value_text_size">20sp</dimen>
 
     <dimen name="car_details_progress_height">38dp</dimen>

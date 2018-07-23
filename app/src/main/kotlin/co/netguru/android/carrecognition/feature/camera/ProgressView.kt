@@ -75,9 +75,9 @@ class GradientProgress : View {
         gradientEnd = typedArray.getColor(R.styleable.GradientProgress_gradientEnd, Color.RED)
         backCircleColor =
                 typedArray.getColor(R.styleable.GradientProgress_backCircleColor, Color.LTGRAY)
-        minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, 40f)
-        maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, 280f)
-        paintStrokeWidth = typedArray.getFloat(R.styleable.GradientProgress_lineWidth, 50f)
+        minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, 60f)
+        maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, 240f)
+        paintStrokeWidth = typedArray.getFloat(R.styleable.GradientProgress_lineWidth, 20f)
         typedArray.recycle()
 
         paint.strokeWidth = paintStrokeWidth
