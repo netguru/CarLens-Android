@@ -6,7 +6,7 @@
         <attr name="backCircleColor" format="color" />
         <attr name="minAngle" format="float" />
         <attr name="maxSweep" format="float" />
-        <attr name="lineWidth" format="float" />
+        <attr name="lineWidth" format="dimension" />
     </declare-styleable>
     <declare-styleable name="RecognitionTextSwitcher">
         <attr name="initText" format="reference" />
