@@ -219,7 +219,7 @@ dependencies {
     testImplementation test.mockitoKotlin
 
     implementation libs.exifinterface
-    implementation libs.tensorflowLite
+    implementation libs.tensorflow
 
     // Permission Dispatcher
     implementation(libs.permissiondispatcher) {
