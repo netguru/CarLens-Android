@@ -26,11 +26,7 @@ class StickerNode(
                 view.setOnClickListener { onClickCallback() }
 
                 val textView = view.findViewById<TextView>(R.id.model_label)
-                textView.text = context.getString(
-                    R.string.maker_model_template,
-                    car.brand,
-                    car.model
-                )
+                textView.text = car.model
 
                 val logoImage = view.findViewById<ImageView>(R.id.model_maker_logo_image)
                 logoImage.setImageResource(context.getDrawableIdentifier(car.brand_logo_image))

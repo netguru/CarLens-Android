@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,23 +9,23 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:rotation="-90"
+        android:layout_gravity="center"
+        android:background="@drawable/circular_progress_background"
         android:progress="0"
         android:progressDrawable="@drawable/circular_progress"
-        android:background="@drawable/circular_progress_background"
-        tools:max="9"
+        android:rotation="-90"
+        tools:max="8"
         tools:progress="3" />
 
     <TextView
         android:id="@+id/progressText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="5dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_xsmall"
+        android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="@dimen/circle_progress_bar_label_text_size"
         android:textStyle="bold"
-        tools:text="3/9" />
-</RelativeLayout>
+        tools:text="3/8" />
+</FrameLayout>
