@@ -256,8 +256,8 @@ class CameraPresenterTest {
             on { acquireFrame() } doReturn frame
         }
 
-        //we need 30 frames to start showing data
-        for (i in 0..29) {
+        //we need 5 frames to start showing data
+        for (i in 0..4) {
             presenter.frameUpdated()
         }
     }
