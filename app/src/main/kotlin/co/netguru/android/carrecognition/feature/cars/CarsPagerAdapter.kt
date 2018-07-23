@@ -1,6 +1,7 @@
 package co.netguru.android.carrecognition.feature.cars
 
 import android.animation.Animator
+import android.app.Activity
 import android.support.annotation.StringRes
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
@@ -76,21 +77,23 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
                 car.brand_logo_image_locked))
 
         view.top_speed_bar.progress = 0f
-        view.top_speed_value.setAsUnseen(Car.TOP_SPEED_MAX, R.string.top_speed_value)
+        view.top_speed_value.setAsUnseen()
 
         view.zero_to_sixty_bar.progress = 0f
-        view.zero_to_sixty_value.setAsUnseen(Car.ZERO_TO_SIXTY_MAX.toInt(), R.string.zero_to_sixty_value)
+        view.zero_to_sixty_value.setAsUnseen()
+
+        view.description.setTextAppearance(R.style.SkeletonTextView)
 
         view.power_bar.progress = 0f
-        view.power_value.setAsUnseen(Car.HORSEPOWER_MAX, R.string.horsePowerValue)
+        view.power_value.setAsUnseen()
 
         view.engine_bar.progress = 0f
-        view.engine_value.setAsUnseen(Car.ENGINE_MAX, R.string.engineValue)
+        view.engine_value.setAsUnseen()
     }
 
-    private fun TextView.setAsUnseen(maxValue: Int, @StringRes stringRes: Int) {
-        text = context.getString(stringRes, maxValue)
-        setTextColor(context.getColor(R.color.car_list_model_text))
+    private fun TextView.setAsUnseen() {
+        setText(R.string.questionMark)
+        setTextColor(context.getColor(R.color.car_list_item_background))
     }
 
     private fun showSeenCarDetails(view: View, car: Cars, position: Int) {
