@@ -22,4 +22,6 @@
     <color name="permission_background">#2F3031</color>
     <color name="permission_font_color">#FFFFFF</color>
     <color name="permission_grant_font_color">#FF6163</color>
+
+    <color name="camera_dim">#80000000</color>
 </resources>
