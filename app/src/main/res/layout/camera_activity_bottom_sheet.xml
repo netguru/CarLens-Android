@@ -8,43 +8,41 @@
     app:behavior_hideable="true"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-
     <android.support.constraint.Guideline
         android:id="@+id/left_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="39dp" />
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_horizontal_margin" />
 
     <android.support.constraint.Guideline
         android:id="@+id/right_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="39dp" />
+        app:layout_constraintGuide_end="@dimen/bottom_sheet_horizontal_margin" />
 
     <android.support.constraint.Guideline
         android:id="@+id/top_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="37dp" />
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_top_margin" />
 
     <android.support.constraint.Guideline
         android:id="@+id/top_meters_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="120dp" />
-
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_top_meters_margin" />
 
     <View
         android:id="@+id/top_bar"
-        android:layout_width="60dp"
-        android:layout_height="3dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="@dimen/bottom_sheet_width"
+        android:layout_height="@dimen/bottom_sheet_height"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
         android:background="@drawable/rounded_bar"
         android:backgroundTint="@color/top_bar_tint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,9 +54,8 @@
         android:id="@+id/car_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        android:textSize="32sp"
+        android:textSize="@dimen/bottom_sheet_car_model_text_size"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
         app:layout_constraintTop_toTopOf="@+id/top_margin"
         tools:text="Passat" />
@@ -67,8 +64,7 @@
         android:id="@+id/car_maker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/gligoth"
+        android:layout_marginTop="@dimen/padding_xsmall"
         android:textColor="@color/subtitle"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
         app:layout_constraintTop_toBottomOf="@+id/car_model"
@@ -76,8 +72,8 @@
 
     <ImageView
         android:id="@+id/miniImage"
-        android:layout_width="138dp"
-        android:layout_height="77dp"
+        android:layout_width="@dimen/bottom_sheet_car_image_width"
+        android:layout_height="@dimen/bottom_sheet_car_image_height"
         android:contentDescription="@null"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/top_margin"
@@ -85,26 +81,20 @@
 
     <co.netguru.android.carrecognition.feature.camera.GradientProgress
         android:id="@+id/top_speed_bar"
-        android:layout_width="126dp"
-        android:layout_height="126dp"
-
-        android:paddingBottom="4dp"
+        android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
+        android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
+        android:paddingBottom="@dimen/margin_xsmall"
         app:backCircleColor="@color/light_gray"
         app:gradientEnd="@color/orange"
-
         app:gradientStart="@color/pink"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
-        app:lineWidth="15.0"
-
-        app:maxSweep="240.0"
-        app:minAngle="60.0" />
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
     <TextView
         android:id="@+id/top_speed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:fontFamily="@font/gligoth"
         android:text="@string/top_speed"
         android:textAllCaps="true"
@@ -117,12 +107,11 @@
         android:id="@+id/top_speed_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_small"
         android:fontFamily="@font/gligoth"
         android:text="@string/top_speed_value"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="@dimen/bottom_sheet_gradient_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
         app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
         app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
@@ -132,12 +121,11 @@
         android:id="@+id/zero_to_sixty_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_small"
         android:fontFamily="@font/gligoth"
         android:text="@string/zero_to_sixty_value"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="@dimen/bottom_sheet_gradient_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
         app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
         app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
@@ -145,25 +133,20 @@
 
     <co.netguru.android.carrecognition.feature.camera.GradientProgress
         android:id="@+id/zero_to_sixty_bar"
-        android:layout_width="126dp"
-        android:layout_height="126dp"
-
-        android:paddingBottom="4dp"
+        android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
+        android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
+        android:paddingBottom="@dimen/margin_xsmall"
         app:backCircleColor="@color/light_gray"
         app:gradientEnd="@color/orange"
-
         app:gradientStart="@color/pink"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
-        app:lineWidth="15.0"
-        app:maxSweep="240.0"
-        app:minAngle="60.0" />
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
     <TextView
         android:id="@+id/zero_to_sixty_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:fontFamily="@font/gligoth"
         android:text="@string/zero_to_sixty_label"
         android:textAllCaps="true"
@@ -174,21 +157,21 @@
 
     <Button
         android:id="@+id/googleButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="@dimen/bottom_sheet_white_button_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_size"
+        android:layout_marginEnd="@dimen/bottom_sheet_white_button_horizontal_margin"
+        android:layout_marginBottom="@dimen/margin_small"
         android:background="@drawable/google_button_background"
         android:contentDescription="@null"
-        android:elevation="10dp"
+        android:elevation="@dimen/bottom_sheet_white_button_elevation"
         app:layout_constraintBottom_toBottomOf="@+id/scanButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scanButton" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/carListButtonRipple"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="@dimen/bottom_sheet_white_button_ripple_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_ripple_size"
         app:layout_constraintBottom_toBottomOf="@+id/carListButton"
         app:layout_constraintEnd_toEndOf="@+id/carListButton"
         app:layout_constraintStart_toStartOf="@+id/carListButton"
@@ -199,24 +182,24 @@
 
     <Button
         android:id="@+id/carListButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="45dp"
+        android:layout_width="@dimen/bottom_sheet_white_button_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_size"
+        android:layout_marginStart="@dimen/bottom_sheet_white_button_horizontal_margin"
         android:background="@drawable/car_list_button_background"
         android:contentDescription="@null"
-        android:elevation="10dp"
+        android:elevation="@dimen/bottom_sheet_white_button_elevation"
         app:layout_constraintBottom_toBottomOf="@+id/scanButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scanButton" />
 
     <Button
         android:id="@+id/scanButton"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="@dimen/bottom_sheet_scan_button_size"
+        android:layout_height="@dimen/bottom_sheet_scan_button_size"
+        android:layout_marginBottom="@dimen/margin_small"
         android:background="@drawable/rescan_button_background"
         android:contentDescription="@null"
-        android:elevation="10dp"
+        android:elevation="@dimen/bottom_sheet_scan_button_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/googleButton"
         app:layout_constraintStart_toEndOf="@+id/carListButton"
@@ -225,10 +208,9 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/power_bar"
-        android:layout_width="125dp"
-        android:layout_height="26dp"
-
-        android:layout_marginTop="32dp"
+        android:layout_width="@dimen/bottom_sheet_horizontal_progress_width"
+        android:layout_height="@dimen/bottom_sheet_horizontal_progress_height"
+        android:layout_marginTop="@dimen/margin_xxlarge"
         app:layout_constraintStart_toStartOf="@id/left_margin"
         app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
         app:lottie_autoPlay="false"
@@ -243,7 +225,7 @@
         android:text="@string/power"
         android:textAllCaps="true"
         android:textColor="@color/subtitle"
-        android:textSize="12sp"
+        android:textSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
         app:layout_constraintBottom_toTopOf="@+id/power_bar"
         app:layout_constraintStart_toStartOf="@+id/left_margin" />
 
@@ -253,17 +235,15 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textSize="@dimen/bottom_sheet_horizontal_progress_text_size"
         app:layout_constraintStart_toStartOf="@+id/power_bar"
         app:layout_constraintTop_toTopOf="@+id/power_bar"
         tools:text="115 hp" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/engine_bar"
-        android:layout_width="125dp"
-        android:layout_height="26dp"
-
+        android:layout_width="@dimen/bottom_sheet_horizontal_progress_width"
+        android:layout_height="@dimen/bottom_sheet_horizontal_progress_height"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/power_bar"
         app:lottie_autoPlay="false"
@@ -277,7 +257,7 @@
         android:fontFamily="@font/gligoth"
         android:text="@string/engine"
         android:textColor="@color/subtitle"
-        android:textSize="12sp"
+        android:textSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
         android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@+id/engine_bar"
         app:layout_constraintStart_toStartOf="@+id/engine_bar" />
@@ -288,8 +268,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textSize="@dimen/bottom_sheet_horizontal_progress_text_size"
         app:layout_constraintStart_toStartOf="@+id/engine_bar"
         app:layout_constraintTop_toTopOf="@+id/engine_bar"
         tools:text="1158" />
