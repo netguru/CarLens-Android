@@ -84,9 +84,6 @@
         android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
         android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
         android:paddingBottom="@dimen/margin_xsmall"
-        app:backCircleColor="@color/light_gray"
-        app:gradientEnd="@color/orange"
-        app:gradientStart="@color/pink"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
         app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
@@ -136,9 +133,6 @@
         android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
         android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
         android:paddingBottom="@dimen/margin_xsmall"
-        app:backCircleColor="@color/light_gray"
-        app:gradientEnd="@color/orange"
-        app:gradientStart="@color/pink"
         app:layout_constraintEnd_toStartOf="@+id/right_margin"
         app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
 
