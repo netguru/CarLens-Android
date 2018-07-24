@@ -7,7 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import co.netguru.android.carrecognition.R
-import kotlinx.android.synthetic.main.horizontal_progress_view.view.*
+import kotlinx.android.synthetic.main.circle_progress_view.view.*
 
 class CircleProgressView : FrameLayout {
     private val view = LayoutInflater.from(context).inflate(R.layout.circle_progress_view, this)
@@ -46,7 +46,7 @@ class CircleProgressView : FrameLayout {
         typedArray.recycle()
 
         view.label.text = label
-        (view.value.layoutParams as MarginLayoutParams).bottomMargin = labelBottomMargin.toInt()
+        (view.label.layoutParams as MarginLayoutParams).bottomMargin = labelBottomMargin.toInt()
 
         view.value.setTextSize(TypedValue.COMPLEX_UNIT_PX, valueTextSize)
         (view.value.layoutParams as MarginLayoutParams).bottomMargin = valueBottomMargin.toInt()

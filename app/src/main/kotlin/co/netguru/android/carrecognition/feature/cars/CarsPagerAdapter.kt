@@ -74,11 +74,8 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         view.car_logo.setImageResource(view.context.getDrawableIdentifier(
                 car.brand_logo_image_locked))
 
-        view.top_speed_bar.progress = 0f
-        view.top_speed_value.setAsUnseen()
-
-        view.zero_to_sixty_bar.progress = 0f
-        view.zero_to_sixty_value.setAsUnseen()
+        view.top_speed_view.setAsUnseen()
+        view.zero_to_sixty_view.setAsUnseen()
 
         view.description.setTextAppearance(R.style.SkeletonTextView)
 
@@ -98,21 +95,21 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         createAnimator(position, car.stars / MAX_STARS) { view.rating_bar.progress = it }
 
         createAnimator(position, car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
-            view.top_speed_bar.progress = it
+            view.top_speed_view.setProgress(it)
         }
 
         createAnimator(position, car.speed_mph) {
-            view.top_speed_value.text = view.context.getString(R.string.top_speed_value, it)
+            view.top_speed_view.setValue(R.string.top_speed_value, it)
         }
 
         val zeroToSixtyProgressValue =
                 1 - car.acceleration_mph / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
         createAnimator(position, zeroToSixtyProgressValue.toFloat()) {
-            view.zero_to_sixty_bar.progress = it
+            view.zero_to_sixty_view.setProgress(it)
         }
 
         createAnimator(position, car.acceleration_mph.toInt()) {
-            view.zero_to_sixty_value.text = view.context.getString(R.string.zero_to_sixty_value, it)
+            view.zero_to_sixty_view.setValue(R.string.zero_to_sixty_value, it)
         }
 
         createAnimator(position, car.power.toFloat() / Car.HORSEPOWER_MAX) {
