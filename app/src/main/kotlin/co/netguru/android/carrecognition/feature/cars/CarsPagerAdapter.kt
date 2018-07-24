@@ -55,8 +55,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
     private fun showDetails(view: View, car: Cars, position: Int) {
         view.car_model.text = car.model
-        view.power_view.setLabel(R.string.power)
-        view.engine_view.setLabel(R.string.engine)
 
         if ((view.parent as View).height > SMALL_SCREEN) {
             view.description.visibility = View.VISIBLE

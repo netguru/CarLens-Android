@@ -7,7 +7,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bar"
         android:layout_width="0dp"
-        android:layout_height="@dimen/car_details_progress_height"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="false"
@@ -21,7 +21,6 @@
         android:fontFamily="@font/gligoth"
         android:textAllCaps="true"
         android:textColor="@color/subtitle"
-        android:textSize="@dimen/car_details_progress_label_text_size"
         app:layout_constraintBottom_toTopOf="@+id/value"
         app:layout_constraintStart_toStartOf="@+id/value" />
 
@@ -30,9 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/gligoth"
-        android:letterSpacing="@dimen/car_details_label_text_spacing"
         android:textColor="@color/black"
-        android:textSize="@dimen/car_details_progress_value_text_size"
         app:layout_constraintBottom_toBottomOf="@+id/bar"
         app:layout_constraintTop_toTopOf="@+id/bar" />
 </android.support.constraint.ConstraintLayout>

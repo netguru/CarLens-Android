@@ -205,7 +205,6 @@
         app:layout_constraintStart_toEndOf="@+id/carListButton"
         app:layout_constraintTop_toBottomOf="@+id/power_bar" />
 
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/power_bar"
         android:layout_width="@dimen/bottom_sheet_horizontal_progress_width"
