@@ -198,19 +198,19 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.power.toFloat() / Car.HORSEPOWER_MAX) {
-            power_bar.progress = it
+            power_view.setProgress(it)
         }
 
         createAnimator(car.power) {
-            power_value.text = getString(R.string.horsePowerValue, it)
+            power_view.setValue(R.string.horsePowerValue, it)
         }
 
         createAnimator(car.engine.toFloat() / Car.ENGINE_MAX) {
-            engine_bar.progress = it
+            engine_view.setProgress(it)
         }
 
         createAnimator(car.engine) {
-            engine_value.text = getString(R.string.engineValue, it)
+            engine_view.setValue(R.string.engineValue, it)
         }
 
         googleButton.setOnClickListener {

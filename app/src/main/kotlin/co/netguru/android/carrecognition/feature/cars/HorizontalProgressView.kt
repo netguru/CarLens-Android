@@ -41,6 +41,7 @@ class HorizontalProgressView : FrameLayout {
         val valueTextSize = typedArray.getDimension(R.styleable.HorizontalProgress_valueTextSize, context.resources.getDimension(R.dimen.car_details_progress_value_text_size))
         val progressHeight = typedArray.getDimension(R.styleable.HorizontalProgress_progressHeight, context.resources.getDimension(R.dimen.car_details_progress_height))
         val progressWidth = typedArray.getDimension(R.styleable.HorizontalProgress_progressWidth, 0f)
+        val progressMargin = typedArray.getDimension(R.styleable.HorizontalProgress_progressMargin, 0f)
         typedArray.recycle()
 
         view.label.setTextSize(TypedValue.COMPLEX_UNIT_PX, labelTextSize)
@@ -51,6 +52,9 @@ class HorizontalProgressView : FrameLayout {
         view.bar.layoutParams.height = progressHeight.toInt()
 
         view.bar.layoutParams.width = progressWidth.toInt()
+
+        (view.bar.layoutParams as MarginLayoutParams).topMargin = progressMargin.toInt()
+        (view.value.layoutParams as MarginLayoutParams).topMargin = progressMargin.toInt()
     }
 
     private val view = LayoutInflater.from(context).inflate(R.layout.horizontal_progress_view, this)

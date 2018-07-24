@@ -16,6 +16,7 @@
         <attr name="valueTextSize" format="dimension" />
         <attr name="progressHeight" format="dimension" />
         <attr name="progressWidth" format="dimension" />
+        <attr name="progressMargin" format="dimension" />
         <attr name="label" format="string" />
     </declare-styleable>
 </resources>
