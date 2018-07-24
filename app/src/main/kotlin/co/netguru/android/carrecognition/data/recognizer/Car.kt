@@ -5,7 +5,7 @@ enum class Car(
 ) {
 
     OTHER_CAR("OtherCar"),
-    NOT_CAR("NotCar"),
+    NOT_A_CAR("NotCar"),
     FORD_FIESTA("FordFiesta"),
     HONDA_CIVIC("HondaCivic"),
     NISSAN_QASHQAI("NissanQashqai"),
