@@ -6,10 +6,8 @@ import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.data.db.AppDatabase
 import dagger.Module
 import dagger.Provides
-import org.tensorflow.lite.Interpreter
+import org.tensorflow.contrib.android.TensorFlowInferenceInterface
 import java.io.BufferedReader
-import java.io.FileInputStream
-import java.nio.channels.FileChannel
 import javax.inject.Named
 
 
@@ -17,8 +15,8 @@ import javax.inject.Named
 class ApplicationModule {
 
     companion object {
-        const val MODEL_PATH = "converted.tflite"
-        const val LABELS_PATH = "labels.txt"
+        const val MODEL_PATH = "cars_model.pb"
+        const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"
         const val DATABASE_NAME = "cars.db"
     }
@@ -33,13 +31,8 @@ class ApplicationModule {
 
     @Provides
     @AppScope
-    fun provideTensorFlow(context: Context): Interpreter {
-        val fileDescriptor = context.assets.openFd(MODEL_PATH)
-        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        return Interpreter(fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength))
+    fun provideTensorFlow(context: Context): TensorFlowInferenceInterface {
+        return TensorFlowInferenceInterface(context.assets, MODEL_PATH)
     }
 
     @Provides

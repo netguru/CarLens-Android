@@ -10,7 +10,7 @@
     <string name="error_device_not_compatible">This device does not support AR</string>
     <string name="error_failed_to_create_session">Failed to create AR session</string>
     <string name="top_speed">top speed</string>
-    <string name="zero_to_sixty_label">0 to 60 MPS</string>
+    <string name="zero_to_sixty_label">0 to 60 MPH</string>
     <string name="zero_to_sixty_value">%d sec</string>
     <string name="top_speed_value">%d mph</string>
     <string name="maker_model_template">%1$s %2$s</string>
@@ -34,6 +34,7 @@
     <string name="power">power</string>
     <string name="horsePowerValue">%d hp</string>
     <string name="engineValue">%d cc</string>
+    <string name="questionMark">\?</string>
 
     <!--recognition indicator labels: -->
     <string name="recognition_indicator_car_out_of_base">Car has been detected but does not belong to our data base</string>

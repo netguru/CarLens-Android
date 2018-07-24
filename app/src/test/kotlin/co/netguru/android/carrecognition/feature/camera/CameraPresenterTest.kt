@@ -209,7 +209,7 @@ class CameraPresenterTest {
 
     @Test
     fun `Should show proper label on not car`() {
-        generateRecognitions(Recognition(Car.NOT_CAR, 1f))
+        generateRecognitions(Recognition(Car.NOT_A_CAR, 1f))
         verify(view).updateViewFinder(0f)
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
 
@@ -256,8 +256,8 @@ class CameraPresenterTest {
             on { acquireFrame() } doReturn frame
         }
 
-        //we need 30 frames to start showing data
-        for (i in 0..29) {
+        //we need 5 frames to start showing data
+        for (i in 0..4) {
             presenter.frameUpdated()
         }
     }

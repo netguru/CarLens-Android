@@ -11,7 +11,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
-import co.netguru.android.carrecognition.common.extensions.getDisplayMetrics
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
@@ -59,7 +58,8 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     private fun showDetails(view: View, car: Cars, position: Int) {
         view.car_model.text = car.model
 
-        if (canShowDescription(view.context as Activity)) {
+        if ((view.parent as View).height > SMALL_SCREEN) {
+            view.description.visibility = View.VISIBLE
             view.description.text = car.description
         } else {
             view.description.visibility = View.GONE
@@ -77,21 +77,23 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
                 car.brand_logo_image_locked))
 
         view.top_speed_bar.progress = 0f
-        view.top_speed_value.setAsUnseen(Car.TOP_SPEED_MAX, R.string.top_speed_value)
+        view.top_speed_value.setAsUnseen()
 
         view.zero_to_sixty_bar.progress = 0f
-        view.zero_to_sixty_value.setAsUnseen(Car.ZERO_TO_SIXTY_MAX.toInt(), R.string.zero_to_sixty_value)
+        view.zero_to_sixty_value.setAsUnseen()
+
+        view.description.setTextAppearance(R.style.SkeletonTextView)
 
         view.power_bar.progress = 0f
-        view.power_value.setAsUnseen(Car.HORSEPOWER_MAX, R.string.horsePowerValue)
+        view.power_value.setAsUnseen()
 
         view.engine_bar.progress = 0f
-        view.engine_value.setAsUnseen(Car.ENGINE_MAX, R.string.engineValue)
+        view.engine_value.setAsUnseen()
     }
 
-    private fun TextView.setAsUnseen(maxValue: Int, @StringRes stringRes: Int) {
-        text = context.getString(stringRes, maxValue)
-        setTextColor(context.getColor(R.color.car_list_model_text))
+    private fun TextView.setAsUnseen() {
+        setText(R.string.questionMark)
+        setTextColor(context.getColor(R.color.car_list_item_background))
     }
 
     private fun showSeenCarDetails(view: View, car: Cars, position: Int) {
@@ -135,10 +137,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
     }
 
-    private fun canShowDescription(activity: Activity) = activity.getDisplayMetrics().let {
-        it.heightPixels.toFloat() / it.widthPixels.toFloat() > SMALL_RATIO //screen ratio higher ten SMALL_RATIO
-    }
-
     private fun <T> createAnimator(position: Int, topValue: T, onUpdate: (T) -> Unit) {
         animatorMap[position]?.add(
                 AnimationUtils.createAnimator(topValue, onUpdate) {
@@ -149,6 +147,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
     companion object {
         private const val MAX_STARS = 5f
-        private const val SMALL_RATIO = 16f / 9f
+        private const val SMALL_SCREEN = 1550
     }
 }
