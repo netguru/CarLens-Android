@@ -197,75 +197,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/googleButton"
         app:layout_constraintStart_toEndOf="@+id/carListButton"
-        app:layout_constraintTop_toBottomOf="@+id/power_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/power_view" />
 
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/power_bar"
-        android:layout_width="@dimen/bottom_sheet_horizontal_progress_width"
-        android:layout_height="@dimen/bottom_sheet_horizontal_progress_height"
-        android:layout_marginTop="@dimen/margin_xxlarge"
-        app:layout_constraintStart_toStartOf="@id/left_margin"
+    <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
+        android:id="@+id/engine_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
         app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
-        app:lottie_autoPlay="false"
-        app:lottie_fileName="progress-bar-linear.json"
-        app:lottie_loop="false" />
+        app:layout_constraintStart_toStartOf="@id/left_margin"
+        app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
+        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:label="@string/engine" />
 
-    <TextView
-        android:id="@+id/power_label"
-        android:layout_width="wrap_content"
+    <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
+        android:id="@+id/power_view"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/power"
-        android:textAllCaps="true"
-        android:textColor="@color/subtitle"
-        android:textSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/power_bar"
-        app:layout_constraintStart_toStartOf="@+id/left_margin" />
-
-    <TextView
-        android:id="@+id/power_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gligoth"
-        android:textColor="@color/black"
-        android:textSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:layout_constraintStart_toStartOf="@+id/power_bar"
-        app:layout_constraintTop_toTopOf="@+id/power_bar"
-        tools:text="115 hp" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/engine_bar"
-        android:layout_width="@dimen/bottom_sheet_horizontal_progress_width"
-        android:layout_height="@dimen/bottom_sheet_horizontal_progress_height"
-        app:layout_constraintEnd_toStartOf="@+id/right_margin"
-        app:layout_constraintTop_toTopOf="@+id/power_bar"
-        app:lottie_autoPlay="false"
-        app:lottie_fileName="progress-bar-linear.json"
-        app:lottie_loop="false" />
-
-    <TextView
-        android:id="@+id/engine_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/engine"
-        android:textColor="@color/subtitle"
-        android:textSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toTopOf="@+id/engine_bar"
-        app:layout_constraintStart_toStartOf="@+id/engine_bar" />
-
-    <TextView
-        android:id="@+id/engine_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/gligoth"
-        android:textColor="@color/black"
-        android:textSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:layout_constraintStart_toStartOf="@+id/engine_bar"
-        app:layout_constraintTop_toTopOf="@+id/engine_bar"
-        tools:text="1158" />
+        android:layout_marginTop="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_bar"
+        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
+        app:layout_constraintEnd_toEndOf="@+id/right_margin"
+        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:label="@string/power" />
 
 
 </android.support.constraint.ConstraintLayout>

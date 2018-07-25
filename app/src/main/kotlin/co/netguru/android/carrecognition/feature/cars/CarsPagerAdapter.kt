@@ -1,8 +1,6 @@
 package co.netguru.android.carrecognition.feature.cars
 
 import android.animation.Animator
-import android.app.Activity
-import android.support.annotation.StringRes
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
@@ -84,11 +82,8 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
         view.description.setTextAppearance(R.style.SkeletonTextView)
 
-        view.power_bar.progress = 0f
-        view.power_value.setAsUnseen()
-
-        view.engine_bar.progress = 0f
-        view.engine_value.setAsUnseen()
+        view.power_view.setAsUnseen()
+        view.engine_view.setAsUnseen()
     }
 
     private fun TextView.setAsUnseen() {
@@ -121,19 +116,19 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
 
         createAnimator(position, car.power.toFloat() / Car.HORSEPOWER_MAX) {
-            view.power_bar.progress = it
+            view.power_view.setProgress(it)
         }
 
         createAnimator(position, car.power) {
-            view.power_value.text = view.context.getString(R.string.horsePowerValue, it)
+            view.power_view.setValue(R.string.horsePowerValue, it)
         }
 
         createAnimator(position, car.engine.toFloat() / Car.ENGINE_MAX) {
-            view.engine_bar.progress = it
+            view.engine_view.setProgress(it)
         }
 
         createAnimator(position, car.engine) {
-            view.engine_value.text = view.context.getString(R.string.engineValue, it)
+            view.engine_view.setValue(R.string.engineValue, it)
         }
     }
 

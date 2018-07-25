@@ -11,4 +11,12 @@
     <declare-styleable name="RecognitionTextSwitcher">
         <attr name="initText" format="reference" />
     </declare-styleable>
+    <declare-styleable name="HorizontalProgress">
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="valueTextSize" format="dimension" />
+        <attr name="progressHeight" format="dimension" />
+        <attr name="progressWidth" format="dimension" />
+        <attr name="progressMargin" format="dimension" />
+        <attr name="label" format="string" />
+    </declare-styleable>
 </resources>
