@@ -163,11 +163,11 @@
         app:layout_constraintTop_toBottomOf="@+id/top_speed_view"
         app:layout_constraintStart_toStartOf="@id/left_margin"
         app:layout_constraintEnd_toEndOf="@+id/top_speed_view"
-        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
-        app:label="@string/engine" />
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/engine" />
 
     <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
         android:id="@+id/power_view"
@@ -177,11 +177,11 @@
         app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_view"
         app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_view"
         app:layout_constraintEnd_toEndOf="@+id/right_margin"
-        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
-        app:label="@string/power" />
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/power" />
 
 
 </android.support.constraint.ConstraintLayout>

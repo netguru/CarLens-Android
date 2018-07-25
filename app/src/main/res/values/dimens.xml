@@ -26,7 +26,7 @@
     <dimen name="camera_button_size">90dp</dimen>
     <dimen name="page_overlap_margin">-40dp</dimen>
     <dimen name="progress_line_width">4dp</dimen>
-    
+
     <!-- camera_list_item_view -->
     <dimen name="car_model_letter_spacing">-0.0127</dimen>
     <dimen name="car_model_text_size">100sp</dimen>
