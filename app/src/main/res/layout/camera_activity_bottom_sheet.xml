@@ -79,82 +79,37 @@
         app:layout_constraintTop_toTopOf="@+id/top_margin"
         tools:src="@drawable/hondacivic" />
 
-    <co.netguru.android.carrecognition.feature.camera.GradientProgress
-        android:id="@+id/top_speed_bar"
-        android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
-        android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
-        android:paddingBottom="@dimen/margin_xsmall"
+    <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+        android:id="@+id/top_speed_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/left_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
-
-    <TextView
-        android:id="@+id/top_speed_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/top_speed"
-        android:textAllCaps="true"
-        android:textColor="@color/subtitle"
-        app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
-        app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
-        app:layout_constraintStart_toStartOf="@+id/top_speed_bar" />
-
-    <TextView
-        android:id="@+id/top_speed_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/top_speed_value"
-        android:textColor="@color/black"
-        android:textSize="@dimen/bottom_sheet_gradient_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
-        app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
-        app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
-        app:layout_constraintTop_toTopOf="@+id/top_speed_bar" />
-
-    <TextView
-        android:id="@+id/zero_to_sixty_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/zero_to_sixty_value"
-        android:textColor="@color/black"
-        android:textSize="@dimen/bottom_sheet_gradient_text_size"
-        app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintTop_toTopOf="@+id/zero_to_sixty_bar" />
-
-    <co.netguru.android.carrecognition.feature.camera.GradientProgress
-        android:id="@+id/zero_to_sixty_bar"
-        android:layout_width="@dimen/bottom_sheet_gradient_progress_size"
-        android:layout_height="@dimen/bottom_sheet_gradient_progress_size"
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
         android:paddingBottom="@dimen/margin_xsmall"
-        app:layout_constraintEnd_toStartOf="@+id/right_margin"
-        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline" />
+        app:circleProgressSize="@dimen/bottom_sheet_gradient_progress_size"
+        app:circleValueTextSize="@dimen/bottom_sheet_gradient_text_size"
+        app:circleValueBottomMargin="@dimen/margin_small"
+        app:circleLabelBottomMargin="@dimen/margin_medium"
+        app:circleLabel="@string/top_speed" />
 
-    <TextView
-        android:id="@+id/zero_to_sixty_label"
+    <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+        android:id="@+id/zero_to_sixty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:fontFamily="@font/gligoth"
-        android:text="@string/zero_to_sixty_label"
-        android:textAllCaps="true"
-        android:textColor="@color/subtitle"
-        app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar" />
+        app:layout_constraintEnd_toStartOf="@+id/right_margin"
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
+        android:paddingBottom="@dimen/margin_xsmall"
+        app:circleProgressSize="@dimen/bottom_sheet_gradient_progress_size"
+        app:circleValueTextSize="@dimen/bottom_sheet_gradient_text_size"
+        app:circleValueBottomMargin="@dimen/margin_small"
+        app:circleLabelBottomMargin="@dimen/margin_medium"
+        app:circleLabel="@string/zero_to_sixty_label" />
 
     <Button
         android:id="@+id/googleButton"
         android:layout_width="@dimen/bottom_sheet_white_button_size"
         android:layout_height="@dimen/bottom_sheet_white_button_size"
         android:layout_marginEnd="@dimen/bottom_sheet_white_button_horizontal_margin"
-        android:layout_marginBottom="@dimen/margin_small"
         android:background="@drawable/google_button_background"
         android:contentDescription="@null"
         android:elevation="@dimen/bottom_sheet_white_button_elevation"
@@ -204,28 +159,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
+        android:layout_marginBottom="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@+id/top_speed_view"
         app:layout_constraintStart_toStartOf="@id/left_margin"
-        app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
-        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
-        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:label="@string/engine" />
+        app:layout_constraintEnd_toEndOf="@+id/top_speed_view"
+        app:layout_constraintBottom_toTopOf="@+id/scanButton"
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/engine" />
 
     <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
         android:id="@+id/power_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
-        app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_bar"
-        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
+        android:layout_marginBottom="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_view"
+        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_view"
         app:layout_constraintEnd_toEndOf="@+id/right_margin"
-        app:valueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:labelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
-        app:progressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
-        app:progressHeight="@dimen/bottom_sheet_horizontal_progress_height"
-        app:label="@string/power" />
+        app:layout_constraintBottom_toTopOf="@+id/scanButton"
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/power" />
 
 
 </android.support.constraint.ConstraintLayout>

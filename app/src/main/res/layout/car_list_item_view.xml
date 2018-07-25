@@ -52,83 +52,36 @@
                 android:paddingStart="@dimen/margin_xlarge"
                 android:paddingTop="@dimen/margin_xlarge">
 
-                <co.netguru.android.carrecognition.feature.camera.GradientProgress
-                    android:id="@+id/top_speed_bar"
-                    android:layout_width="@dimen/card_gradient_progress_size"
-                    android:layout_height="@dimen/card_gradient_progress_size"
-                    android:layout_margin="@dimen/margin_large"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+                    android:id="@+id/top_speed_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_xlarge"
+                    android:layout_marginBottom="@dimen/margin_xlarge"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/top_speed_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:fontFamily="@font/gligoth"
-                    android:letterSpacing="@dimen/car_details_label_text_spacing"
-                    android:text="@string/top_speed"
-                    android:textAllCaps="true"
-                    android:textColor="@color/subtitle"
-                    app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
-                    app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
-                    app:layout_constraintStart_toStartOf="@+id/top_speed_bar" />
-
-                <TextView
-                    android:id="@+id/top_speed_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:fontFamily="@font/gligoth"
-                    android:letterSpacing="@dimen/car_details_label_text_spacing"
-                    android:text="@string/top_speed_value"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/car_progress_value_text_size"
-                    app:layout_constraintBottom_toBottomOf="@+id/top_speed_bar"
-                    app:layout_constraintEnd_toEndOf="@+id/top_speed_bar"
-                    app:layout_constraintStart_toStartOf="@+id/top_speed_bar"
-                    app:layout_constraintTop_toTopOf="@+id/top_speed_bar" />
-
-                <TextView
-                    android:id="@+id/zero_to_sixty_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:fontFamily="@font/gligoth"
-                    android:letterSpacing="@dimen/car_details_label_text_spacing"
-                    android:text="@string/zero_to_sixty_value"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/car_progress_value_text_size"
-                    app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintTop_toTopOf="@+id/zero_to_sixty_bar" />
-
-                <co.netguru.android.carrecognition.feature.camera.GradientProgress
-                    android:id="@+id/zero_to_sixty_bar"
-                    android:layout_width="@dimen/card_gradient_progress_size"
-                    android:layout_height="@dimen/card_gradient_progress_size"
-                    android:layout_margin="@dimen/margin_large"
+                    app:layout_constraintRight_toLeftOf="@+id/zero_to_sixty_view"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintLeft_toRightOf="@+id/top_speed_bar"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:circleProgressSize="@dimen/card_gradient_progress_size"
+                    app:circleValueTextSize="@dimen/car_progress_value_text_size"
+                    app:circleValueBottomMargin="@dimen/margin_small"
+                    app:circleLabelBottomMargin="@dimen/margin_small"
+                    app:circleLabel="@string/top_speed" />
 
-                <TextView
-                    android:id="@+id/zero_to_sixty_label"
-                    android:layout_width="wrap_content"
+                <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+                    android:id="@+id/zero_to_sixty_view"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:fontFamily="@font/gligoth"
-                    android:letterSpacing="@dimen/car_details_label_text_spacing"
-                    android:text="@string/zero_to_sixty_label"
-                    android:textAllCaps="true"
-                    android:textColor="@color/subtitle"
-                    app:layout_constraintBottom_toBottomOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintEnd_toEndOf="@+id/zero_to_sixty_bar"
-                    app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_bar" />
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/margin_xlarge"
+                    android:layout_marginBottom="@dimen/margin_xlarge"
+                    app:layout_constraintLeft_toRightOf="@+id/top_speed_view"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:circleProgressSize="@dimen/card_gradient_progress_size"
+                    app:circleValueTextSize="@dimen/car_progress_value_text_size"
+                    app:circleValueBottomMargin="@dimen/margin_small"
+                    app:circleLabelBottomMargin="@dimen/margin_small"
+                    app:circleLabel="@string/zero_to_sixty_label" />
 
                 <View
                     android:id="@+id/star_div_left"
@@ -150,7 +103,7 @@
                     android:layout_marginTop="@dimen/margin_small"
                     app:layout_constraintLeft_toRightOf="@+id/star_div_left"
                     app:layout_constraintRight_toLeftOf="@+id/star_div_right"
-                    app:layout_constraintTop_toBottomOf="@+id/top_speed_bar"
+                    app:layout_constraintTop_toBottomOf="@+id/top_speed_view"
                     app:lottie_autoPlay="false"
                     app:lottie_fileName="rating_bar.json"
                     app:lottie_loop="false" />
@@ -195,11 +148,11 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@id/middle_guideline"
                     app:layout_constraintTop_toBottomOf="@id/description"
-                    app:label="@string/power"
-                    app:valueTextSize="@dimen/car_details_progress_value_text_size"
-                    app:labelTextSize="@dimen/car_details_progress_label_text_size"
-                    app:progressHeight="@dimen/car_details_progress_height"
-                    app:progressMargin="@dimen/car_details_progress_value_text_size" />
+                    app:horizontalLabel="@string/power"
+                    app:horizontalValueTextSize="@dimen/car_details_progress_value_text_size"
+                    app:horizontalLabelTextSize="@dimen/car_details_progress_label_text_size"
+                    app:horizontalProgressHeight="@dimen/car_details_progress_height"
+                    app:horizontalProgressMargin="@dimen/car_details_progress_value_text_size" />
 
                 <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
                     android:id="@+id/engine_view"
@@ -210,11 +163,11 @@
                     app:layout_constraintRight_toRightOf="@+id/middle_guideline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/description"
-                    app:label="@string/engine"
-                    app:valueTextSize="@dimen/car_details_progress_value_text_size"
-                    app:labelTextSize="@dimen/car_details_progress_label_text_size"
-                    app:progressHeight="@dimen/car_details_progress_height"
-                    app:progressMargin="@dimen/car_details_progress_value_text_size" />
+                    app:horizontalLabel="@string/engine"
+                    app:horizontalValueTextSize="@dimen/car_details_progress_value_text_size"
+                    app:horizontalLabelTextSize="@dimen/car_details_progress_label_text_size"
+                    app:horizontalProgressHeight="@dimen/car_details_progress_height"
+                    app:horizontalProgressMargin="@dimen/car_details_progress_value_text_size" />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
 

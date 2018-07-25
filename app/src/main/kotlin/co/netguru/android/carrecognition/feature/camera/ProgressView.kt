@@ -75,25 +75,25 @@ class GradientProgress : View {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GradientProgress)
         gradientStart =
                 typedArray.getColor(
-                    R.styleable.GradientProgress_gradientStart,
-                    context.getColorCompat(R.color.pink)
+                        R.styleable.GradientProgress_gradientStart,
+                        context.getColorCompat(R.color.pink)
                 )
         gradientEnd =
                 typedArray.getColor(
-                    R.styleable.GradientProgress_gradientEnd,
-                    context.getColorCompat(R.color.orange)
+                        R.styleable.GradientProgress_gradientEnd,
+                        context.getColorCompat(R.color.orange)
                 )
         backCircleColor =
                 typedArray.getColor(
-                    R.styleable.GradientProgress_backCircleColor,
-                    context.getColorCompat(R.color.light_gray)
+                        R.styleable.GradientProgress_backCircleColor,
+                        context.getColorCompat(R.color.light_gray)
                 )
         minAngle = typedArray.getFloat(R.styleable.GradientProgress_minAngle, DEFAULT_MIN_ANGLE)
         maxSweep = typedArray.getFloat(R.styleable.GradientProgress_maxSweep, DEFAULT_MAX_SWEEP)
 
         paintStrokeWidth = typedArray.getDimension(
-            R.styleable.GradientProgress_lineWidth,
-            context.dimen(R.dimen.progress_line_width).toFloat()
+                R.styleable.GradientProgress_lineWidth,
+                context.dimen(R.dimen.progress_line_width).toFloat()
         )
         typedArray.recycle()
 
