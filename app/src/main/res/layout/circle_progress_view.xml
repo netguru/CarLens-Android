@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <co.netguru.android.carrecognition.feature.camera.GradientProgress
+        android:id="@+id/bar"
+        app:backCircleColor="@color/light_gray"
+        app:gradientEnd="@color/orange"
+        app:gradientStart="@color/pink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/label"
+        app:layout_constraintBottom_toBottomOf="@+id/bar"
+        app:layout_constraintEnd_toEndOf="@+id/bar"
+        app:layout_constraintStart_toStartOf="@+id/bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gligoth"
+        android:text="@string/top_speed"
+        android:textAllCaps="true"
+        android:textColor="@color/subtitle" />
+
+    <TextView
+        android:id="@+id/value"
+        app:layout_constraintBottom_toBottomOf="@+id/bar"
+        app:layout_constraintEnd_toEndOf="@+id/bar"
+        app:layout_constraintStart_toStartOf="@+id/bar"
+        app:layout_constraintTop_toTopOf="@+id/bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gligoth"
+        android:text="@string/top_speed_value"
+        android:textColor="@color/black" />
+
+</android.support.constraint.ConstraintLayout>

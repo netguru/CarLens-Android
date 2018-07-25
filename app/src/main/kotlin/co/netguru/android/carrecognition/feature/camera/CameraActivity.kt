@@ -180,21 +180,21 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         miniImage.setImageResource(getDrawableIdentifier(car.image))
 
         createAnimator(car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
-            top_speed_bar.progress = it
+            top_speed_view.setProgress(it)
         }
 
         createAnimator(car.speed_mph) {
-            top_speed_value.text = getString(R.string.top_speed_value, it)
+            top_speed_view.setValue(R.string.top_speed_value, it)
         }
 
         val zeroToSixtyProgressValue =
             1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
         createAnimator(zeroToSixtyProgressValue) {
-            zero_to_sixty_bar.progress = it
+            zero_to_sixty_view.setProgress(it)
         }
 
         createAnimator(car.acceleration_mph.toInt()) {
-            zero_to_sixty_value.text = getString(R.string.zero_to_sixty_value, it)
+            zero_to_sixty_view.setValue(R.string.zero_to_sixty_value, it)
         }
 
         createAnimator(car.power.toFloat() / Car.HORSEPOWER_MAX) {

@@ -7,11 +7,10 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import co.netguru.android.carrecognition.R
-import kotlinx.android.synthetic.main.horizontal_progress_view.view.*
+import kotlinx.android.synthetic.main.circle_progress_view.view.*
 
-class HorizontalProgressView : FrameLayout {
-
-    private val view = LayoutInflater.from(context).inflate(R.layout.horizontal_progress_view, this)
+class CircleProgressView : FrameLayout {
+    private val view = LayoutInflater.from(context).inflate(R.layout.circle_progress_view, this)
 
     constructor(context: Context) : super(context)
 
@@ -37,28 +36,28 @@ class HorizontalProgressView : FrameLayout {
     }
 
     private fun applyAttributes(context: Context, attrs: AttributeSet) {
-        clipChildren = false
-        clipToPadding = false
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.HorizontalProgress)
-        val labelTextSize = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalLabelTextSize, context.resources.getDimension(R.dimen.car_details_progress_label_text_size))
-        val label = typedArray.getString(R.styleable.HorizontalProgress_horizontalLabel)
-        val valueTextSize = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalValueTextSize, context.resources.getDimension(R.dimen.car_details_progress_value_text_size))
-        val progressHeight = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalProgressHeight, context.resources.getDimension(R.dimen.car_details_progress_height))
-        val progressWidth = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalProgressWidth, 0f)
-        val progressMargin = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalProgressMargin, 0f)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleProgress)
+        val label = typedArray.getString(R.styleable.CircleProgress_circleLabel)
+        val valueTextSize = typedArray.getDimension(R.styleable.CircleProgress_circleValueTextSize, context.resources.getDimension(R.dimen.car_details_progress_value_text_size))
+        val progressSize = typedArray.getDimension(R.styleable.CircleProgress_circleProgressSize, context.resources.getDimension(R.dimen.bottom_sheet_gradient_progress_size))
+        val valueBottomMargin = typedArray.getDimension(R.styleable.CircleProgress_circleValueBottomMargin, 0f)
+        val labelBottomMargin = typedArray.getDimension(R.styleable.CircleProgress_circleLabelBottomMargin, 0f)
+        val progressBottomPadding = typedArray.getDimension(R.styleable.CircleProgress_circleProgressBottomPadding, 0f)
         typedArray.recycle()
 
-        view.label.setTextSize(TypedValue.COMPLEX_UNIT_PX, labelTextSize)
         view.label.text = label
+        (view.label.layoutParams as MarginLayoutParams).bottomMargin = labelBottomMargin.toInt()
 
         view.value.setTextSize(TypedValue.COMPLEX_UNIT_PX, valueTextSize)
+        (view.value.layoutParams as MarginLayoutParams).bottomMargin = valueBottomMargin.toInt()
 
-        view.bar.layoutParams.height = progressHeight.toInt()
-
-        view.bar.layoutParams.width = progressWidth.toInt()
-
-        (view.value.layoutParams as MarginLayoutParams).bottomMargin = progressMargin.toInt()
+        view.bar.layoutParams.height = progressSize.toInt()
+        view.bar.layoutParams.width = progressSize.toInt()
+        with(view.bar) {
+            setPadding(paddingLeft, paddingTop, paddingRight, progressBottomPadding.toInt())
+        }
     }
+
 
     fun setAsUnseen() {
         view.value.setText(R.string.questionMark)

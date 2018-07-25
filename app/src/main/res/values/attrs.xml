@@ -12,11 +12,19 @@
         <attr name="initText" format="reference" />
     </declare-styleable>
     <declare-styleable name="HorizontalProgress">
-        <attr name="labelTextSize" format="dimension" />
-        <attr name="valueTextSize" format="dimension" />
-        <attr name="progressHeight" format="dimension" />
-        <attr name="progressWidth" format="dimension" />
-        <attr name="progressMargin" format="dimension" />
-        <attr name="label" format="string" />
+        <attr name="horizontalLabelTextSize" format="dimension" />
+        <attr name="horizontalValueTextSize" format="dimension" />
+        <attr name="horizontalProgressHeight" format="dimension" />
+        <attr name="horizontalProgressWidth" format="dimension" />
+        <attr name="horizontalProgressMargin" format="dimension" />
+        <attr name="horizontalLabel" format="string" />
+    </declare-styleable>
+    <declare-styleable name="CircleProgress">
+        <attr name="circleValueTextSize" format="dimension" />
+        <attr name="circleProgressSize" format="dimension" />
+        <attr name="circleValueBottomMargin" format="dimension" />
+        <attr name="circleLabelBottomMargin" format="dimension" />
+        <attr name="circleProgressBottomPadding" format="dimension" />
+        <attr name="circleLabel" format="string" />
     </declare-styleable>
 </resources>
