@@ -37,6 +37,8 @@ class HorizontalProgressView : FrameLayout {
     }
 
     private fun applyAttributes(context: Context, attrs: AttributeSet) {
+        clipChildren = false
+        clipToPadding = false
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.HorizontalProgress)
         val labelTextSize = typedArray.getDimension(R.styleable.HorizontalProgress_horizontalLabelTextSize, context.resources.getDimension(R.dimen.car_details_progress_label_text_size))
         val label = typedArray.getString(R.styleable.HorizontalProgress_horizontalLabel)
@@ -55,8 +57,7 @@ class HorizontalProgressView : FrameLayout {
 
         view.bar.layoutParams.width = progressWidth.toInt()
 
-        (view.bar.layoutParams as MarginLayoutParams).topMargin = progressMargin.toInt()
-        (view.value.layoutParams as MarginLayoutParams).topMargin = progressMargin.toInt()
+        (view.value.layoutParams as MarginLayoutParams).bottomMargin = progressMargin.toInt()
     }
 
     fun setAsUnseen() {

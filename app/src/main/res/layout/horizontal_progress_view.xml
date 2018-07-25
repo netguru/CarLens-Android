@@ -12,7 +12,7 @@
         app:lottie_autoPlay="false"
         app:lottie_fileName="progress-bar.json"
         app:lottie_loop="false"
-        android:layout_marginTop="@dimen/margin_small" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/label"
@@ -29,6 +29,5 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gligoth"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/bar"
-        android:layout_marginBottom="@dimen/margin_small" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>
