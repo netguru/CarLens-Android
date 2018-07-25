@@ -13,6 +13,7 @@ import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
 import kotlinx.android.synthetic.main.car_list_item_view.view.*
+import java.util.*
 
 class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
@@ -54,7 +55,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     override fun getCount(): Int = carsList.size
 
     private fun showDetails(view: View, car: Cars, position: Int) {
-        view.zero_to_sixty_view.setLabel(view.context.getString(MetricsUtils.getAccelerationLabel()))
+        view.zero_to_sixty_view.setLabel(view.context.getString(MetricsUtils.getAccelerationLabel(Locale.getDefault())))
         view.car_model.text = car.model
 
         if ((view.parent as View).height > SMALL_SCREEN) {
@@ -95,7 +96,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
 
         createAnimator(position, car.speed_mph) {
-            view.top_speed_view.setValue(MetricsUtils.getConvertedMetric(view.context.resources, it))
+            view.top_speed_view.setValue(MetricsUtils.getConvertedMetric(Locale.getDefault(), view.context.resources, it))
         }
 
         val zeroToSixtyProgressValue =

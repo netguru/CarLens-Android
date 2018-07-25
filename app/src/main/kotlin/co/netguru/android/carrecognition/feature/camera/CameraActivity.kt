@@ -179,14 +179,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         car_model.text = car.model
         car_maker.text = car.brand
         miniImage.setImageResource(getDrawableIdentifier(car.image))
-        zero_to_sixty_view.setLabel(getString(MetricsUtils.getAccelerationLabel()))
+        zero_to_sixty_view.setLabel(getString(MetricsUtils.getAccelerationLabel(Locale.getDefault())))
 
         createAnimator(car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
             top_speed_view.setProgress(it)
         }
 
         createAnimator(car.speed_mph) {
-            top_speed_view.setValue(MetricsUtils.getConvertedMetric(resources, it))
+            top_speed_view.setValue(MetricsUtils.getConvertedMetric(Locale.getDefault(), resources, it))
         }
 
         val zeroToSixtyProgressValue =
