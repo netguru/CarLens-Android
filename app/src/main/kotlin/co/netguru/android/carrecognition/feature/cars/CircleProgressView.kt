@@ -1,7 +1,6 @@
 package co.netguru.android.carrecognition.feature.cars
 
 import android.content.Context
-import android.support.annotation.StringRes
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -69,7 +68,11 @@ class CircleProgressView : FrameLayout {
         view.bar.progress = progress
     }
 
-    fun setValue(@StringRes format: Int, value: Int) {
-        view.value.text = context.getString(format, value)
+    fun setValue(text: String) {
+        view.value.text = text
+    }
+
+    fun setLabel(text: String) {
+        view.label.text = text
     }
 }

@@ -77,8 +77,7 @@
                     app:circleProgressSize="@dimen/card_gradient_progress_size"
                     app:circleValueTextSize="@dimen/car_progress_value_text_size"
                     app:circleValueBottomMargin="@dimen/margin_small"
-                    app:circleLabelBottomMargin="@dimen/margin_small"
-                    app:circleLabel="@string/zero_to_sixty_label" />
+                    app:circleLabelBottomMargin="@dimen/margin_small" />
 
                 <View
                     android:id="@+id/star_div_left"
