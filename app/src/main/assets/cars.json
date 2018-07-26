@@ -1,21 +1,6 @@
 {
   "cars": [
     {
-      "id": "ToyotaCamry",
-      "brand": "Toyota",
-      "model": "Camry",
-      "description": "Sold since 1982, spanning multiple generations. Originally compact in size (narrow-body), later Camry models have grown to fit the mid-size classification.",
-      "stars": 4,
-      "acceleration_mph": 7.6,
-      "speed_mph": 155,
-      "power": 301,
-      "engine": 3500,
-      "brand_logo_image": "Toyota",
-      "brand_logo_image_locked": "Toyota_locked",
-      "image": "ToyotaCamry",
-      "image_locked": "ToyotaCamry_locked"
-    },
-    {
       "id": "HondaCivic",
       "brand": "Honda",
       "model": "Civic",
@@ -61,21 +46,6 @@
       "image_locked": "FordFiesta_locked"
     },
     {
-      "id": "VolkswagenGolf",
-      "brand": "Volkswagen",
-      "model": "Golf",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "stars": 2,
-      "acceleration_mph": 9.6,
-      "speed_mph": 128,
-      "power": 85,
-      "engine": 1000,
-      "brand_logo_image": "Volkswagen",
-      "brand_logo_image_locked": "Volkswagen_locked",
-      "image": "VolkswagenGolf",
-      "image_locked": "VolkswagenGolf_locked"
-    },
-    {
       "id": "NissanQashqai",
       "brand": "Nissan",
       "model": "Qashqai",
@@ -104,21 +74,6 @@
       "brand_logo_image_locked": "Volkswagen_locked",
       "image": "VolkswagenPassat",
       "image_locked": "VolkswagenPassat_locked"
-    },
-    {
-      "id": "VolkswagenTiguan",
-      "brand": "Volkswagen",
-      "model": "Tiguan",
-      "description": "The Volkswagen Tiguan is a compact crossover vehicle (CUV). Introduced in 2007, it uses the PQ35 platform of the Volkswagen Golf.",
-      "stars": 3,
-      "acceleration_mph": 9.2,
-      "speed_mph": 130,
-      "power": 240,
-      "engine": 2000,
-      "brand_logo_image": "Volkswagen",
-      "brand_logo_image_locked": "Volkswagen_locked",
-      "image": "VolkswagenTiguan",
-      "image_locked": "VolkswagenTiguan_locked"
     }
   ]
 }
