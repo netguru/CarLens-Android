@@ -119,6 +119,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         arSceneView.destroy()
     }
 
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED || bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun createPresenter(): CameraContract.Presenter {
         return cameraPresenter
     }
