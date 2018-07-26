@@ -21,6 +21,7 @@ interface CameraContract {
         fun showCouldNotAttachPinError()
         fun showRecognitionUi()
         fun showPermissionUi()
+        fun showExplorationMode()
     }
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)

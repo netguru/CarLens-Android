@@ -13,6 +13,8 @@ import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.common.MetricsUtils
+import co.netguru.android.carrecognition.common.extensions.fadeIn
+import co.netguru.android.carrecognition.common.extensions.fadeOut
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
@@ -88,6 +90,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         scanButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        closeRecognitionModeButtonMain.setOnClickListener {
+            showExplorationMode()
+        }
+
+        scanButtonMain.setOnClickListener {
+            showViewFinder(true)
         }
     }
 
@@ -239,6 +249,12 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
+    override fun showExplorationMode() {
+        frameStreamEnabled(false)
+        showViewFinder(false)
+        scanButtonMain.visibility = View.VISIBLE
+    }
+
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
         AnimationUtils.createAnimator(topValue, onUpdate) {
             duration = 1000
@@ -262,9 +278,19 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun showViewFinder(visible: Boolean) {
-        recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
-        recognitionLabelSwitcher.visibility = if (visible) View.VISIBLE else View.GONE
-        cameraDim.visibility = if (visible) View.VISIBLE else View.GONE
+        if (visible) {
+            frameStreamEnabled(true)
+            cameraDim.fadeIn()
+            recognitionIndicator.fadeIn()
+            recognitionLabelSwitcher.fadeIn()
+            closeRecognitionModeButtonMain.fadeIn()
+        } else {
+            cameraDim.fadeOut()
+            recognitionIndicator.fadeOut()
+            recognitionLabelSwitcher.fadeOut()
+            closeRecognitionModeButtonMain.fadeOut()
+        }
+        scanButtonMain.visibility = View.INVISIBLE
     }
 
     override fun tryAttachPin(randomFieldPercentage: Int) {
