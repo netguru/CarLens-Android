@@ -52,14 +52,14 @@
         android:id="@+id/carListButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="@dimen/car_list_button_size"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
         app:layout_constraintBottom_toBottomOf="@id/scanButtonMain"
         app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@drawable/car_list_button_background_translucent"
-        android:background="@android:color/transparent" />
+        android:background="@color/transparent" />
 
     <Button
         android:id="@+id/scanButtonMain"
@@ -78,14 +78,14 @@
         android:id="@+id/closeRecognitionModeButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
-        android:layout_marginEnd="45dp"
+        android:layout_marginEnd="@dimen/car_list_button_size"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/scanButtonMain"
         app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/close_recognition_button_background_translucent"
-        android:background="@android:color/transparent"
+        android:background="@color/transparent"
         android:alpha="0" />
 
 </android.support.constraint.ConstraintLayout>

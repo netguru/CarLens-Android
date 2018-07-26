@@ -42,7 +42,7 @@ fun View.fadeIn() {
     AnimationUtils.createAnimator(1f, {
         alpha = it
     }) {
-        duration = 300
+        duration = AnimationUtils.DEFAULT_ANIMATION_LENGTH
         interpolator = AccelerateDecelerateInterpolator()
     }.start()
 }
@@ -51,7 +51,7 @@ fun View.fadeOut() {
     AnimationUtils.createAnimator(1f, {
         alpha = 1 - it
     }) {
-        duration = 300
+        duration = AnimationUtils.DEFAULT_ANIMATION_LENGTH
         interpolator = AccelerateDecelerateInterpolator()
     }.start()
 }

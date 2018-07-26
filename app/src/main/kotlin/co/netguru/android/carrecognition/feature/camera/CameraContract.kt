@@ -13,7 +13,8 @@ interface CameraContract {
         fun createAnchor(hitPoint: HitResult, car: Cars): Anchor
         fun acquireFrame(): Image?
         fun updateViewFinder(viewfinderSize: Float)
-        fun showViewFinder(visible: Boolean)
+        fun showViewFinder()
+        fun hideViewFinder()
         fun frameStreamEnabled(enabled: Boolean)
         fun showDetails(car: Cars)
         fun tryAttachPin(randomFieldPercentage: Int)
@@ -29,5 +30,7 @@ interface CameraContract {
         fun bottomSheetHidden()
         fun onPermissionGranted()
         fun onPermissionDeclined()
+        fun onCloseRecognitionClicked()
+        fun onScanButtonClicked()
     }
 }

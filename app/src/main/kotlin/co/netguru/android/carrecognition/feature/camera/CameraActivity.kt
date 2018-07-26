@@ -69,7 +69,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.setBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
+                BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
 
@@ -93,11 +93,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         closeRecognitionModeButtonMain.setOnClickListener {
-            showExplorationMode()
+            presenter.onCloseRecognitionClicked()
         }
 
         scanButtonMain.setOnClickListener {
-            showViewFinder(true)
+            presenter.onScanButtonClicked()
         }
     }
 
@@ -142,7 +142,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, results: IntArray
+            requestCode: Int, permissions: Array<String>, results: IntArray
     ) {
         ArActivityUtils.processPermissionResult(this, presenter::onPermissionGranted, presenter::onPermissionDeclined)
     }
@@ -181,18 +181,18 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun updateViewFinder(viewfinderSize: Float) {
         recognitionIndicatorAnimator =
                 ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
-                    .apply {
-                        addUpdateListener { animation ->
-                            recognitionIndicator.progress = animation.animatedValue as Float
+                        .apply {
+                            addUpdateListener { animation ->
+                                recognitionIndicator.progress = animation.animatedValue as Float
+                            }
+                            start()
                         }
-                        start()
-                    }
     }
 
     override fun showDetails(car: Cars) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        showViewFinder(false)
+        hideViewFinder()
 
         car_model.text = car.model
         car_maker.text = car.brand
@@ -208,7 +208,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         val zeroToSixtyProgressValue =
-            1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
+                1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
         createAnimator(zeroToSixtyProgressValue) {
             zero_to_sixty_view.setProgress(it)
         }
@@ -235,13 +235,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         googleButton.setOnClickListener {
             val query =
-                getString(R.string.maker_model_template, car.brand, car.model)
+                    getString(R.string.maker_model_template, car.brand, car.model)
             val escapedQuery = URLEncoder.encode(query, "UTF-8")
             val uri = Uri.parse(getString(R.string.google_query_string, escapedQuery))
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
-        
+
         carListButtonRipple.visibility = if (!car.seen) View.VISIBLE else View.GONE
         carListButton.setOnClickListener {
             carListButtonRipple.visibility = View.GONE
@@ -251,7 +251,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun showExplorationMode() {
         frameStreamEnabled(false)
-        showViewFinder(false)
+        hideViewFinder()
         scanButtonMain.visibility = View.VISIBLE
     }
 
@@ -277,19 +277,20 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    override fun showViewFinder(visible: Boolean) {
-        if (visible) {
-            frameStreamEnabled(true)
-            cameraDim.fadeIn()
-            recognitionIndicator.fadeIn()
-            recognitionLabelSwitcher.fadeIn()
-            closeRecognitionModeButtonMain.fadeIn()
-        } else {
-            cameraDim.fadeOut()
-            recognitionIndicator.fadeOut()
-            recognitionLabelSwitcher.fadeOut()
-            closeRecognitionModeButtonMain.fadeOut()
-        }
+    override fun showViewFinder() {
+        frameStreamEnabled(true)
+        cameraDim.fadeIn()
+        recognitionIndicator.fadeIn()
+        recognitionLabelSwitcher.fadeIn()
+        closeRecognitionModeButtonMain.fadeIn()
+        scanButtonMain.visibility = View.INVISIBLE
+    }
+
+    override fun hideViewFinder() {
+        cameraDim.fadeOut()
+        recognitionIndicator.fadeOut()
+        recognitionLabelSwitcher.fadeOut()
+        closeRecognitionModeButtonMain.fadeOut()
         scanButtonMain.visibility = View.INVISIBLE
     }
 
@@ -299,13 +300,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         with(Random()) {
 
             val randomPointX =
-                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
+                    (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
             val randomPointY =
-                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
+                    (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
 
             val hitPoint =
-                frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
-                    .firstOrNull()
+                    frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
+                            .firstOrNull()
 
             Timber.d("hitpoint = (${(cameraWidth / 2f) + randomPointX}, ${(cameraHeight / 2f) + randomPointY})")
             presenter.processHitResult(hitPoint)
