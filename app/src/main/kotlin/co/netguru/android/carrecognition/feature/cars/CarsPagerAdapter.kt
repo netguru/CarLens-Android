@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.TextView
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
+import co.netguru.android.carrecognition.common.MetricsUtils
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.recognizer.Car
 import kotlinx.android.synthetic.main.car_list_item_view.view.*
+import java.util.*
 
 class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
 
@@ -54,6 +55,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
     override fun getCount(): Int = carsList.size
 
     private fun showDetails(view: View, car: Cars, position: Int) {
+        view.zero_to_sixty_view.setLabel(view.context.getString(MetricsUtils.getAccelerationLabel(Locale.getDefault())))
         view.car_model.text = car.model
 
         if ((view.parent as View).height > SMALL_SCREEN) {
@@ -83,11 +85,6 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         view.engine_view.setAsUnseen()
     }
 
-    private fun TextView.setAsUnseen() {
-        setText(R.string.questionMark)
-        setTextColor(context.getColor(R.color.car_list_item_background))
-    }
-
     private fun showSeenCarDetails(view: View, car: Cars, position: Int) {
         view.car_image.setImageResource(view.context.getDrawableIdentifier(car.image))
         view.car_logo.setImageResource(view.context.getDrawableIdentifier(car.brand_logo_image))
@@ -99,7 +96,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
 
         createAnimator(position, car.speed_mph) {
-            view.top_speed_view.setValue(R.string.top_speed_value, it)
+            view.top_speed_view.setValue(MetricsUtils.getConvertedMetric(Locale.getDefault(), view.context.resources, it))
         }
 
         val zeroToSixtyProgressValue =
@@ -109,7 +106,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         }
 
         createAnimator(position, car.acceleration_mph.toInt()) {
-            view.zero_to_sixty_view.setValue(R.string.zero_to_sixty_value, it)
+            view.zero_to_sixty_view.setValue(view.context.getString(R.string.zero_to_sixty_value, it))
         }
 
         createAnimator(position, car.power.toFloat() / Car.HORSEPOWER_MAX) {

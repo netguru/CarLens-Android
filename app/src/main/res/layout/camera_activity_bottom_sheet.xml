@@ -102,8 +102,7 @@
         app:circleProgressSize="@dimen/bottom_sheet_gradient_progress_size"
         app:circleValueTextSize="@dimen/bottom_sheet_gradient_text_size"
         app:circleValueBottomMargin="@dimen/margin_small"
-        app:circleLabelBottomMargin="@dimen/margin_medium"
-        app:circleLabel="@string/zero_to_sixty_label" />
+        app:circleLabelBottomMargin="@dimen/margin_medium" />
 
     <Button
         android:id="@+id/googleButton"

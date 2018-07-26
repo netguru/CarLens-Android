@@ -12,6 +12,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
+import co.netguru.android.carrecognition.common.MetricsUtils
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
@@ -186,13 +187,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         car_model.text = car.model
         car_maker.text = car.brand
         miniImage.setImageResource(getDrawableIdentifier(car.image))
+        zero_to_sixty_view.setLabel(getString(MetricsUtils.getAccelerationLabel(Locale.getDefault())))
 
         createAnimator(car.speed_mph.toFloat() / Car.TOP_SPEED_MAX) {
             top_speed_view.setProgress(it)
         }
 
         createAnimator(car.speed_mph) {
-            top_speed_view.setValue(R.string.top_speed_value, it)
+            top_speed_view.setValue(MetricsUtils.getConvertedMetric(Locale.getDefault(), resources, it))
         }
 
         val zeroToSixtyProgressValue =
@@ -202,7 +204,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         createAnimator(car.acceleration_mph.toInt()) {
-            zero_to_sixty_view.setValue(R.string.zero_to_sixty_value, it)
+            zero_to_sixty_view.setValue(getString(R.string.zero_to_sixty_value, it))
         }
 
         createAnimator(car.power.toFloat() / Car.HORSEPOWER_MAX) {
