@@ -13,6 +13,8 @@ import android.widget.Toast
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.AnimationUtils
 import co.netguru.android.carrecognition.common.MetricsUtils
+import co.netguru.android.carrecognition.common.extensions.fadeIn
+import co.netguru.android.carrecognition.common.extensions.fadeOut
 import co.netguru.android.carrecognition.common.extensions.getDrawableIdentifier
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
@@ -64,10 +66,11 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         setPresenter(createPresenter())
 
         arSceneView.planeRenderer.isEnabled = false
+        closeRecognitionModeButtonMain.isEnabled = false
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.setBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
+                BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
 
@@ -88,6 +91,14 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         scanButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        closeRecognitionModeButtonMain.setOnClickListener {
+            presenter.onCloseRecognitionClicked()
+        }
+
+        scanButtonMain.setOnClickListener {
+            presenter.onScanButtonClicked()
         }
     }
 
@@ -132,7 +143,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, results: IntArray
+            requestCode: Int, permissions: Array<String>, results: IntArray
     ) {
         ArActivityUtils.processPermissionResult(this, presenter::onPermissionGranted, presenter::onPermissionDeclined)
     }
@@ -171,18 +182,18 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun updateViewFinder(viewfinderSize: Float) {
         recognitionIndicatorAnimator =
                 ValueAnimator.ofFloat(recognitionIndicator.progress, viewfinderSize)
-                    .apply {
-                        addUpdateListener { animation ->
-                            recognitionIndicator.progress = animation.animatedValue as Float
+                        .apply {
+                            addUpdateListener { animation ->
+                                recognitionIndicator.progress = animation.animatedValue as Float
+                            }
+                            start()
                         }
-                        start()
-                    }
     }
 
     override fun showDetails(car: Cars) {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        showViewFinder(false)
+        hideViewFinder()
 
         car_model.text = car.model
         car_maker.text = car.brand
@@ -198,7 +209,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
 
         val zeroToSixtyProgressValue =
-            1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
+                1 - car.acceleration_mph.toFloat() / (Car.ZERO_TO_SIXTY_MAX - Car.ZERO_TO_SIXTY_MIN)
         createAnimator(zeroToSixtyProgressValue) {
             zero_to_sixty_view.setProgress(it)
         }
@@ -225,18 +236,25 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         googleButton.setOnClickListener {
             val query =
-                getString(R.string.maker_model_template, car.brand, car.model)
+                    getString(R.string.maker_model_template, car.brand, car.model)
             val escapedQuery = URLEncoder.encode(query, "UTF-8")
             val uri = Uri.parse(getString(R.string.google_query_string, escapedQuery))
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
-        
+
         carListButtonRipple.visibility = if (!car.seen) View.VISIBLE else View.GONE
         carListButton.setOnClickListener {
             carListButtonRipple.visibility = View.GONE
             showCarList(car.id)
         }
+    }
+
+    override fun showExplorationMode() {
+        frameStreamEnabled(false)
+        hideViewFinder()
+        scanButtonMain.fadeIn()
+        scanButtonMain.isEnabled = true
     }
 
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
@@ -261,10 +279,25 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         }
     }
 
-    override fun showViewFinder(visible: Boolean) {
-        recognitionIndicator.visibility = if (visible) View.VISIBLE else View.GONE
-        recognitionLabelSwitcher.visibility = if (visible) View.VISIBLE else View.GONE
-        cameraDim.visibility = if (visible) View.VISIBLE else View.GONE
+    override fun showViewFinder() {
+        frameStreamEnabled(true)
+        cameraDim.fadeIn()
+        recognitionIndicator.fadeIn()
+        recognitionLabelSwitcher.fadeIn()
+        closeRecognitionModeButtonMain.fadeIn()
+        closeRecognitionModeButtonMain.isEnabled = true
+        if (scanButtonMain.alpha == 1f) scanButtonMain.fadeOut()
+        scanButtonMain.isEnabled = false
+    }
+
+    override fun hideViewFinder() {
+        cameraDim.fadeOut()
+        recognitionIndicator.fadeOut()
+        recognitionLabelSwitcher.fadeOut()
+        closeRecognitionModeButtonMain.fadeOut()
+        closeRecognitionModeButtonMain.isEnabled = false
+        scanButtonMain.fadeOut()
+        scanButtonMain.isEnabled = false
     }
 
     override fun tryAttachPin(randomFieldPercentage: Int) {
@@ -273,13 +306,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         with(Random()) {
 
             val randomPointX =
-                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
+                    (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraWidth)
             val randomPointY =
-                (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
+                    (-1 * nextInt(2)) * nextFloat() * (randomFieldPercentage * cameraHeight)
 
             val hitPoint =
-                frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
-                    .firstOrNull()
+                    frame.hitTest((cameraWidth / 2f) + randomPointX, (cameraHeight / 2f) + randomPointY)
+                            .firstOrNull()
 
             Timber.d("hitpoint = (${(cameraWidth / 2f) + randomPointX}, ${(cameraHeight / 2f) + randomPointY})")
             presenter.processHitResult(hitPoint)
