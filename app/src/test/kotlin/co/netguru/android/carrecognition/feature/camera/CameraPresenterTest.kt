@@ -227,7 +227,7 @@ class CameraPresenterTest {
         presenter.bottomSheetHidden()
         verify(view).updateViewFinder(0f)
         verify(view).frameStreamEnabled(true)
-        verify(view).showViewFinder(true)
+        verify(view).showViewFinder()
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
     }
 
@@ -241,6 +241,18 @@ class CameraPresenterTest {
     fun `Should show permission ui on premission declined`() {
         presenter.onPermissionDeclined()
         verify(view).showPermissionUi()
+    }
+
+    @Test
+    fun `Should show exploration mode when recognition mode closed`() {
+        presenter.onCloseRecognitionClicked()
+        verify(view).showExplorationMode()
+    }
+
+    @Test
+    fun `Should show recognition mode when exploration mode closed`() {
+        presenter.onScanButtonClicked()
+        verify(view).showViewFinder()
     }
 
     private fun generateRecognitions(recognition: Recognition) {

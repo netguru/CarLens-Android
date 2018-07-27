@@ -4,6 +4,8 @@ import android.animation.ValueAnimator
 
 object AnimationUtils {
 
+    const val DEFAULT_ANIMATION_LENGTH = 300L
+
     @Suppress("UNCHECKED_CAST")
     fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit,
                            propertiesBlock: ValueAnimator.() -> Unit) =

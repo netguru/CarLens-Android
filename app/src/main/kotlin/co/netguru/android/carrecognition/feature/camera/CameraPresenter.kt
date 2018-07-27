@@ -63,7 +63,7 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
             it.updateViewFinder(0f)
             it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
             it.frameStreamEnabled(true)
-            it.showViewFinder(true)
+            it.showViewFinder()
         }
     }
 
@@ -135,6 +135,18 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
     override fun onPermissionDeclined() {
         ifViewAttached {
             it.showPermissionUi()
+        }
+    }
+
+    override fun onCloseRecognitionClicked() {
+        ifViewAttached {
+            it.showExplorationMode()
+        }
+    }
+
+    override fun onScanButtonClicked() {
+        ifViewAttached {
+            it.showViewFinder()
         }
     }
 
