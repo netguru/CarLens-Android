@@ -72,14 +72,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/closeRecognitionModeButtonMain"
         app:layout_constraintStart_toEndOf="@+id/carListButtonMain"
-        android:visibility="invisible" />
+        android:alpha="0"
+        android:enabled="false" />
 
     <ImageButton
         android:id="@+id/closeRecognitionModeButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
         android:layout_marginEnd="@dimen/car_list_button_size"
-        android:clickable="true"
+        android:clickable="false"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/scanButtonMain"
         app:layout_constraintTop_toTopOf="@+id/scanButtonMain"

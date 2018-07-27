@@ -66,6 +66,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         setPresenter(createPresenter())
 
         arSceneView.planeRenderer.isEnabled = false
+        closeRecognitionModeButtonMain.isEnabled = false
 
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetBehavior.setBottomSheetCallback(object :
@@ -252,7 +253,8 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     override fun showExplorationMode() {
         frameStreamEnabled(false)
         hideViewFinder()
-        scanButtonMain.visibility = View.VISIBLE
+        scanButtonMain.fadeIn()
+        scanButtonMain.isEnabled = true
     }
 
     private fun <T> createAnimator(topValue: T, onUpdate: (T) -> Unit) {
@@ -283,7 +285,9 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         recognitionIndicator.fadeIn()
         recognitionLabelSwitcher.fadeIn()
         closeRecognitionModeButtonMain.fadeIn()
-        scanButtonMain.visibility = View.INVISIBLE
+        closeRecognitionModeButtonMain.isEnabled = true
+        if (scanButtonMain.alpha == 1f) scanButtonMain.fadeOut()
+        scanButtonMain.isEnabled = false
     }
 
     override fun hideViewFinder() {
@@ -291,7 +295,9 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
         recognitionIndicator.fadeOut()
         recognitionLabelSwitcher.fadeOut()
         closeRecognitionModeButtonMain.fadeOut()
-        scanButtonMain.visibility = View.INVISIBLE
+        closeRecognitionModeButtonMain.isEnabled = false
+        scanButtonMain.fadeOut()
+        scanButtonMain.isEnabled = false
     }
 
     override fun tryAttachPin(randomFieldPercentage: Int) {
