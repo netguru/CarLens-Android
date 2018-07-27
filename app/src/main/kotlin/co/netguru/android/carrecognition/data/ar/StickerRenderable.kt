@@ -33,7 +33,7 @@ class StickerNode(
                 renderable = it
             }
 
-        localPosition = Vector3(0f, 0.5f, -1.5f)
+        localPosition = Vector3(0f, 1f, -1.5f)
         localScale = Vector3(2f, 2f, 2f)
     }
 
