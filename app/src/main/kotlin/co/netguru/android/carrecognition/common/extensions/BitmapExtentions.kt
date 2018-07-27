@@ -18,28 +18,43 @@ class ImageUtils {
             height: Int, rotation: Int, inputSize: Int
         ): IntArray {
             return rotateAndScaleBitmap(
-                camera2apiImageToBitmap(context, image, width, height),
-                -rotation, inputSize
+                camera2apiImageToBitmap(context, image, width, height), -rotation, inputSize
             ).getPixels(inputSize * inputSize)
         }
 
+        /**
+         * Applies scale and rotation on input bitmap.
+         */
         private fun rotateAndScaleBitmap(
                 inputBitmap: Bitmap,
-                rotation: Int,
+                inputRotation: Int,
                 desiredSize: Int
         ): Bitmap {
-            val matrix =
+            val transformationMatrix =
                     getTransformationMatrix(
-                            inputBitmap.width, inputBitmap.height, desiredSize, desiredSize, rotation
+                            inputBitmap.width, inputBitmap.height,
+                            desiredSize, desiredSize, inputRotation
                     )
-            val cropToFrameTransform = Matrix()
-            matrix.invert(cropToFrameTransform)
+            val invertedMatrix = Matrix()
+            transformationMatrix.invert(invertedMatrix)
             val croppedBitmap = Bitmap.createBitmap(desiredSize, desiredSize, Bitmap.Config.RGB_565)
-            val canvas = Canvas(croppedBitmap)
-            canvas.drawBitmap(inputBitmap, matrix, null)
+            val targetCanvas = Canvas(croppedBitmap)
+            targetCanvas.drawBitmap(inputBitmap, transformationMatrix, null)
             return croppedBitmap
         }
 
+        /**
+         * Returns a transformation matrix from one reference frame into another.
+         * Handles cropping (if maintaining aspect ratio is desired) and rotation.
+         *
+         * @param srcWidth Width of source frame.
+         * @param srcHeight Height of source frame.
+         * @param dstWidth Width of destination frame.
+         * @param dstHeight Height of destination frame.
+         * @param rotation Amount of rotation to apply from one frame to another.
+         *  Must be a multiple of 90.
+         * @return The transformation fulfilling the desired requirements.
+         */
         private fun getTransformationMatrix(
                 srcWidth: Int,
                 srcHeight: Int,
@@ -55,18 +70,19 @@ class ImageUtils {
             }
 
             val transpose = (Math.abs(rotation) + 90) % 180 == 0
+
             val inWidth = if (transpose) srcHeight else srcWidth
             val inHeight = if (transpose) srcWidth else srcHeight
-
-            if (rotation != 0) {
-                matrix.postTranslate(dstWidth / 2.0f, dstHeight / 2.0f)
-            }
 
             if (inWidth != dstWidth || inHeight != dstHeight) {
                 val scaleFactorX = dstWidth / inWidth.toFloat()
                 val scaleFactorY = dstHeight / inHeight.toFloat()
                 val scaleFactor = Math.max(scaleFactorX, scaleFactorY)
                 matrix.postScale(scaleFactor, scaleFactor)
+            }
+
+            if (rotation != 0) {
+                matrix.postTranslate(dstWidth / 2.0f, dstHeight / 2.0f)
             }
 
             return matrix
