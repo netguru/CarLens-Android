@@ -87,7 +87,10 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         ArActivityUtils.requestCameraPermission(this, RC_PERMISSIONS)
 
-        carListButtonMain.setOnClickListener { showCarList() }
+        carListButtonMain.setOnClickListener {
+            progress_bar.visibility = View.VISIBLE
+            showCarList()
+        }
 
         scanButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -110,6 +113,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun onResume() {
         super.onResume()
+        progress_bar.visibility = View.INVISIBLE
         if (ArActivityUtils.hasCameraPermission(this)) {
             presenter.onPermissionGranted()
         }
@@ -245,6 +249,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
         carListButtonRipple.visibility = if (!car.seen) View.VISIBLE else View.GONE
         carListButton.setOnClickListener {
+            progress_bar.visibility = View.VISIBLE
             carListButtonRipple.visibility = View.GONE
             showCarList(car.id)
         }
