@@ -6,10 +6,19 @@ import kotlinx.android.synthetic.main.car_list_item_view.view.*
 
 class CarListPageTransformer : ViewPager.PageTransformer {
 
+    private var counter = 0
+
     override fun transformPage(page: View, position: Float) {
-        if ((position in -1..1).not()) return
-        val multiplier = Math.abs(position) * -1
-        val delta = page.height - page.card.height
-        page.bottomContainer.translationY = delta * multiplier
+        var pos = position
+        if (counter == 1) {
+            pos = 0.9f
+        }
+        if (counter < 3) counter++
+        if ((pos in -1..1).not()) return
+        val multiplier = Math.abs(pos) * -1
+        page.bottomContainer.post {
+            val delta = page.height - page.card.height
+            page.bottomContainer.translationY = delta * multiplier
+        }
     }
 }
