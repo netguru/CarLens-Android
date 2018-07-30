@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/camera_activity_bottom_sheet_background">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/left_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_horizontal_margin" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/right_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/bottom_sheet_horizontal_margin" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/top_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_top_margin" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/top_meters_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/bottom_sheet_top_meters_margin" />
+
+    <View
+        android:id="@+id/top_bar"
+        android:layout_width="@dimen/bottom_sheet_width"
+        android:layout_height="@dimen/bottom_sheet_height"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:background="@drawable/rounded_bar"
+        android:backgroundTint="@color/top_bar_tint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/car_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/bottom_sheet_car_model_text_size"
+        app:layout_constraintStart_toStartOf="@+id/left_margin"
+        app:layout_constraintTop_toTopOf="@+id/top_margin"
+        tools:text="Passat" />
+
+    <TextView
+        android:id="@+id/car_maker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_xsmall"
+        android:textColor="@color/subtitle"
+        app:layout_constraintStart_toStartOf="@+id/left_margin"
+        app:layout_constraintTop_toBottomOf="@+id/car_model"
+        tools:text="Volkswagen" />
+
+    <ImageView
+        android:id="@+id/miniImage"
+        android:layout_width="@dimen/bottom_sheet_car_image_width"
+        android:layout_height="@dimen/bottom_sheet_car_image_height"
+        android:contentDescription="@null"
+        app:layout_constraintEnd_toStartOf="@+id/right_margin"
+        app:layout_constraintTop_toTopOf="@+id/top_margin"
+        tools:src="@drawable/hondacivic" />
+
+    <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+        android:id="@+id/top_speed_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/left_margin"
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
+        android:paddingBottom="@dimen/margin_xsmall"
+        app:circleProgressSize="@dimen/bottom_sheet_gradient_progress_size"
+        app:circleValueTextSize="@dimen/bottom_sheet_gradient_text_size"
+        app:circleValueBottomMargin="@dimen/margin_small"
+        app:circleLabelBottomMargin="@dimen/margin_medium"
+        app:circleLabel="@string/top_speed" />
+
+    <co.netguru.android.carrecognition.feature.cars.CircleProgressView
+        android:id="@+id/zero_to_sixty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/right_margin"
+        app:layout_constraintTop_toTopOf="@+id/top_meters_guideline"
+        android:paddingBottom="@dimen/margin_xsmall"
+        app:circleProgressSize="@dimen/bottom_sheet_gradient_progress_size"
+        app:circleValueTextSize="@dimen/bottom_sheet_gradient_text_size"
+        app:circleValueBottomMargin="@dimen/margin_small"
+        app:circleLabelBottomMargin="@dimen/margin_medium" />
+
+    <Button
+        android:id="@+id/googleButton"
+        android:layout_width="@dimen/bottom_sheet_white_button_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_size"
+        android:layout_marginEnd="@dimen/bottom_sheet_white_button_horizontal_margin"
+        android:background="@drawable/google_button_background"
+        android:contentDescription="@null"
+        android:elevation="@dimen/bottom_sheet_white_button_elevation"
+        app:layout_constraintBottom_toBottomOf="@+id/scanButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scanButton" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/carListButtonRipple"
+        android:layout_width="@dimen/bottom_sheet_white_button_ripple_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_ripple_size"
+        app:layout_constraintBottom_toBottomOf="@+id/carListButton"
+        app:layout_constraintEnd_toEndOf="@+id/carListButton"
+        app:layout_constraintStart_toStartOf="@+id/carListButton"
+        app:layout_constraintTop_toTopOf="@+id/carListButton"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="button_ripple.json"
+        app:lottie_loop="true" />
+
+    <Button
+        android:id="@+id/carListButton"
+        android:layout_width="@dimen/bottom_sheet_white_button_size"
+        android:layout_height="@dimen/bottom_sheet_white_button_size"
+        android:layout_marginStart="@dimen/bottom_sheet_white_button_horizontal_margin"
+        android:background="@drawable/car_list_button_background"
+        android:contentDescription="@null"
+        android:elevation="@dimen/bottom_sheet_white_button_elevation"
+        app:layout_constraintBottom_toBottomOf="@+id/scanButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scanButton" />
+
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="@dimen/bottom_sheet_scan_button_size"
+        android:layout_height="@dimen/bottom_sheet_scan_button_size"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:background="@drawable/rescan_button_background"
+        android:contentDescription="@null"
+        android:elevation="@dimen/bottom_sheet_scan_button_elevation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/googleButton"
+        app:layout_constraintStart_toEndOf="@+id/carListButton"
+        app:layout_constraintTop_toBottomOf="@+id/power_view" />
+
+    <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
+        android:id="@+id/engine_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@+id/top_speed_view"
+        app:layout_constraintStart_toStartOf="@id/left_margin"
+        app:layout_constraintEnd_toEndOf="@+id/top_speed_view"
+        app:layout_constraintBottom_toTopOf="@+id/scanButton"
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/engine" />
+
+    <co.netguru.android.carrecognition.feature.cars.HorizontalProgressView
+        android:id="@+id/power_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        app:layout_constraintTop_toBottomOf="@+id/zero_to_sixty_view"
+        app:layout_constraintStart_toStartOf="@+id/zero_to_sixty_view"
+        app:layout_constraintEnd_toEndOf="@+id/right_margin"
+        app:layout_constraintBottom_toTopOf="@+id/scanButton"
+        app:horizontalValueTextSize="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalLabelTextSize="@dimen/bottom_sheet_horizontal_progress_label_text_size"
+        app:horizontalProgressMargin="@dimen/bottom_sheet_horizontal_progress_text_size"
+        app:horizontalProgressHeight="@dimen/bottom_sheet_horizontal_progress_height"
+        app:horizontalLabel="@string/power" />
+
+
+</android.support.constraint.ConstraintLayout>
