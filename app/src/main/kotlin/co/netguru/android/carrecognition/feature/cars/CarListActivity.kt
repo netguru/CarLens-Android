@@ -2,6 +2,7 @@ package co.netguru.android.carrecognition.feature.cars
 
 import android.animation.Animator
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -125,8 +126,10 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         private const val START_X = "startX"
         private const val START_Y = "startY"
         private const val CAR_ID = "carId"
-        fun startActivityWithCircleAnimation(activity: Activity, startX: Int, startY: Int,
-                                             carId: String? = null) {
+        fun startActivityWithCircleAnimation(
+            activity: Context, startX: Int, startY: Int,
+            carId: String? = null
+        ) {
             activity.startActivity(
                     Intent(activity, CarListActivity::class.java).apply {
                         putExtra(START_X, startX)
