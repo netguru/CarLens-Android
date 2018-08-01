@@ -105,7 +105,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
             presenter.onPermissionGranted()
         }
         installRequested = ArActivityUtils.initARView(arSceneView, this, installRequested)
-        frameStreamEnabled(true)
+        showViewFinder()
     }
 
     override fun onPause() {
@@ -210,6 +210,7 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
     }
 
     override fun showViewFinder() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         frameStreamEnabled(true)
         cameraDim.fadeIn()
         recognitionIndicator.fadeIn()

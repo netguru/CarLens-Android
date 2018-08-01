@@ -15,7 +15,7 @@ import co.netguru.android.carrecognition.data.recognizer.Car
 import kotlinx.android.synthetic.main.car_list_item_view.view.*
 import java.util.*
 
-class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
+class CarsPagerAdapter : PagerAdapter() {
 
     private val animatorMap = mutableMapOf<Int, MutableList<Animator>>()
     private val carsList = mutableListOf<Cars>()
@@ -33,10 +33,7 @@ class CarsPagerAdapter(private var initialCarId: String?) : PagerAdapter() {
         it.addView(view)
         animatorMap[position] = mutableListOf()
         showDetails(view, carsList[position], position)
-        if (initialCarId == carsList[position].id) {
-            showAnimation(position)
-            initialCarId = null //clear that position after animation
-        }
+        showAnimation(position)
         view
     }
 

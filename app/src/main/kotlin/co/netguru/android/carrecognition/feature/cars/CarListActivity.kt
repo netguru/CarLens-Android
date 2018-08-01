@@ -50,7 +50,7 @@ class CarListActivity : MvpActivity<CarListContract.View, CarListContract.Presen
         view_pager.apply {
             offscreenPageLimit = 2
             pageMargin = resources.getDimensionPixelSize(R.dimen.page_overlap_margin)
-            carAdapter = CarsPagerAdapter(getCarIdOpt())
+            carAdapter = CarsPagerAdapter()
             adapter = carAdapter
             onPageSelected { position ->
                 if (position == currentVisibleItem) return@onPageSelected
