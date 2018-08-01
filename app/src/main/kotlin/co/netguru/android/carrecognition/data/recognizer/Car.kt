@@ -20,7 +20,7 @@ enum class Car(
         const val ZERO_TO_SIXTY_MIN = 2.9f
         const val ZERO_TO_SIXTY_MAX = 20f
         const val HORSEPOWER_MAX = 320
-        const val ENGINE_MAX = 4000
+        const val ENGINE_MAX = 2000
         fun of(text: String) = valueOf(text.replace(" ", "_").toUpperCase())
     }
 }
