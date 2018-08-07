@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="camera">Camera</string>
+    <string name="app_name">CarLens</string>
     <string name="viewfinder">viewfinder</string>
     <string name="searching">Searching</string>
     <string name="error_install_ar_core">Please install ARCore</string>
