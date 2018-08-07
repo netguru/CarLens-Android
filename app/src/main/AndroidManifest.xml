@@ -14,7 +14,7 @@
         android:name="co.netguru.android.carrecognition.application.App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/camera"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         tools:ignore="GoogleAppIndexingWarning">
 
@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name=".feature.camera.CameraActivity"
-            android:label="@string/camera"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
