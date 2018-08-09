@@ -11,8 +11,6 @@
 
     <item
         android:drawable="@drawable/pointer"
-        android:width="110dp"
-        android:height="110dp"
         android:gravity="center" />
 
     <item
