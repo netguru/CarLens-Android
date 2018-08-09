@@ -14,9 +14,7 @@
         android:gravity="center" />
 
     <item
-        android:drawable="@drawable/poweredby"
-        android:width="120dp"
-        android:height="59dp"
-        android:bottom="168dp"
+        android:drawable="@drawable/copyright_by"
+        android:bottom="100dp"
         android:gravity="bottom|center" />
 </layer-list>
