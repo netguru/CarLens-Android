@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/margin_medium"
+    tools:ignore="ContentDescription">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/circlesLay" />
+
+    <LinearLayout
+        android:id="@+id/circlesLay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/next_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_xxxlarge"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.marozzi.roundbutton.RoundButton
+            android:id="@+id/firstCircleImg"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:gravity="center"
+            app:rb_animation_corner_radius="20dp"
+            app:rb_animation_duration="250"
+            app:rb_background_color="@color/orange"
+            app:rb_corner_radius="20dp" />
+
+
+        <com.marozzi.roundbutton.RoundButton
+            android:id="@+id/secondCircleImg"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:gravity="center"
+            app:rb_animation_corner_radius="20dp"
+            app:rb_animation_duration="250"
+            app:rb_background_color="@color/orange_light"
+            app:rb_corner_radius="20dp" />
+
+        <com.marozzi.roundbutton.RoundButton
+            android:id="@+id/thirdCircleImg"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="20dp"
+            android:layout_height="5dp"
+            android:gravity="center"
+            app:rb_animation_corner_radius="20dp"
+            app:rb_animation_duration="250"
+            app:rb_background_color="@color/orange_light"
+            app:rb_corner_radius="20dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:src="@drawable/rescan_button" />
+    </LinearLayout>
+</RelativeLayout>

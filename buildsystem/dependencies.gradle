@@ -63,6 +63,7 @@ ext {
             roomRx                  : "android.arch.persistence.room:rxjava2:$roomVersion",
             room                    : "android.arch.persistence.room:runtime:$roomVersion",
             hockeyApp               : "net.hockeyapp.android:HockeySDK:$hockeyAppVersion",
+            roundButton             : "com.marozzi.roundbutton:round-button:1.0.7"
     ]
 
     proc = [

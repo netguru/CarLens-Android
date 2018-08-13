@@ -8,6 +8,7 @@
     <dimen name="padding_xsmall">4dp</dimen>
     <dimen name="padding_xxsmall">2dp</dimen>
 
+    <dimen name="margin_xxxlarge">46dp</dimen>
     <dimen name="margin_xxlarge">32dp</dimen>
     <dimen name="margin_xlarge">24dp</dimen>
     <dimen name="margin_large">20dp</dimen>

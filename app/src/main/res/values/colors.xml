@@ -8,6 +8,7 @@
 
     <color name="pink">#FF5969</color>
     <color name="orange">#FF8D3D</color>
+    <color name="orange_light">#ffac71</color>
 
     <color name="top_bar_tint">#D7E2E6</color>
     <color name="subtitle">#9BB3C6</color>

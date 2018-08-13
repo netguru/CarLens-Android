@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingBottom="@dimen/margin_medium"
+    android:paddingEnd="@dimen/margin_xxxlarge"
+    android:paddingStart="@dimen/margin_xxxlarge"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/recognizeCarsTxt"
+        android:src="@drawable/img_blue_car" />
+
+    <TextView
+        android:id="@+id/recognizeCarsTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pointTheCameraTxt"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:gravity="center"
+        android:text="@string/recognize_cars"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/pointTheCameraTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/point_the_camera"
+        android:textColor="@color/subtitle" />
+</RelativeLayout>
