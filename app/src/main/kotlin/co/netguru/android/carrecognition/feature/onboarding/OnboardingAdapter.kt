@@ -8,8 +8,7 @@ import android.view.ViewGroup
 
 class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 
-    val PAGE_COUNT = 3
-    var progressPhotoFragments: SparseArray<Fragment>
+    private var progressPhotoFragments: SparseArray<Fragment>
 
     init {
         progressPhotoFragments = SparseArray(PAGE_COUNT)
@@ -37,5 +36,9 @@ class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         super.destroyItem(container, position, `object`)
         progressPhotoFragments.remove(position)
+    }
+
+    companion object {
+        const val PAGE_COUNT = 3
     }
 }
