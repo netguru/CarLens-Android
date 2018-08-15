@@ -3,35 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/transparent"
     android:paddingBottom="@dimen/margin_medium"
-    android:paddingEnd="@dimen/margin_xxxlarge"
-    android:paddingStart="@dimen/margin_xxxlarge"
     tools:ignore="ContentDescription">
 
     <ImageView
+        android:id="@+id/carImg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/recognizeCarsTxt"
-        android:src="@drawable/img_blue_car" />
+        android:layout_above="@+id/titleTxt"
+        android:paddingEnd="@dimen/margin_medium"
+        android:paddingStart="@dimen/margin_medium" />
 
     <TextView
-        android:id="@+id/recognizeCarsTxt"
+        android:id="@+id/titleTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pointTheCameraTxt"
+        android:layout_above="@+id/descriptionTxt"
         android:layout_marginBottom="@dimen/margin_large"
         android:gravity="center"
-        android:text="@string/recognize_cars"
+        android:paddingEnd="@dimen/margin_xxxlarge"
+        android:paddingStart="@dimen/margin_xxxlarge"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/pointTheCameraTxt"
+        android:id="@+id/descriptionTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="@string/point_the_camera"
+        android:paddingEnd="@dimen/margin_xxxlarge"
+        android:paddingStart="@dimen/margin_xxxlarge"
         android:textColor="@color/subtitle" />
 </RelativeLayout>

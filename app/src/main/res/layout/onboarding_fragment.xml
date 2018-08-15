@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingBottom="@dimen/margin_medium"
+    android:background="@color/onboarding_background"
     tools:ignore="ContentDescription">
 
     <android.support.v4.view.ViewPager
@@ -21,7 +20,7 @@
         android:layout_above="@+id/next_btn"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/margin_xxxlarge"
+        android:layout_marginBottom="@dimen/margin_xxlarge"
         android:layout_marginTop="@dimen/margin_medium"
         android:gravity="center"
         android:orientation="horizontal">
@@ -71,9 +70,12 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:id="@+id/nextImg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/rescan_button" />
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/img_next" />
     </LinearLayout>
 </RelativeLayout>

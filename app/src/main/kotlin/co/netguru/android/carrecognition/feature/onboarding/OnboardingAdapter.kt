@@ -18,8 +18,8 @@ class OnboardingAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> OnboardingRecognizeFragment.newInstance()
-            1 -> OnboardingRecognizeFragment.newInstance()
-            2 -> OnboardingRecognizeFragment.newInstance()
+            1 -> OnboardingDiscoverFragment.newInstance()
+            2 -> OnboardingStayUpdatedFragment.newInstance()
             else -> OnboardingRecognizeFragment.newInstance()
         }
     }

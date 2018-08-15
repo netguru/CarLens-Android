@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import co.netguru.android.carrecognition.R
 import kotlinx.android.synthetic.main.onboarding_inside_fragment.*
 
-class OnboardingRecognizeFragment : Fragment() {
+class OnboardingDiscoverFragment : Fragment() {
     companion object {
-        val TAG = OnboardingRecognizeFragment::class.java.simpleName!!
+        val TAG = OnboardingDiscoverFragment::class.java.simpleName!!
 
-        fun newInstance(): OnboardingRecognizeFragment {
-            return OnboardingRecognizeFragment()
+        fun newInstance(): OnboardingDiscoverFragment {
+            return OnboardingDiscoverFragment()
         }
     }
 
@@ -23,8 +23,8 @@ class OnboardingRecognizeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        carImg.setImageResource(R.drawable.img_onboarding_1)
-        titleTxt.setText(R.string.recognize_cars)
-        descriptionTxt.setText(R.string.point_the_camera)
+        carImg.setImageResource(R.drawable.img_onboarding_2)
+        titleTxt.setText(R.string.discover_cars)
+        descriptionTxt.setText(R.string.search_and_unlock)
     }
 }
