@@ -32,13 +32,13 @@ https://github.com/tommybuonomo/dotsindicator
 
 class DotsIndicator : LinearLayout {
 
-    private var dots: MutableList<ImageView>? = mutableListOf()
+    private var dots: MutableList<ImageView> = mutableListOf()
     private var viewPager: ViewPager? = null
-    private var dotsSize: Float = 0.toFloat()
-    private var dotsCornerRadius: Float = 0.toFloat()
-    private var dotsSpacing: Float = 0.toFloat()
+    private var dotsSize: Float = 0F
+    private var dotsCornerRadius: Float = 0F
+    private var dotsSpacing: Float = 0F
     private var currentPage: Int = 0
-    private var dotsWidthFactor: Float = 0.toFloat()
+    private var dotsWidthFactor: Float = 0F
     private var dotsColor: Int = 0
 
     private var dotsClickable: Boolean = false
@@ -100,13 +100,11 @@ class DotsIndicator : LinearLayout {
 
     private fun refreshDots() {
         viewPager?.adapter?.apply {
-            if (dots != null) {
-                if (dots!!.size < viewPager!!.adapter!!.count) {
-                    addDots(viewPager!!.adapter!!.count - dots!!.size)
-                } else if (dots!!.size > viewPager!!.adapter!!.count) {
-                    removeDots(dots!!.size - viewPager!!.adapter!!.count)
+            if (dots.size < this.count) {
+                addDots(this.count - dots.size)
+            } else if (dots.size > this.count) {
+                removeDots(dots.size - this.count)
                 }
-            }
             setUpDotsAnimators()
         } ?: Timber.e(DotsIndicator::class.java.simpleName,
                 "You have to set an adapter to the view pager before !")
@@ -126,14 +124,13 @@ class DotsIndicator : LinearLayout {
 
             dot.setOnClickListener {
                 if (dotsClickable
-                        && viewPager != null
-                        && viewPager!!.adapter != null
+                        && viewPager?.adapter != null
                         && i < viewPager!!.adapter!!.count) {
                     viewPager!!.setCurrentItem(i, true)
                 }
             }
 
-            dots!!.add(imageView)
+            dots.add(imageView)
             addView(dot)
         }
     }
@@ -141,26 +138,26 @@ class DotsIndicator : LinearLayout {
     private fun removeDots(count: Int) {
         for (i in 0 until count) {
             removeViewAt(childCount - 1)
-            dots?.removeAt(dots!!.size - 1)
+            dots.removeAt(dots.size - 1)
         }
     }
 
     private fun setUpDotsAnimators() {
         viewPager?.adapter?.apply {
-            if (viewPager!!.adapter!!.count > 0) {
-                if (currentPage < dots!!.size) {
-                    val dot = dots!![currentPage]
+            if (this.count > 0) {
+                if (currentPage < dots.size) {
+                    val dot = dots[currentPage]
                     val params = dot.layoutParams as RelativeLayout.LayoutParams
                     params.width = dotsSize.toInt()
                     dot.layoutParams = params
                 }
 
                 currentPage = viewPager!!.currentItem
-                if (currentPage >= dots!!.size) {
-                    currentPage = dots!!.size - 1
+                if (currentPage >= dots.size) {
+                    currentPage = dots.size - 1
                     viewPager?.setCurrentItem(currentPage, false)
                 }
-                val dot = dots!![currentPage]
+                val dot = dots[currentPage]
 
                 val params = dot.layoutParams as RelativeLayout.LayoutParams
                 params.width = (dotsSize * dotsWidthFactor).toInt()
@@ -180,23 +177,23 @@ class DotsIndicator : LinearLayout {
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 if (position != currentPage && positionOffset == 0f || currentPage < position) {
-                    setDotWidth(dots!![currentPage], dotsSize.toInt())
+                    setDotWidth(dots[currentPage], dotsSize.toInt())
                     currentPage = position
                 }
 
                 if (Math.abs(currentPage - position) > 1) {
-                    setDotWidth(dots!![currentPage], dotsSize.toInt())
+                    setDotWidth(dots[currentPage], dotsSize.toInt())
                     currentPage = lastPage
                 }
 
-                var dot = dots!![currentPage]
+                var dot = dots[currentPage]
 
                 var nextDot: ImageView? = null
-                if (currentPage == position && currentPage + 1 < dots!!.size) {
-                    nextDot = dots!![currentPage + 1]
+                if (currentPage == position && currentPage + 1 < dots.size) {
+                    nextDot = dots[currentPage + 1]
                 } else if (currentPage > position) {
                     nextDot = dot
-                    dot = dots!![currentPage - 1]
+                    dot = dots[currentPage - 1]
                 }
 
                 val dotWidth = (dotsSize + dotsSize * (dotsWidthFactor - 1) * (1 - positionOffset)).toInt()
@@ -223,11 +220,9 @@ class DotsIndicator : LinearLayout {
     }
 
     private fun setUpCircleColors(color: Int) {
-        if (dots != null) {
-            for (elevationItem in dots!!) {
+        for (elevationItem in dots) {
                 (elevationItem.background as GradientDrawable).setColor(color)
             }
-        }
     }
 
     private fun setUpViewPager() {
