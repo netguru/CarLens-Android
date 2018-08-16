@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.feature.camera.CameraActivity
-import com.marozzi.roundbutton.RoundButton
 import kotlinx.android.synthetic.main.onboarding_fragment.*
 import org.jetbrains.anko.support.v4.startActivity
 
@@ -33,8 +32,8 @@ class OnboardingFragment : Fragment() {
 
     private fun setupViewPager() {
         viewPager.adapter = OnboardingAdapter(childFragmentManager)
-        firstCircleImg.isSelected = true
         nextImg.setOnClickListener { viewPager.currentItem = 1 }
+        viewPagerIndicator.setViewPager(viewPager)
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -48,30 +47,19 @@ class OnboardingFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-                        selectFirstUnselectRest(firstCircleImg, secondCircleImg, thirdCircleImg)
                         nextImg.setImageResource(R.drawable.img_next)
                         nextImg.setOnClickListener { viewPager.currentItem = 1 }
                     }
                     1 -> {
-                        selectFirstUnselectRest(secondCircleImg, firstCircleImg, thirdCircleImg)
                         nextImg.setImageResource(R.drawable.img_next)
                         nextImg.setOnClickListener { viewPager.currentItem = 2 }
                     }
                     2 -> {
-                        selectFirstUnselectRest(thirdCircleImg, secondCircleImg, firstCircleImg)
-                        //TODO change nextImg button
                         nextImg.setImageResource(R.drawable.img_next)
                         nextImg.setOnClickListener { startActivity<CameraActivity>() }
                     }
                 }
             }
         })
-    }
-
-    fun selectFirstUnselectRest(toSelected: RoundButton, vararg toUnselected: RoundButton) {
-        toSelected.startAnimation()
-        for (roundButton in toUnselected) {
-            roundButton.revertAnimation()
-        }
     }
 }
