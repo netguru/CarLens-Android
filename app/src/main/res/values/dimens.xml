@@ -8,6 +8,7 @@
     <dimen name="padding_xsmall">4dp</dimen>
     <dimen name="padding_xxsmall">2dp</dimen>
 
+    <dimen name="margin_xxxlarge">72dp</dimen>
     <dimen name="margin_xxlarge">32dp</dimen>
     <dimen name="margin_xlarge">24dp</dimen>
     <dimen name="margin_large">20dp</dimen>
@@ -26,6 +27,7 @@
     <dimen name="camera_button_size">90dp</dimen>
     <dimen name="page_overlap_margin">-40dp</dimen>
     <dimen name="progress_line_width">8dp</dimen>
+    <dimen name="onboarding_button_size">100dp</dimen>
 
     <!-- camera_list_item_view -->
     <dimen name="car_model_letter_spacing">-0.0127</dimen>

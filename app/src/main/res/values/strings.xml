@@ -40,6 +40,14 @@
     <string name="zero_to_sixty">0 to 60 MPH</string>
     <string name="zero_to_hundred">0 to 100 KM/H</string>
 
+    <!--Onboarding -->
+    <string name="recognize_cars">Recognize Cars</string>
+    <string name="point_the_camera">Point the camera at the front of the car for the best results in image recognition.</string>
+    <string name="discover_cars">Discover Cars</string>
+    <string name="search_and_unlock">Search and unlock the models available in the gallery. Catch them all.</string>
+    <string name="stay_updated">Stay updated</string>
+    <string name="expect_updates">Expect updates with more cars and improved recognition algorithm.</string>
+
     <!--recognition indicator labels: -->
     <string name="recognition_indicator_car_out_of_base">Car has been detected but does not belong to our data base</string>
     <string name="recognition_indicator_car_has_been_found">Car has been found</string>

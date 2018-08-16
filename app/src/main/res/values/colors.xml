@@ -8,11 +8,14 @@
 
     <color name="pink">#FF5969</color>
     <color name="orange">#FF8D3D</color>
+    <color name="orange_light">#ffac71</color>
 
     <color name="top_bar_tint">#D7E2E6</color>
     <color name="subtitle">#9BB3C6</color>
     <color name="black">#000</color>
     <color name="pin_background_color">#c0ffffff</color>
+
+    <color name="onboarding_background">#E9EEF1</color>
 
     <color name="car_list_model_text">#C4D0D6</color>
     <color name="car_list_item_background">#EEF3F5</color>

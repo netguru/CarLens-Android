@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_background"
+    tools:ignore="ContentDescription">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/viewPagerIndicator" />
+
+    <co.netguru.android.carrecognition.common.view.DotsIndicator
+        android:id="@+id/viewPagerIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nextImg"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_xxlarge"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:gravity="center"
+        app:dotsColor="@color/orange"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="5dp"
+        app:dotsSpacing="@dimen/margin_xxsmall"
+        app:dotsWidthFactor="5" />
+
+    <ImageView
+        android:id="@+id/nextImg"
+        android:layout_width="@dimen/onboarding_button_size"
+        android:layout_height="@dimen/onboarding_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/img_next" />
+</RelativeLayout>

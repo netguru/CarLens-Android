@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import co.netguru.android.carrecognition.common.extensions.startActivity
 import co.netguru.android.carrecognition.data.db.AppDatabase
 import co.netguru.android.carrecognition.data.db.DatabaseInitializer
-import co.netguru.android.carrecognition.feature.camera.CameraActivity
+import co.netguru.android.carrecognition.feature.onboarding.OnboardingActivity
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         DatabaseInitializer.checkIfInit(this, database)
                 .subscribe {
-                    startActivity<CameraActivity>()
+                    startActivity<OnboardingActivity>()
                     finish()
                 }
     }
