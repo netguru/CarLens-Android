@@ -235,7 +235,4 @@ dependencies {
 
     // HockeyApp
     implementation libs.hockeyApp
-
-    // RoundButton
-    implementation libs.roundButton
 }
