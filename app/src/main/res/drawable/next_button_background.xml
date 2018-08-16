@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple android:color="@color/light_gray"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/img_rescan" />
+    <item android:drawable="@drawable/img_next" />
 </ripple>

@@ -8,12 +8,13 @@ import dagger.android.support.AndroidSupportInjectionModule
 
 @AppScope
 @Component(
-    modules = [
-        AndroidInjectionModule::class,
-        AndroidSupportInjectionModule::class,
-        ApplicationModule::class,
-        ActivityBindingsModule::class
-    ]
+        modules = [
+            AndroidInjectionModule::class,
+            AndroidSupportInjectionModule::class,
+            ApplicationModule::class,
+            ActivityBindingsModule::class,
+            FragmentBindingsModule::class
+        ]
 )
 internal interface ApplicationComponent : AndroidInjector<App> {
     @Component.Builder

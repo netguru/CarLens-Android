@@ -143,7 +143,7 @@
         android:layout_width="@dimen/bottom_sheet_scan_button_size"
         android:layout_height="@dimen/bottom_sheet_scan_button_size"
         android:layout_marginBottom="@dimen/margin_small"
-        android:background="@drawable/rescan_button_background"
+        android:background="@drawable/scan_button_background"
         android:contentDescription="@null"
         android:elevation="@dimen/bottom_sheet_scan_button_elevation"
         app:layout_constraintBottom_toBottomOf="parent"
