@@ -9,13 +9,6 @@ import co.netguru.android.carrecognition.R
 import kotlinx.android.synthetic.main.onboarding_inside_fragment.*
 
 class OnboardingStayUpdatedFragment : Fragment() {
-    companion object {
-        val TAG = OnboardingStayUpdatedFragment::class.java.simpleName!!
-
-        fun newInstance(): OnboardingStayUpdatedFragment {
-            return OnboardingStayUpdatedFragment()
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.onboarding_inside_fragment, container, false)
@@ -26,5 +19,13 @@ class OnboardingStayUpdatedFragment : Fragment() {
         carImg.setImageResource(R.drawable.img_onboarding_3)
         titleTxt.setText(R.string.stay_updated)
         descriptionTxt.setText(R.string.expect_updates)
+    }
+
+    companion object {
+        val TAG = OnboardingStayUpdatedFragment::class.java.simpleName!!
+
+        fun newInstance(): OnboardingStayUpdatedFragment {
+            return OnboardingStayUpdatedFragment()
+        }
     }
 }

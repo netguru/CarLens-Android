@@ -37,5 +37,5 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:focusable="true"
-        android:src="@drawable/img_next" />
+        android:src="@drawable/next_button_background" />
 </RelativeLayout>
