@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:clipChildren="false">
+
+    <com.google.ar.sceneform.ArSceneView
+        android:id="@+id/arSceneView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cameraDim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/camera_dim" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/recognitionIndicator"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:contentDescription="@string/viewfinder"
+        app:layout_constraintBottom_toBottomOf="@+id/arSceneView"
+        app:layout_constraintEnd_toEndOf="@+id/arSceneView"
+        app:layout_constraintStart_toStartOf="@+id/arSceneView"
+        app:layout_constraintTop_toTopOf="@+id/arSceneView"
+        app:layout_constraintVertical_bias="0.40"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="lottie_viewfinder_animation.json"
+        app:lottie_loop="false" />
+
+    <co.netguru.android.carrecognition.feature.camera.RecognitionTextSwitcher
+        android:id="@+id/recognitionLabelSwitcher"
+        android:clipChildren="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        app:initText="@string/recognition_indicator_put_car_in_center"
+        app:layout_constraintEnd_toEndOf="@+id/recognitionIndicator"
+        app:layout_constraintStart_toStartOf="@+id/recognitionIndicator"
+        app:layout_constraintTop_toBottomOf="@+id/recognitionIndicator" />
+
+    <ImageButton
+        android:id="@+id/carListButtonMain"
+        android:layout_width="@dimen/car_list_button_size"
+        android:layout_height="@dimen/car_list_button_size"
+        android:layout_marginStart="@dimen/car_list_button_size"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
+        app:layout_constraintBottom_toBottomOf="@id/scanButtonMain"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/car_list_button_background_translucent"
+        android:background="@color/transparent" />
+
+    <Button
+        android:id="@+id/scanButtonMain"
+        android:layout_width="@dimen/bottom_sheet_scan_button_size"
+        android:layout_height="@dimen/bottom_sheet_scan_button_size"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:background="@drawable/scan_button_background"
+        android:contentDescription="@null"
+        android:elevation="@dimen/bottom_sheet_scan_button_elevation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/closeRecognitionModeButtonMain"
+        app:layout_constraintStart_toEndOf="@+id/carListButtonMain"
+        android:alpha="0"
+        android:enabled="false" />
+
+    <ImageButton
+        android:id="@+id/closeRecognitionModeButtonMain"
+        android:layout_width="@dimen/car_list_button_size"
+        android:layout_height="@dimen/car_list_button_size"
+        android:layout_marginEnd="@dimen/car_list_button_size"
+        android:clickable="false"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/scanButtonMain"
+        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/close_recognition_button_background_translucent"
+        android:background="@color/transparent"
+        android:alpha="0" />
+
+</android.support.constraint.ConstraintLayout>

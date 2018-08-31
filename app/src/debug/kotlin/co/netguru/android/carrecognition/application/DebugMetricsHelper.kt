@@ -25,6 +25,9 @@ import javax.inject.Inject
  *
  * ## Release type tools:
  * - CrashManager
+ *
+ * ## Staging type tools:
+ * - CrashManager
  */
 @AppScope
 class DebugMetricsHelper @Inject constructor() {

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GradientProgress">
+        <attr name="gradientStart" format="color" />
+        <attr name="gradientEnd" format="color" />
+        <attr name="backCircleColor" format="color" />
+        <attr name="minAngle" format="float" />
+        <attr name="maxSweep" format="float" />
+        <attr name="lineWidth" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="RecognitionTextSwitcher">
+        <attr name="initText" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="HorizontalProgress">
+        <attr name="horizontalLabelTextSize" format="dimension" />
+        <attr name="horizontalValueTextSize" format="dimension" />
+        <attr name="horizontalProgressHeight" format="dimension" />
+        <attr name="horizontalProgressWidth" format="dimension" />
+        <attr name="horizontalProgressMargin" format="dimension" />
+        <attr name="horizontalLabel" format="string" />
+    </declare-styleable>
+    <declare-styleable name="CircleProgress">
+        <attr name="circleValueTextSize" format="dimension" />
+        <attr name="circleProgressSize" format="dimension" />
+        <attr name="circleValueBottomMargin" format="dimension" />
+        <attr name="circleLabelBottomMargin" format="dimension" />
+        <attr name="circleProgressBottomPadding" format="dimension" />
+        <attr name="circleLabel" format="string" />
+    </declare-styleable>
+
+    <!--ViewPager dots indicator-->
+
+    <attr format="color" name="dotsColor" />
+    <attr format="color" name="dotsStrokeColor" />
+    <attr format="dimension" name="dotsSize" />
+    <attr format="float" name="dotsWidthFactor" />
+    <attr format="dimension" name="dotsSpacing" />
+    <attr format="dimension" name="dotsCornerRadius" />
+    <attr format="dimension" name="dotsStrokeWidth" />
+    <attr format="float" name="stiffness" />
+    <attr format="float" name="dampingRatio" />
+
+    <declare-styleable name="DotsIndicator">
+        <attr name="dotsColor" />
+        <attr name="dotsSize" />
+        <attr name="dotsWidthFactor" />
+        <attr name="dotsSpacing" />
+        <attr name="dotsCornerRadius" />
+    </declare-styleable>
+
+</resources>

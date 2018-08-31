@@ -2,7 +2,7 @@
 buildscript {
 
     ext {
-        kotlinVersion = '1.2.41'
+        kotlinVersion = '1.2.60'
     }
     repositories {
         jcenter()
@@ -13,12 +13,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath "com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2"
         classpath "com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:0.6"
         classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.18.0'
         // There is a problem with this plugin when using Gradle Plugin >= 3.0.0-alpha3
         // https://jira.sonarsource.com/browse/SONARGRADL-41
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.1"

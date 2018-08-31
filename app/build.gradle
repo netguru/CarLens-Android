@@ -12,7 +12,6 @@ apply from: '../buildsystem/sonarqube.gradle'
 ext {
 
     secrets = [
-            // define your app secrets, for example:
             hockeyAppId: keyProperty("HOCKEY_APP_ID")
     ]
 }
@@ -23,12 +22,16 @@ android {
 
     defaultConfig {
         applicationId "co.netguru.android.carrecognition"
-        minSdkVersion 18
+        minSdkVersion 24
         targetSdkVersion 27
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
         versionName '0.1.0'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                HOCKEY_APP_ID    : secrets.hockeyAppId
+        ]
     }
 
     buildTypes {
@@ -43,6 +46,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro', 'proguard-rules-test.pro'
         }
+        staging {
+            versionNameSuffix "-STAGING"
+            applicationIdSuffix ".staging"
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
         release {
             debuggable false
             minifyEnabled true
@@ -54,37 +68,8 @@ android {
         }
     }
 
-    flavorDimensions "api"
-
-    productFlavors {
-        mock {
-            versionNameSuffix "-MOCK"
-            applicationIdSuffix ".mock"
-            dimension "api"
-
-            // put your secrets in the BuildConfig.java class, for example:
-            buildConfigField 'String', 'HOCKEY_APP_ID', "\"${secrets.hockeyAppId}\""
-            buildConfigField 'String', 'baseUrl', "\"https://dev.sighthoundapi.com/\""
-        }
-        production {
-            dimension "api"
-            // inherit
-        }
-    }
-
-    variantFilter { variant ->
-        def buildName = variant.buildType.name
-        def flavorName = variant.getFlavors().get(0).name
-        // remove unnecessary variants
-        ['release'].each {
-            if (buildName == it) {
-                ['mock'].each {
-                    if (flavorName == it) {
-                        variant.setIgnore(true)
-                    }
-                }
-            }
-        }
+    aaptOptions {
+        noCompress '.tflite'
     }
 
     // Always show the result of every unit test, even if it passes.
@@ -105,7 +90,7 @@ android {
     }
 
     junitJacoco {
-        jacocoVersion='0.7.9'
+        jacocoVersion = '0.7.9'
         excludes = ['android/databinding/**/*.class',
                     '**/android/databinding/*Binding.class',
                     '**/BR.*',
@@ -129,6 +114,11 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -160,6 +150,7 @@ dependencies {
     // Support
     implementation libs.appCompat
     implementation libs.recyclerView
+    implementation libs.cardView
     implementation libs.constraintLayout
     implementation libs.design
 
@@ -179,7 +170,7 @@ dependencies {
 
     //RxJava
     implementation libs.rxJava2
-    implementation (libs.rxKotlin2)  {
+    implementation(libs.rxKotlin2) {
         exclude module: 'rxjava'
         exclude module: 'kotlin-stdlib'
     }
@@ -194,12 +185,21 @@ dependencies {
     implementation libs.retrofitGsonConverter
     implementation libs.retrofitRxJava2Adapter
 
+    //Gson
+    implementation libs.gson
+
     // PaperParcel
     implementation libs.paperParcel
     kapt proc.paperParcel
 
     // Timber
     implementation libs.timber
+
+    //Room
+    implementation libs.room
+    implementation libs.roomRx
+    kapt proc.roomAnnotation
+    testImplementation test.roomTest
 
     // Stetho
     debugImplementation libs.stetho
@@ -218,11 +218,21 @@ dependencies {
     testImplementation test.mockito
     testImplementation test.mockitoKotlin
 
-    implementation libs.cameraview
+    implementation libs.exifinterface
+    implementation libs.tensorflow
 
     // Permission Dispatcher
     implementation(libs.permissiondispatcher) {
         exclude module: "support-v13"
     }
     kapt proc.permissiondispatcher
+
+    // Sceneform and arcore
+    implementation libs.sceneform
+
+    // Lottie
+    implementation libs.lottie
+
+    // HockeyApp
+    implementation libs.hockeyApp
 }

@@ -1,4 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="padding_xxlarge">32dp</dimen>
+    <dimen name="padding_xlarge">24dp</dimen>
+    <dimen name="padding_large">20dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_xsmall">4dp</dimen>
+    <dimen name="padding_xxsmall">2dp</dimen>
+
+    <dimen name="margin_xxxlarge">72dp</dimen>
+    <dimen name="margin_xxlarge">32dp</dimen>
+    <dimen name="margin_xlarge">24dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_xsmall">4dp</dimen>
+    <dimen name="margin_xxsmall">2dp</dimen>
+
+    <dimen name="default_toolbar_title_size">23sp</dimen>
+
+    <dimen name="corner_radius">20dp</dimen>
+
+    <dimen name="car_list_button_size">45dp</dimen>
+    <dimen name="progress_bar_indicator_size">68dp</dimen>
+    <dimen name="card_gradient_progress_size">110dp</dimen>
+    <dimen name="camera_button_size">90dp</dimen>
+    <dimen name="page_overlap_margin">-40dp</dimen>
+    <dimen name="progress_line_width">8dp</dimen>
+    <dimen name="onboarding_button_size">100dp</dimen>
+
+    <!-- camera_list_item_view -->
+    <dimen name="car_model_letter_spacing">-0.0127</dimen>
+    <dimen name="car_model_text_size">100sp</dimen>
+
+    <dimen name="car_image_height">160dp</dimen>
+    <dimen name="car_margin_top">49dp</dimen>
+
+    <dimen name="car_details_card_elevation">5dp</dimen>
+    <dimen name="car_details_card_cornerRadius">10dp</dimen>
+
+    <dimen name="car_progress_width">20.0</dimen>
+    <dimen name="car_progress_value_text_size">20sp</dimen>
+
+    <dimen name="car_details_progress_height">38dp</dimen>
+    <dimen name="car_details_label_text_spacing">-0.0465</dimen>
+
+    <dimen name="car_details_stars_divider_height">1dp</dimen>
+    <dimen name="car_details_stars_width">80dp</dimen>
+    <dimen name="car_details_stars_height">15dp</dimen>
+
+    <dimen name="car_details_description_spacing">1.2</dimen>
+    <dimen name="car_details_description_size">12sp</dimen>
+
+    <dimen name="car_details_progress_label_text_size">12sp</dimen>
+    <dimen name="car_details_progress_value_text_size">20sp</dimen>
+
+    <dimen name="car_details_logo_height">50dp</dimen>
+    <dimen name="car_details_logo_margin">-25dp</dimen>
+
+    <!-- camera_activity_bottom_sheet.xml -->
+    <dimen name="bottom_sheet_horizontal_margin">39dp</dimen>
+    <dimen name="bottom_sheet_top_margin">37dp</dimen>
+    <dimen name="bottom_sheet_top_meters_margin">120dp</dimen>
+
+    <dimen name="bottom_sheet_width">60dp</dimen>
+    <dimen name="bottom_sheet_height">3dp</dimen>
+
+    <dimen name="bottom_sheet_gradient_progress_size">126dp</dimen>
+    <dimen name="bottom_sheet_gradient_text_size">20sp</dimen>
+
+    <dimen name="bottom_sheet_car_model_text_size">32sp</dimen>
+    <dimen name="bottom_sheet_car_image_width">138dp</dimen>
+    <dimen name="bottom_sheet_car_image_height">77dp</dimen>
+
+    <dimen name="bottom_sheet_white_button_size">45dp</dimen>
+    <dimen name="bottom_sheet_white_button_ripple_size">90dp</dimen>
+    <dimen name="bottom_sheet_white_button_elevation">10dp</dimen>
+    <dimen name="bottom_sheet_white_button_horizontal_margin">45dp</dimen>
+    
+    <dimen name="bottom_sheet_scan_button_size">90dp</dimen>
+    <dimen name="bottom_sheet_scan_button_elevation">10dp</dimen>
+    
+    <dimen name="bottom_sheet_horizontal_progress_width">125dp</dimen>
+    <dimen name="bottom_sheet_horizontal_progress_height">26dp</dimen>
+    <dimen name="bottom_sheet_horizontal_progress_text_size">18sp</dimen>
+    <dimen name="bottom_sheet_horizontal_progress_label_text_size">12sp</dimen>
+
+    <!-- circle_progress_bar_with_label -->
+    <dimen name="circle_progress_bar_label_text_size">20sp</dimen>
 
 </resources>
