@@ -1,10 +1,12 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.graphics.Bitmap
 import android.media.Image
 import android.support.annotation.StringRes
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.LimitedList
+import co.netguru.android.carrecognition.common.extensions.ImageUtils
 import co.netguru.android.carrecognition.common.extensions.applyComputationSchedulers
 import co.netguru.android.carrecognition.common.extensions.applyIoSchedulers
 import co.netguru.android.carrecognition.data.db.AppDatabase
@@ -14,6 +16,8 @@ import co.netguru.android.carrecognition.data.recognizer.TFlowRecognizer
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
@@ -23,9 +27,11 @@ import javax.inject.Inject
 import kotlin.math.sqrt
 
 @ActivityScope
-class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowRecognizer,
-                                          private val database: AppDatabase)
-    : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
+class CameraPresenter @Inject constructor(
+    private val tFlowRecognizer: TFlowRecognizer,
+    private val imageUtils: ImageUtils,
+    private val database: AppDatabase
+) : MvpBasePresenter<CameraContract.View>(), CameraContract.Presenter {
 
     enum class RecognitionLabel(@StringRes val labelId: Int) {
         INIT(R.string.recognition_indicator_put_car_in_center),
@@ -48,11 +54,11 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
     private fun getAverageBestRecognition(): Recognition {
         val best = recognitionData.toList()
-                .toMultiMap { Pair(it.title, it.confidence) }
-                .mapValues { (_, value) -> value.average() }
-                .toList()
-                .sortedByDescending { it.second }
-                .firstOrNull()
+            .toMultiMap { Pair(it.title, it.confidence) }
+            .mapValues { (_, value) -> value.average() }
+            .toList()
+            .sortedByDescending { it.second }
+            .firstOrNull()
         return Recognition(best?.first ?: Car.NOT_A_CAR, best?.second?.toFloat() ?: 0.0f)
     }
 
@@ -83,16 +89,18 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
 
                 //get first anchor that distance is lower than MINIMUM_DISTANCE_BETWEEN_ANCHORS
                 val isLegal = anchors.asSequence()
-                        .map {
-                            val pose =
-                                    it.pose //cache pose (anchor.pose is mutable and can be changed by ar core)
-                            val dx = pose.tx() - hitPoint.hitPose.tx()
-                            val dy = pose.ty() - hitPoint.hitPose.ty()
-                            val dz = pose.tz() - hitPoint.hitPose.tz()
-                            sqrt(dx * dx + dy * dy + dz * dz) //map into distance from anchor to hitpoint
-                        }
-                        .filter { it < MINIMUM_DISTANCE_BETWEEN_ANCHORS }
-                        .firstOrNull()
+                    .map {
+                        val pose =
+                            it.pose //cache pose (anchor.pose is mutable and can be changed by ar core)
+                        val dx = pose.tx() - hitPoint.hitPose.tx()
+                        val dy = pose.ty() - hitPoint.hitPose.ty()
+                        val dz = pose.tz() - hitPoint.hitPose.tz()
+                        sqrt(
+                            dx * dx + dy * dy + dz * dz
+                        ) //map into distance from anchor to hitpoint
+                    }
+                    .filter { it < MINIMUM_DISTANCE_BETWEEN_ANCHORS }
+                    .firstOrNull()
 
                 //if anchor does not exits than we can add new anchor
                 if (isLegal == null) {
@@ -108,9 +116,9 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         val car = getAverageBestRecognition().title
         if (car != Car.NOT_A_CAR && car != Car.OTHER_CAR) {
             compositeDisposable.add(
-                    database.carDao().findById(car.id)
-                            .applyIoSchedulers()
-                            .subscribe { anchors += view.createAnchor(hitPoint, it) })
+                database.carDao().findById(car.id)
+                    .applyIoSchedulers()
+                    .subscribe { anchors += view.createAnchor(hitPoint, it) })
         } else {
             Timber.d("tried to add anchor to NOT_A_CAR or OTHER_CAR ")
         }
@@ -156,21 +164,39 @@ class CameraPresenter @Inject constructor(private val tFlowRecognizer: TFlowReco
         }
         processing = true
 
-        compositeDisposable += tFlowRecognizer.classify(image)
-                .applyComputationSchedulers()
-                .doFinally {
-                    image.close()
-                    processing = false
+        compositeDisposable += Single.just(image)
+            .map { imageUtils.prepareBitmap(image, TFlowRecognizer.INPUT_SIZE) }
+            .doOnSuccess { saveImageInExternalStorage(it) }
+            .flatMap { tFlowRecognizer.classify(it, TFlowRecognizer.INPUT_SIZE) }
+            .applyComputationSchedulers()
+            .doFinally {
+                image.close()
+                processing = false
+            }
+            .subscribeBy(
+                onSuccess = { result ->
+                    recognitionData.addAll(result)
+                    onFrameProcessed()
+                },
+                onError = { error ->
+                    Timber.e(error)
                 }
-                .subscribeBy(
-                        onSuccess = { result ->
-                            recognitionData.addAll(result)
-                            onFrameProcessed()
-                        },
-                        onError = { error ->
-                            Timber.e(error)
-                        }
-                )
+            )
+    }
+
+    private fun saveImageInExternalStorage(bitmap: Bitmap) {
+        compositeDisposable += Completable.fromAction {
+            imageUtils.saveImageInExternalStorage(bitmap)
+        }
+            .applyComputationSchedulers()
+            .subscribeBy(
+                onComplete = {
+                    Timber.d("Image saved")
+                },
+                onError = {
+                    Timber.e(it)
+                }
+            )
     }
 
     private fun onFrameProcessed() {
