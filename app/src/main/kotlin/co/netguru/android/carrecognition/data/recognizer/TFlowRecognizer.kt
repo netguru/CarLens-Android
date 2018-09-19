@@ -19,7 +19,7 @@ class TFlowRecognizer @Inject constructor(
 
         internal const val INPUT_SIZE = 224
 
-        private const val INPUT_LAYER_NAME = "Placeholder"
+        private const val INPUT_LAYER_NAME = "input"
         private const val OUTPUT_LAYER_NAME = "final_result"
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128f
