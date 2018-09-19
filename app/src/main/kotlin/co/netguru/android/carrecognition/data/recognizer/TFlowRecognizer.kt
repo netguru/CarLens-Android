@@ -21,7 +21,7 @@ class TFlowRecognizer @Inject constructor(
     companion object {
         private const val FRAME_ROTATION = -90
 
-        private const val INPUT_LAYER_NAME = "Placeholder"
+        private const val INPUT_LAYER_NAME = "input"
         private const val OUTPUT_LAYER_NAME = "final_result"
         private const val INPUT_SIZE = 224
         private const val IMAGE_MEAN = 128
