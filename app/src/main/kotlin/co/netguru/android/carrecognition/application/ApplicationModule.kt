@@ -17,7 +17,7 @@ import javax.inject.Named
 class ApplicationModule {
 
     companion object {
-        const val MODEL_PATH = "cars_model.pb"
+        const val MODEL_PATH = "model_224x224.pb"
         const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"
         const val DATABASE_NAME = "cars.db"

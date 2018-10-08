@@ -19,13 +19,14 @@ class TFlowRecognizer @Inject constructor(
 
         internal const val INPUT_SIZE = 224
 
-        private const val INPUT_LAYER_NAME = "input"
-        private const val OUTPUT_LAYER_NAME = "final_result"
+        private const val INPUT_LAYER_NAME = "input_00"
+        private const val OUTPUT_LAYER_NAME = "output_00/Softmax"
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128f
+        private const val IMAGE_MAX = 256f
 
         private const val NUMBER_OF_IMAGES = 1L
-        private const val NUMBER_OF_CHANNELS = 3
+        private const val NUMBER_OF_CHANNELS = 1
 
         private const val CONFIDENCE_THRESHOLD = 0.1f
     }
@@ -50,9 +51,11 @@ class TFlowRecognizer @Inject constructor(
 
     private fun prepareFrameColorValues(bitmap: Bitmap, inputSize: Int): FloatArray {
         bitmap.getPixels(inputSize * inputSize).forEachIndexed { index, intValue ->
-            colorFloatValues[index * 3 + 0] = ((intValue shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 1] = ((intValue shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 2] = ((intValue and 0xFF) - IMAGE_MEAN) / IMAGE_STD
+            val channel1 = (intValue shr 16 and 0xFF)
+            val channel2 = (intValue shr 8 and 0xFF)
+            val channel3 = (intValue and 0xFF)
+            val grayscale = ((channel1+channel2+channel3)/3f)/ IMAGE_MAX
+            colorFloatValues[index] = grayscale
         }
         return colorFloatValues
     }
