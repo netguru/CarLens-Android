@@ -21,9 +21,9 @@ class TFModule {
         const val RECOGNIZER = "recognizer"
 
         const val DETECTOR_INPUT_LAYER_NAME = "input_00"
-        const val DETECOTOR_OUTPUT_LAYER_NAME = "output_00/Softmax"
-        const val RECOGNIZER_INPUT_LAYER_NAME = "input_5:0"
-        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result"
+        const val DETECTOR_OUTPUT_LAYER_NAME = "output_00/Softmax"
+        const val RECOGNIZER_INPUT_LAYER_NAME = "input_5_1"
+        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result_4"
 
         const val INPUT_SIZE = 224
         const val NR_OF_CHANNELS = 1
@@ -36,7 +36,7 @@ class TFModule {
         return TFWrapper(
             tf = TensorFlowInferenceInterface(context.assets, DETECTOR_MODEL_PATH),
             inputLayerName = DETECTOR_INPUT_LAYER_NAME,
-            outputLayerName = DETECOTOR_OUTPUT_LAYER_NAME,
+            outputLayerName = DETECTOR_OUTPUT_LAYER_NAME,
             inputSize = INPUT_SIZE,
             nrOfChannels = NR_OF_CHANNELS
         )

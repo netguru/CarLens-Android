@@ -127,9 +127,9 @@ class CameraPresenter @Inject constructor(
 
     override fun frameUpdated() {
         if (!processing) {
-            ifViewAttached {
-                it.acquireFrame()?.let {
-                    processFrame(it)
+            ifViewAttached { view ->
+                view.acquireFrame()?.let { image ->
+                    processFrame(image)
                 }
             }
         }
@@ -176,8 +176,7 @@ class CameraPresenter @Inject constructor(
             }
             .subscribeBy(
                 onSuccess = { result ->
-                    recognitionData.add(result)
-                    onFrameProcessed()
+                    onFrameProcessed(result)
                 },
                 onError = { error ->
                     Timber.e(error)
@@ -200,31 +199,31 @@ class CameraPresenter @Inject constructor(
             )
     }
 
-    private fun onFrameProcessed() {
-        if (!recognitionData.isFull()) return
+    private fun onFrameProcessed(result: Recognition) {
+        if (result.title == Car.NOT_A_CAR) {
+            ifViewAttached {
+                it.updateViewFinder(0f)
+                it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
+            }
+        } else {
+            recognitionData.add(result)
+            if (!recognitionData.isFull()) return
 
-        ifViewAttached {
-            val bestRecognition = getAverageBestRecognition()
+            ifViewAttached {
+                val bestRecognition = getAverageBestRecognition()
+                it.updateViewFinder(bestRecognition.confidence)
 
-            when (bestRecognition.title) {
-                Car.NOT_A_CAR -> {
-                    it.updateViewFinder(0f)
-                    it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
-                }
-                Car.OTHER_CAR -> {
-                    it.updateViewFinder(0f)
-                    it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND_UNKNOWN)
-                }
-                else -> {
-                    it.updateViewFinder(bestRecognition.confidence)
-                    when {
-                        bestRecognition.confidence < RECOGNITION_THRESHOLD_MIDDLE -> {
-                            it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
-                        }
-                        bestRecognition.confidence > RECOGNITION_THRESHOLD_MIDDLE && bestRecognition.confidence < RECOGNITION_THRESHOLD -> {
-                            it.updateRecognitionIndicatorLabel(RecognitionLabel.IN_PROGRESS)
-                        }
-                        else -> {
+                when {
+                    bestRecognition.confidence < RECOGNITION_THRESHOLD_MIDDLE -> {
+                        it.updateRecognitionIndicatorLabel(RecognitionLabel.INIT)
+                    }
+                    bestRecognition.confidence > RECOGNITION_THRESHOLD_MIDDLE && bestRecognition.confidence < RECOGNITION_THRESHOLD -> {
+                        it.updateRecognitionIndicatorLabel(RecognitionLabel.IN_PROGRESS)
+                    }
+                    else -> {
+                        if (bestRecognition.title == Car.OTHER_CAR) {
+                            it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND_UNKNOWN)
+                        } else {
                             it.frameStreamEnabled(false)
                             getModelAndShowDetails(bestRecognition.title, it)
                             it.updateRecognitionIndicatorLabel(RecognitionLabel.FOUND)

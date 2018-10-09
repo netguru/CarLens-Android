@@ -1,18 +1,10 @@
 package co.netguru.android.carrecognition.data.recognizer
 
 import android.graphics.Bitmap
-import co.netguru.android.carrecognition.application.ApplicationModule
 import co.netguru.android.carrecognition.application.TFModule
-import co.netguru.android.carrecognition.application.TFModule.Companion.DETECOTOR_OUTPUT_LAYER_NAME
-import co.netguru.android.carrecognition.application.TFModule.Companion.DETECTOR_INPUT_LAYER_NAME
-import co.netguru.android.carrecognition.application.TFModule.Companion.RECOGNIZER_INPUT_LAYER_NAME
-import co.netguru.android.carrecognition.application.TFModule.Companion.RECOGNIZER_OUTPUT_LAYER_NAME
 import co.netguru.android.carrecognition.application.scope.AppScope
-import co.netguru.android.carrecognition.common.extensions.getOutputSize
 import co.netguru.android.carrecognition.common.extensions.map
 import io.reactivex.Single
-import org.tensorflow.contrib.android.TensorFlowInferenceInterface
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
