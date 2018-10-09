@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.media.Image
 import android.support.annotation.StringRes
 import co.netguru.android.carrecognition.R
+import co.netguru.android.carrecognition.application.TFModule
 import co.netguru.android.carrecognition.application.scope.ActivityScope
 import co.netguru.android.carrecognition.common.LimitedList
 import co.netguru.android.carrecognition.common.extensions.ImageUtils
@@ -165,9 +166,9 @@ class CameraPresenter @Inject constructor(
         processing = true
 
         compositeDisposable += Single.just(image)
-            .map { imageUtils.prepareBitmap(image, TFlowRecognizer.INPUT_SIZE) }
+            .map { imageUtils.prepareBitmap(image, TFModule.INPUT_SIZE) }
             .doOnSuccess { saveImageInExternalStorage(it) }
-            .flatMap { tFlowRecognizer.classify(it, TFlowRecognizer.INPUT_SIZE) }
+            .flatMap { tFlowRecognizer.classify(it, TFModule.INPUT_SIZE) }
             .applyComputationSchedulers()
             .doFinally {
                 image.close()
