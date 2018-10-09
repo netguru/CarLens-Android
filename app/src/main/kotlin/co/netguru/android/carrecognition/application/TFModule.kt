@@ -14,7 +14,7 @@ class TFModule {
 
     companion object {
         const val DETECTOR_MODEL_PATH = "model_android_224x224.pb"
-        const val RECOGNIZER_MODEL_PATH = "model_android_224x224.pb"
+        const val RECOGNIZER_MODEL_PATH = "CarLensModel.pb"
         const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"
         const val DETECTOR = "detector"
@@ -22,8 +22,8 @@ class TFModule {
 
         const val DETECTOR_INPUT_LAYER_NAME = "input_00"
         const val DETECOTOR_OUTPUT_LAYER_NAME = "output_00/Softmax"
-        const val RECOGNIZER_INPUT_LAYER_NAME = "input_00"
-        const val RECOGNIZER_OUTPUT_LAYER_NAME = "output_00/Softmax"
+        const val RECOGNIZER_INPUT_LAYER_NAME = "input_5:0"
+        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result"
 
         const val INPUT_SIZE = 224
         const val NR_OF_CHANNELS = 1
