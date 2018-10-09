@@ -17,10 +17,13 @@ import javax.inject.Named
 class ApplicationModule {
 
     companion object {
-        const val MODEL_PATH = "model_224x224.pb"
+        const val DETECTOR_MODEL_PATH = "model_android_224x224.pb"
+        const val RECOGNIZER_MODEL_PATH = "model_android_224x224.pb"
         const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"
         const val DATABASE_NAME = "cars.db"
+        const val DETECTOR = "detector"
+        const val RECOGNIZER = "recognizer"
     }
 
     @Provides
@@ -33,8 +36,16 @@ class ApplicationModule {
 
     @Provides
     @AppScope
-    fun provideTensorFlow(context: Context): TensorFlowInferenceInterface {
-        return TensorFlowInferenceInterface(context.assets, MODEL_PATH)
+    @Named(DETECTOR)
+    fun provideDetector(context: Context): TensorFlowInferenceInterface {
+        return TensorFlowInferenceInterface(context.assets, DETECTOR_MODEL_PATH)
+    }
+
+    @Provides
+    @AppScope
+    @Named(RECOGNIZER)
+    fun provideRecognizer(context: Context): TensorFlowInferenceInterface {
+        return TensorFlowInferenceInterface(context.assets, RECOGNIZER_MODEL_PATH)
     }
 
     @Provides

@@ -175,7 +175,7 @@ class CameraPresenter @Inject constructor(
             }
             .subscribeBy(
                 onSuccess = { result ->
-                    recognitionData.addAll(result)
+                    recognitionData.add(result)
                     onFrameProcessed()
                 },
                 onError = { error ->
