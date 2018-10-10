@@ -7,12 +7,14 @@ import android.support.design.widget.BottomSheetBehavior
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
+import co.netguru.android.carrecognition.BuildConfig
 import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.common.extensions.fadeIn
 import co.netguru.android.carrecognition.common.extensions.fadeOut
 import co.netguru.android.carrecognition.data.ar.ArActivityUtils
 import co.netguru.android.carrecognition.data.ar.StickerNode
 import co.netguru.android.carrecognition.data.db.Cars
+import co.netguru.android.carrecognition.data.recognizer.Recognition
 import co.netguru.android.carrecognition.feature.cars.CarListActivity
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
@@ -260,6 +262,13 @@ class CameraActivity : MvpActivity<CameraContract.View, CameraContract.Presenter
 
     override fun showCouldNotAttachPinError() {
         Toast.makeText(this, R.string.could_not_attach_pin_error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showDebugResult(result: Recognition) {
+        if(BuildConfig.DEBUG){
+            debugResult.visibility = View.VISIBLE
+            debugResult.text = result.toString()
+        }
     }
 
     companion object {

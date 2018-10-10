@@ -1,6 +1,5 @@
 package co.netguru.android.carrecognition.data.recognizer
 
-import co.netguru.android.carrecognition.common.extensions.getOutputSize
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface
 
 class TFWrapper(
@@ -8,6 +7,7 @@ class TFWrapper(
     private val inputLayerName: String,
     private val outputLayerName: String,
     private val inputSize: Int,
+    private val outputSize: Int,
     private val nrOfChannels: Int
 ) {
 
@@ -15,7 +15,7 @@ class TFWrapper(
         private const val NUMBER_OF_IMAGES = 1L
     }
 
-    private val output = FloatArray(tf.getOutputSize(outputLayerName))
+    private val output = FloatArray(outputSize)
 
     fun run(colorFloatValues: FloatArray): Pair<Int, Float> {
         tf.feed(

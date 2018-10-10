@@ -167,7 +167,7 @@ class CameraPresenter @Inject constructor(
 
         compositeDisposable += Single.just(image)
             .map { imageUtils.prepareBitmap(image, TFModule.INPUT_SIZE) }
-            .doOnSuccess { saveImageInExternalStorage(it) }
+            //.doOnSuccess { saveImageInExternalStorage(it) }
             .flatMap { tFlowRecognizer.classify(it, TFModule.INPUT_SIZE) }
             .applyComputationSchedulers()
             .doFinally {
@@ -200,6 +200,9 @@ class CameraPresenter @Inject constructor(
     }
 
     private fun onFrameProcessed(result: Recognition) {
+        ifViewAttached {
+            it.showDebugResult(result)
+        }
         if (result.title == Car.NOT_A_CAR) {
             ifViewAttached {
                 it.updateViewFinder(0f)

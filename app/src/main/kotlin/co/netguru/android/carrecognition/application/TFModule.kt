@@ -13,17 +13,19 @@ import javax.inject.Named
 class TFModule {
 
     companion object {
-        const val DETECTOR_MODEL_PATH = "model_android_224x224.pb"
-        const val RECOGNIZER_MODEL_PATH = "CarLensModel.pb"
+
+        const val DETECTOR = "detector"
+        const val DETECTOR_MODEL_PATH = "CarDetectorModel_181010_1150.pb"
+        const val DETECTOR_INPUT_LAYER_NAME = "input_0"
+        const val DETECTOR_OUTPUT_LAYER_NAME = "final_result_0/Softmax"
+
+        const val RECOGNIZER = "recognizer"
+        const val RECOGNIZER_MODEL_PATH = "CarClassificator_20181010_1251.pb"
+        const val RECOGNIZER_INPUT_LAYER_NAME = "input_1_1:0"
+        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result_0:0"
+
         const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"
-        const val DETECTOR = "detector"
-        const val RECOGNIZER = "recognizer"
-
-        const val DETECTOR_INPUT_LAYER_NAME = "input_00"
-        const val DETECTOR_OUTPUT_LAYER_NAME = "output_00/Softmax"
-        const val RECOGNIZER_INPUT_LAYER_NAME = "input_5_1"
-        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result_4"
 
         const val INPUT_SIZE = 224
         const val NR_OF_CHANNELS = 1
@@ -38,6 +40,7 @@ class TFModule {
             inputLayerName = DETECTOR_INPUT_LAYER_NAME,
             outputLayerName = DETECTOR_OUTPUT_LAYER_NAME,
             inputSize = INPUT_SIZE,
+            outputSize = 2,
             nrOfChannels = NR_OF_CHANNELS
         )
     }
@@ -51,6 +54,7 @@ class TFModule {
             inputLayerName = RECOGNIZER_INPUT_LAYER_NAME,
             outputLayerName = RECOGNIZER_OUTPUT_LAYER_NAME,
             inputSize = INPUT_SIZE,
+            outputSize = 6,
             nrOfChannels = NR_OF_CHANNELS
         )
     }
