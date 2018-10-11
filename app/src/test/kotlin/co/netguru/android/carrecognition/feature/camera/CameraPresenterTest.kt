@@ -263,7 +263,7 @@ class CameraPresenterTest {
     private fun generateRecognitions(recognition: Recognition) {
         val frame = mock<Image>()
         tflow.stub {
-            on { classify(any(), any()) } doReturn Single.just(recognition)
+            on { classify(any()) } doReturn Single.just(recognition)
         }
         view.stub {
             on { acquireFrame() } doReturn frame

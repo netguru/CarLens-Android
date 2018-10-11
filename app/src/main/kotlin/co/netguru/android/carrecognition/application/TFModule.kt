@@ -20,9 +20,9 @@ class TFModule {
         const val DETECTOR_OUTPUT_LAYER_NAME = "final_result_0/Softmax"
 
         const val RECOGNIZER = "recognizer"
-        const val RECOGNIZER_MODEL_PATH = "CarClassificator_20181010_1251.pb"
-        const val RECOGNIZER_INPUT_LAYER_NAME = "input_1_1:0"
-        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result_0:0"
+        const val RECOGNIZER_MODEL_PATH = "CarClassifierModel_181011_1028.pb"
+        const val RECOGNIZER_INPUT_LAYER_NAME = "input_0"
+        const val RECOGNIZER_OUTPUT_LAYER_NAME = "final_result_0/Softmax"
 
         const val LABELS_PATH = "cars_labels.txt"
         const val LABELS_BINDING = "labels"

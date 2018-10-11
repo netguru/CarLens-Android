@@ -22,20 +22,18 @@ class TFlowRecognizer @Inject constructor(
         private const val IMAGE_MAX = 256f
     }
 
-    private val colorFloatValues = FloatArray(TFModule.INPUT_SIZE * TFModule.INPUT_SIZE * 3)
     private val grayScaleFloatValues = FloatArray(TFModule.INPUT_SIZE*TFModule.INPUT_SIZE)
 
-    fun classify(bitmap: Bitmap, inputSize: Int): Single<Recognition> {
+    fun classify(bitmap: Bitmap): Single<Recognition> {
         return Single.fromCallable {
-            prepareFrameColorValues(bitmap, inputSize)
-
+            prepareFrameGrayscaleValues(bitmap, TFModule.INPUT_SIZE)
             return@fromCallable detector
-                .run(prepareFrameGrayscaleValues(bitmap, TFModule.INPUT_SIZE))
+                .run(grayScaleFloatValues)
                 .map { (index, confidence) ->
                     if (index == 0) {
                         Recognition(Car.NOT_A_CAR, confidence)
                     } else {
-                        recognizer.run(prepareFrameGrayscaleValues(bitmap, TFModule.INPUT_SIZE))
+                        recognizer.run(grayScaleFloatValues)
                             .map {
                                 Recognition(Car.of(labels[it.first]), it.second)
                             }
@@ -53,15 +51,6 @@ class TFlowRecognizer @Inject constructor(
             grayScaleFloatValues[index] = grayScale
         }
         return grayScaleFloatValues
-    }
-
-    private fun prepareFrameColorValues(bitmap: Bitmap, inputSize: Int): FloatArray {
-        bitmap.getPixels(inputSize * inputSize).forEachIndexed { index, intValue ->
-            colorFloatValues[index * 3 + 0] = ((intValue shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 1] = ((intValue shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 2] = ((intValue and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-        }
-        return colorFloatValues
     }
 
     private fun Bitmap.getPixels(size: Int): IntArray {

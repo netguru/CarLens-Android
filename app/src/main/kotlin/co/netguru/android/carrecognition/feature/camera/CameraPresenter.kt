@@ -168,7 +168,7 @@ class CameraPresenter @Inject constructor(
         compositeDisposable += Single.just(image)
             .map { imageUtils.prepareBitmap(image, TFModule.INPUT_SIZE) }
             //.doOnSuccess { saveImageInExternalStorage(it) }
-            .flatMap { tFlowRecognizer.classify(it, TFModule.INPUT_SIZE) }
+            .flatMap { tFlowRecognizer.classify(it) }
             .applyComputationSchedulers()
             .doFinally {
                 image.close()
