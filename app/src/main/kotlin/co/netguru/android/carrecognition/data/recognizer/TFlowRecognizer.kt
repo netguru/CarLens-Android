@@ -1,6 +1,7 @@
 package co.netguru.android.carrecognition.data.recognizer
 
 import android.graphics.Bitmap
+import co.netguru.android.carrecognition.R
 import co.netguru.android.carrecognition.application.TFModule
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.common.extensions.map
@@ -19,7 +20,7 @@ class TFlowRecognizer @Inject constructor(
     companion object {
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128f
-        private const val IMAGE_MAX = 256f
+        private const val IMAGE_MAX = 255f
     }
 
     private val grayScaleFloatValues = FloatArray(TFModule.INPUT_SIZE*TFModule.INPUT_SIZE)
@@ -44,10 +45,10 @@ class TFlowRecognizer @Inject constructor(
 
     private fun prepareFrameGrayscaleValues(bitmap: Bitmap, inputSize: Int): FloatArray {
         bitmap.getPixels(inputSize * inputSize).forEachIndexed { index, intValue ->
-            val channel1 = (intValue shr 16 and 0xFF)
-            val channel2 = (intValue shr 8 and 0xFF)
-            val channel3 = (intValue and 0xFF)
-            val grayScale = ((channel1 + channel2 + channel3) / 3f) / IMAGE_MAX
+            val red = (intValue shr 16 and 0xFF)
+            val green = (intValue shr 8 and 0xFF)
+            val blue = (intValue and 0xFF)
+            val grayScale = (red * 299f/1000f + green * 587f/1000f + blue * 114f/1000f) / IMAGE_MAX
             grayScaleFloatValues[index] = grayScale
         }
         return grayScaleFloatValues
