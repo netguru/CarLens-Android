@@ -215,15 +215,15 @@ class CameraPresenterTest {
     @Test
     fun `Should show proper label on not car`() {
         generateRecognitions(Recognition(Car.NOT_A_CAR, 1f))
-        verify(view).updateViewFinder(0f)
-        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
+        verify(view, times(5)).updateViewFinder(0f)
+        verify(view, times(5)).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
 
     }
 
     @Test
     fun `Should show proper label on other car`() {
         generateRecognitions(Recognition(Car.OTHER_CAR, 1f))
-        verify(view).updateViewFinder(0f)
+        verify(view).updateViewFinder(1f)
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.FOUND_UNKNOWN)
     }
 
@@ -263,11 +263,7 @@ class CameraPresenterTest {
     private fun generateRecognitions(recognition: Recognition) {
         val frame = mock<Image>()
         tflow.stub {
-            on { classify(any(), any()) } doReturn Single.just(
-                listOf(
-                    recognition
-                )
-            )
+            on { classify(any()) } doReturn Single.just(recognition)
         }
         view.stub {
             on { acquireFrame() } doReturn frame

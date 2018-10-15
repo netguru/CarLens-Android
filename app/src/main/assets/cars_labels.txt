@@ -1,7 +1,6 @@
-ford fiesta
-honda civic
-nissan qashqai
-not a car
-other car
-toyota corolla
-volkswagen passat
+ford_fiesta
+honda_civic
+nissan_qashqai
+other_car
+toyota_corolla
+volkswagen_passat

@@ -2,6 +2,7 @@ package co.netguru.android.carrecognition.feature.camera
 
 import android.media.Image
 import co.netguru.android.carrecognition.data.db.Cars
+import co.netguru.android.carrecognition.data.recognizer.Recognition
 import com.google.ar.core.Anchor
 import com.google.ar.core.HitResult
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
@@ -23,6 +24,7 @@ interface CameraContract {
         fun showRecognitionUi()
         fun showPermissionUi()
         fun showExplorationMode()
+        fun showDebugResult(result: Recognition)
     }
     interface Presenter: MvpPresenter<View> {
         fun processHitResult(hitPoint: HitResult?)
