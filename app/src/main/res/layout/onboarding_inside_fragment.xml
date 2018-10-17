@@ -7,13 +7,12 @@
     android:paddingBottom="@dimen/margin_medium"
     tools:ignore="ContentDescription">
 
-    <ImageView
+    <VideoView
         android:id="@+id/carImg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/titleTxt"
-        android:paddingEnd="@dimen/margin_medium"
-        android:paddingStart="@dimen/margin_medium" />
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/titleTxt"
@@ -22,8 +21,8 @@
         android:layout_above="@+id/descriptionTxt"
         android:layout_marginBottom="@dimen/margin_large"
         android:gravity="center"
-        android:paddingEnd="@dimen/margin_xxxlarge"
         android:paddingStart="@dimen/margin_xxxlarge"
+        android:paddingEnd="@dimen/margin_xxxlarge"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -33,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:paddingEnd="@dimen/margin_xxxlarge"
         android:paddingStart="@dimen/margin_xxxlarge"
+        android:paddingEnd="@dimen/margin_xxxlarge"
         android:textColor="@color/subtitle" />
 </RelativeLayout>
