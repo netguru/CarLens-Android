@@ -17,6 +17,8 @@
     <dimen name="margin_xsmall">4dp</dimen>
     <dimen name="margin_xxsmall">2dp</dimen>
 
+    <dimen name="text_size_big">20sp</dimen>
+
     <dimen name="default_toolbar_title_size">23sp</dimen>
 
     <dimen name="corner_radius">20dp</dimen>

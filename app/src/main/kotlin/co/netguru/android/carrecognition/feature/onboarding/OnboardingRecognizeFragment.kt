@@ -15,7 +15,7 @@ class OnboardingRecognizeFragment : PageFragment() {
     }
 
     override fun getResourceUri(): Uri =
-        Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.onboarding_1)
+        Uri.parse("android.resource://${context?.packageName}/${R.raw.onboarding_1}")
 
     companion object {
         val TAG = OnboardingRecognizeFragment::class.java.simpleName!!

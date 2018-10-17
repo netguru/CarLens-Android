@@ -17,14 +17,18 @@ abstract class PageFragment : Fragment() {
 
     abstract fun getResourceUri(): Uri
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.onboarding_inside_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!fragmentResume && fragmentVisible){   //only when first time fragment is created
+        if (!fragmentResume && fragmentVisible) {   //only when first time fragment is created
             updatePlayer()
         }
 
@@ -55,7 +59,7 @@ abstract class PageFragment : Fragment() {
         carImg.seekTo(1)
     }
 
-    private fun updatePlayer(){
+    private fun updatePlayer() {
         carImg.requestFocus()
         carImg.start()
     }

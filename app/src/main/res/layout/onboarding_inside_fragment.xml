@@ -24,7 +24,7 @@
         android:paddingStart="@dimen/margin_xxxlarge"
         android:paddingEnd="@dimen/margin_xxxlarge"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="@dimen/text_size_big" />
 
     <TextView
         android:id="@+id/descriptionTxt"

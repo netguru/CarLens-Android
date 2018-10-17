@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.onboarding_inside_fragment.*
 class OnboardingDiscoverFragment : PageFragment() {
 
     override fun getResourceUri(): Uri =
-        Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.onboarding_2)
+        Uri.parse("android.resource://${context?.packageName}/${R.raw.onboarding_2}")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
