@@ -102,6 +102,7 @@ class ImageUtils @Inject constructor(private val context: Context) {
             val scaleFactorY = dstHeight / inHeight.toFloat()
             val scaleFactor = Math.max(scaleFactorX, scaleFactorY)
             matrix.postScale(scaleFactor, scaleFactor)
+            matrix.postTranslate(-(scaleFactor * inWidth - dstWidth)/2f , -(scaleFactor * inHeight - dstHeight)/2f )
         }
 
         if (rotation != 0) {

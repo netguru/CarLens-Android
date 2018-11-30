@@ -15,7 +15,7 @@ class TFModule {
     companion object {
 
         const val DETECTOR = "detector"
-        const val DETECTOR_MODEL_PATH = "CarDetectorModel_181011_1231.pb"
+        const val DETECTOR_MODEL_PATH = "CarDetectorModel_181130_1111.pb"
         const val DETECTOR_INPUT_LAYER_NAME = "input_0"
         const val DETECTOR_OUTPUT_LAYER_NAME = "final_result_0/Softmax"
 
