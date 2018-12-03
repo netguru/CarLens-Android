@@ -2,5 +2,4 @@ ford_fiesta
 honda_civic
 nissan_qashqai
 other_car
-toyota_corolla
 volkswagen_passat
