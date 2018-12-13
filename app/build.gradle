@@ -24,8 +24,8 @@ android {
         applicationId "co.netguru.android.carrecognition"
         minSdkVersion 24
         targetSdkVersion 27
-        versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 1
-        versionName '1.0.0'
+        versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 2
+        versionName '1.0.1'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
