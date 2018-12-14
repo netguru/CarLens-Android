@@ -6,12 +6,8 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.data.db.AppDatabase
-import co.netguru.android.carrecognition.data.recognizer.TFWrapper
 import dagger.Module
 import dagger.Provides
-import org.tensorflow.contrib.android.TensorFlowInferenceInterface
-import java.io.BufferedReader
-import javax.inject.Named
 
 
 @Module
@@ -28,8 +24,6 @@ class ApplicationModule {
     @Provides
     @AppScope
     fun bindContext(application: App): Context = application
-
-    }
 
     @Provides
     @AppScope
