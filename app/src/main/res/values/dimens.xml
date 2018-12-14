@@ -17,6 +17,8 @@
     <dimen name="margin_xsmall">4dp</dimen>
     <dimen name="margin_xxsmall">2dp</dimen>
 
+    <dimen name="text_size_big">20sp</dimen>
+
     <dimen name="default_toolbar_title_size">23sp</dimen>
 
     <dimen name="corner_radius">20dp</dimen>
@@ -77,10 +79,10 @@
     <dimen name="bottom_sheet_white_button_ripple_size">90dp</dimen>
     <dimen name="bottom_sheet_white_button_elevation">10dp</dimen>
     <dimen name="bottom_sheet_white_button_horizontal_margin">45dp</dimen>
-    
+
     <dimen name="bottom_sheet_scan_button_size">90dp</dimen>
     <dimen name="bottom_sheet_scan_button_elevation">10dp</dimen>
-    
+
     <dimen name="bottom_sheet_horizontal_progress_width">125dp</dimen>
     <dimen name="bottom_sheet_horizontal_progress_height">26dp</dimen>
     <dimen name="bottom_sheet_horizontal_progress_text_size">18sp</dimen>

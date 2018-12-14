@@ -41,9 +41,6 @@ class DebugMetricsHelper @Inject constructor() {
         }
         LeakCanary.install(context.applicationContext as App)
 
-        // AndroidDevMetrics
-        AndroidDevMetrics.initWith(context)
-
         // Stetho
         Stetho.initialize(
             Stetho.newInitializerBuilder(context)
@@ -52,27 +49,7 @@ class DebugMetricsHelper @Inject constructor() {
                 .build()
         )
 
-        // StrictMode
-        StrictModeNotifier.install(context)
-        Handler().post({
-            val threadPolicy = StrictMode.ThreadPolicy.Builder().detectAll()
-                .permitDiskReads()
-                .permitDiskWrites()
-                .penaltyLog() // Must!
-                .build()
-            StrictMode.setThreadPolicy(threadPolicy)
-
-            val vmPolicy = StrictMode.VmPolicy.Builder()
-                .detectAll()
-                .penaltyLog() // Must!
-                .build()
-            StrictMode.setVmPolicy(vmPolicy)
-        })
-
         //Timber
         Timber.plant(Timber.DebugTree())
-
-        //BlockCanary
-        BlockCanary.install(context, BlockCanaryContext()).start()
     }
 }

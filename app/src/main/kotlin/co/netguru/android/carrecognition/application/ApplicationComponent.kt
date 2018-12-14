@@ -10,6 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule
         modules = [
             AndroidSupportInjectionModule::class,
             ApplicationModule::class,
+            TFModule::class,
             ActivityBindingsModule::class,
             FragmentBindingsModule::class
         ]

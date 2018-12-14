@@ -65,3 +65,7 @@ Welcome to the **Car Regonition** project. It's an internal application made for
 
 ### Supported devices
 Supported devices are listed here: https://developers.google.com/ar/discover/supported-devices 
+
+## Related repositories
+- [iOS](https://github.com/netguru/car-recognition-ios)
+- [Machine Learning](https://github.com/netguru/car-recognition-ml)

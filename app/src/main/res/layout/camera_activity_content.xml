@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,10 +40,10 @@
 
     <co.netguru.android.carrecognition.feature.camera.RecognitionTextSwitcher
         android:id="@+id/recognitionLabelSwitcher"
-        android:clipChildren="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_large"
+        android:clipChildren="false"
         app:initText="@string/recognition_indicator_put_car_in_center"
         app:layout_constraintEnd_toEndOf="@+id/recognitionIndicator"
         app:layout_constraintStart_toStartOf="@+id/recognitionIndicator"
@@ -53,40 +54,54 @@
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
         android:layout_marginStart="@dimen/car_list_button_size"
+        android:background="@color/transparent"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
         app:layout_constraintBottom_toBottomOf="@id/scanButtonMain"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@drawable/car_list_button_background_translucent"
-        android:background="@color/transparent" />
+        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
+        app:srcCompat="@drawable/car_list_button_background_translucent" />
 
     <Button
         android:id="@+id/scanButtonMain"
         android:layout_width="@dimen/bottom_sheet_scan_button_size"
         android:layout_height="@dimen/bottom_sheet_scan_button_size"
         android:layout_marginBottom="@dimen/margin_medium"
+        android:alpha="0"
         android:background="@drawable/scan_button_background"
         android:contentDescription="@null"
         android:elevation="@dimen/bottom_sheet_scan_button_elevation"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/closeRecognitionModeButtonMain"
-        app:layout_constraintStart_toEndOf="@+id/carListButtonMain"
-        android:alpha="0"
-        android:enabled="false" />
+        app:layout_constraintStart_toEndOf="@+id/carListButtonMain" />
 
     <ImageButton
         android:id="@+id/closeRecognitionModeButtonMain"
         android:layout_width="@dimen/car_list_button_size"
         android:layout_height="@dimen/car_list_button_size"
         android:layout_marginEnd="@dimen/car_list_button_size"
+        android:alpha="0"
+        android:background="@color/transparent"
         android:clickable="false"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/scanButtonMain"
-        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
         app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/close_recognition_button_background_translucent"
-        android:background="@color/transparent"
-        android:alpha="0" />
+        app:layout_constraintTop_toTopOf="@+id/scanButtonMain"
+        app:srcCompat="@drawable/close_recognition_button_background_translucent" />
+
+    <TextView
+        android:id="@+id/debugResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cameraDim"
+        tools:text="TextView" />
 
 </android.support.constraint.ConstraintLayout>

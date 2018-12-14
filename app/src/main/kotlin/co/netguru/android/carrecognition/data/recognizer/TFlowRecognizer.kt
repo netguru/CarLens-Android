@@ -1,65 +1,62 @@
 package co.netguru.android.carrecognition.data.recognizer
 
-import android.content.Context
-import android.media.Image
-import co.netguru.android.carrecognition.application.ApplicationModule
+import android.graphics.Bitmap
+import android.graphics.Color
+import co.netguru.android.carrecognition.application.TFModule
 import co.netguru.android.carrecognition.application.scope.AppScope
-import co.netguru.android.carrecognition.common.extensions.ImageUtils
-import co.netguru.android.carrecognition.common.extensions.getOutputSize
+import co.netguru.android.carrecognition.common.extensions.map
 import io.reactivex.Single
-import org.tensorflow.contrib.android.TensorFlowInferenceInterface
 import javax.inject.Inject
 import javax.inject.Named
 
-
 @AppScope
 class TFlowRecognizer @Inject constructor(
-        private val context: Context,
-        private val tensorFlow: TensorFlowInferenceInterface,
-        @Named(ApplicationModule.LABELS_BINDING) private val labels: List<String>) {
+    @Named(TFModule.DETECTOR) private val detector: TFWrapper,
+    @Named(TFModule.RECOGNIZER) private val recognizer: TFWrapper,
+    @Named(TFModule.LABELS_BINDING) private val labels: List<String>
+) {
 
     companion object {
-        private const val FRAME_ROTATION = -90
-
-        private const val INPUT_LAYER_NAME = "Placeholder"
-        private const val OUTPUT_LAYER_NAME = "final_result"
-        private const val INPUT_SIZE = 224
         private const val IMAGE_MEAN = 128
         private const val IMAGE_STD = 128f
-
-        private const val NUMBER_OF_IMAGES = 1L
-        private const val NUMBER_OF_CHANNELS = 3
-
-        private const val CONFIDENCE_THRESHOLD = 0.1f
+        private const val IMAGE_MAX = 255f
     }
 
-    private val colorFloatValues = FloatArray(INPUT_SIZE * INPUT_SIZE * NUMBER_OF_CHANNELS)
-    private val outputs: FloatArray = FloatArray(tensorFlow.getOutputSize(OUTPUT_LAYER_NAME))
+    private val grayScaleFloatValues = FloatArray(TFModule.INPUT_SIZE * TFModule.INPUT_SIZE)
 
-    fun classify(frame: Image): Single<List<Recognition>> {
+    fun classify(bitmap: Bitmap): Single<Recognition> {
         return Single.fromCallable {
-            tensorFlow.feed(
-                    INPUT_LAYER_NAME, prepareFrameColorValues(frame), NUMBER_OF_IMAGES,
-                    INPUT_SIZE.toLong(), INPUT_SIZE.toLong(), NUMBER_OF_CHANNELS.toLong()
-            )
-            tensorFlow.run(arrayOf(OUTPUT_LAYER_NAME))
-            tensorFlow.fetch(OUTPUT_LAYER_NAME, outputs)
-
-            return@fromCallable outputs.mapIndexed { index, confidence ->
-                Recognition(Car.of(labels[index]), confidence)
-            }.filter { it.confidence > CONFIDENCE_THRESHOLD }
+            prepareFrameGrayscaleValues(bitmap, TFModule.INPUT_SIZE)
+            return@fromCallable detector
+                .run(grayScaleFloatValues)
+                .map { (index, confidence) ->
+                    if (index == 1) {
+                        Recognition(Car.NOT_A_CAR, confidence)
+                    } else {
+                        recognizer.run(grayScaleFloatValues)
+                            .map {
+                                Recognition(Car.of(labels[it.first]), it.second)
+                            }
+                    }
+                }
         }
     }
 
-    private fun prepareFrameColorValues(image: Image): FloatArray {
-        val pixels = ImageUtils.prepareBitmap(
-                context, image, image.width, image.height, FRAME_ROTATION, INPUT_SIZE
-        )
-        pixels.forEachIndexed { index, intValue ->
-            colorFloatValues[index * 3 + 0] = ((intValue shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 1] = ((intValue shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD
-            colorFloatValues[index * 3 + 2] = ((intValue and 0xFF) - IMAGE_MEAN) / IMAGE_STD
+    private fun prepareFrameGrayscaleValues(bitmap: Bitmap, inputSize: Int): FloatArray {
+        bitmap.getPixels(inputSize * inputSize).forEachIndexed { index, intValue ->
+            val red = Color.red(intValue)
+            val green = Color.green(intValue)
+            val blue = Color.blue(intValue)
+            val grayScale =
+                (red * 299f / 1000f + green * 587f / 1000f + blue * 114f / 1000f) / IMAGE_MAX
+            grayScaleFloatValues[index] = grayScale
         }
-        return colorFloatValues
+        return grayScaleFloatValues
+    }
+
+    private fun Bitmap.getPixels(size: Int): IntArray {
+        val intArray = IntArray(size)
+        getPixels(intArray, 0, width, 0, 0, width, height)
+        return intArray
     }
 }

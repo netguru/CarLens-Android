@@ -5,10 +5,10 @@ buildscript {
         kotlinVersion = '1.2.60'
     }
     repositories {
+        google()
         jcenter()
         mavenCentral()
         mavenLocal()
-        google()
         maven { url "https://plugins.gradle.org/m2/" }
     }
 
@@ -39,9 +39,9 @@ detekt {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         mavenCentral()
-        google()
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo/" }
         maven { url "https://maven.fabric.io/public" }
