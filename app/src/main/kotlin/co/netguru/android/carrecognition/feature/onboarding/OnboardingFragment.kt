@@ -37,6 +37,7 @@ class OnboardingFragment : Fragment() {
 
     private fun setupViewPager() {
         viewPager.adapter = OnboardingAdapter(childFragmentManager)
+        viewPager.offscreenPageLimit = 3
         nextImg.setOnClickListener { viewPager.currentItem = 1 }
         viewPagerIndicator.setViewPager(viewPager)
 

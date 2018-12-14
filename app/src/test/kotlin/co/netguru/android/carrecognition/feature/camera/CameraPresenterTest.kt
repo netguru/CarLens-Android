@@ -1,7 +1,9 @@
 package co.netguru.android.carrecognition.feature.camera
 
+import android.graphics.Bitmap
 import android.media.Image
 import co.netguru.android.carrecognition.RxSchedulersOverrideRule
+import co.netguru.android.carrecognition.common.extensions.ImageUtils
 import co.netguru.android.carrecognition.data.db.AppDatabase
 import co.netguru.android.carrecognition.data.db.Cars
 import co.netguru.android.carrecognition.data.db.CarsDao
@@ -23,9 +25,11 @@ class CameraPresenterTest {
 
     private val view = mock<CameraContract.View>()
     private val tflow = mock<TFlowRecognizer>()
+    private val imageUtils = mock<ImageUtils>()
     private val database = mock<AppDatabase>()
     private val carsDao = mock<CarsDao>()
     private val car = mock<Cars>()
+    private val bitmap = mock<Bitmap>()
     private lateinit var presenter: CameraPresenter
 
     @Rule
@@ -36,7 +40,8 @@ class CameraPresenterTest {
     fun before() {
         reset(tflow, view, database, carsDao, car)
         Mockito.`when`(database.carDao()).thenReturn(carsDao)
-        presenter = CameraPresenter(tflow, database)
+        Mockito.`when`(imageUtils.prepareBitmap(any(), any())).thenReturn(bitmap)
+        presenter = CameraPresenter(tflow, imageUtils, database)
         presenter.attachView(view)
     }
 
@@ -210,15 +215,15 @@ class CameraPresenterTest {
     @Test
     fun `Should show proper label on not car`() {
         generateRecognitions(Recognition(Car.NOT_A_CAR, 1f))
-        verify(view).updateViewFinder(0f)
-        verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
+        verify(view, times(5)).updateViewFinder(0f)
+        verify(view, times(5)).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.INIT)
 
     }
 
     @Test
     fun `Should show proper label on other car`() {
         generateRecognitions(Recognition(Car.OTHER_CAR, 1f))
-        verify(view).updateViewFinder(0f)
+        verify(view).updateViewFinder(1f)
         verify(view).updateRecognitionIndicatorLabel(CameraPresenter.RecognitionLabel.FOUND_UNKNOWN)
     }
 
@@ -258,11 +263,7 @@ class CameraPresenterTest {
     private fun generateRecognitions(recognition: Recognition) {
         val frame = mock<Image>()
         tflow.stub {
-            on { classify(any()) } doReturn Single.just(
-                listOf(
-                    recognition
-                )
-            )
+            on { classify(any()) } doReturn Single.just(recognition)
         }
         view.stub {
             on { acquireFrame() } doReturn frame
