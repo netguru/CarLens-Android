@@ -6,8 +6,10 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import co.netguru.android.carrecognition.application.scope.AppScope
 import co.netguru.android.carrecognition.data.db.AppDatabase
+import co.netguru.android.carrecognition.data.recognizer.TFWrapper
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 
 
 @Module

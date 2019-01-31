@@ -79,10 +79,8 @@
     <dimen name="bottom_sheet_white_button_ripple_size">90dp</dimen>
     <dimen name="bottom_sheet_white_button_elevation">10dp</dimen>
     <dimen name="bottom_sheet_white_button_horizontal_margin">45dp</dimen>
-
     <dimen name="bottom_sheet_scan_button_size">90dp</dimen>
     <dimen name="bottom_sheet_scan_button_elevation">10dp</dimen>
-
     <dimen name="bottom_sheet_horizontal_progress_width">125dp</dimen>
     <dimen name="bottom_sheet_horizontal_progress_height">26dp</dimen>
     <dimen name="bottom_sheet_horizontal_progress_text_size">18sp</dimen>
