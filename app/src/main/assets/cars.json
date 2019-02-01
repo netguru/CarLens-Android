@@ -16,21 +16,6 @@
       "image_locked": "HondaCivic_locked"
     },
     {
-      "id": "ToyotaCorolla",
-      "brand": "Toyota",
-      "model": "Corolla",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "stars": 2,
-      "acceleration_mph": 10.1,
-      "speed_mph": 130,
-      "power": 90,
-      "engine": 1330,
-      "brand_logo_image": "Toyota",
-      "brand_logo_image_locked": "Toyota_locked",
-      "image": "ToyotaCorolla",
-      "image_locked": "ToyotaCorolla_locked"
-    },
-    {
       "id": "FordFiesta",
       "brand": "Ford",
       "model": "Fiesta",
