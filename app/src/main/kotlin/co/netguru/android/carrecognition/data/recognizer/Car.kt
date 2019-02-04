@@ -9,11 +9,7 @@ enum class Car(
     FORD_FIESTA("FordFiesta"),
     HONDA_CIVIC("HondaCivic"),
     NISSAN_QASHQAI("NissanQashqai"),
-    TOYOTA_CAMRY("ToyotaCamry"),
-    TOYOTA_COROLLA("ToyotaCorolla"),
-    VOLKSWAGEN_GOLF("VolkswagenGolf"),
-    VOLKSWAGEN_PASSAT("VolkswagenPassat"),
-    VOLKSWAGEN_TIGUAN("VolkswagenTiguan");
+    VOLKSWAGEN_PASSAT("VolkswagenPassat");
 
     companion object {
         const val TOP_SPEED_MAX = 200
