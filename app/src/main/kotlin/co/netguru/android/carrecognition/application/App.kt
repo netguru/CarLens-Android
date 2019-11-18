@@ -5,6 +5,7 @@ import dagger.android.support.DaggerApplication
 import io.reactivex.plugins.RxJavaPlugins
 import javax.inject.Inject
 
+
 class App : DaggerApplication() {
 
     @Inject

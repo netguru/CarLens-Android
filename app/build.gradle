@@ -230,4 +230,7 @@ dependencies {
 
     // Lottie
     implementation libs.lottie
+
+    //AppCenter
+    implementation libs.appCenterCrashes
 }
