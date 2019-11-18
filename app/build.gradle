@@ -17,13 +17,13 @@ ext {
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "co.netguru.android.carrecognition"
         minSdkVersion 24
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode isBitrise ? Integer.parseInt(bitrise.io.buildNumber) : 2
         versionName '1.0.1'
 
