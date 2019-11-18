@@ -62,7 +62,7 @@ ext {
             lottie                  : 'com.airbnb.android:lottie:2.7.0',
             roomRx                  : "android.arch.persistence.room:rxjava2:$roomVersion",
             room                    : "android.arch.persistence.room:runtime:$roomVersion",
-            hockeyApp               : "net.hockeyapp.android:HockeySDK:$hockeyAppVersion",
+            appCenterCrashes        : "com.microsoft.appcenter:appcenter-crashes:2.5.0",
             roundButton             : "com.marozzi.roundbutton:round-button:1.0.7"
     ]
 

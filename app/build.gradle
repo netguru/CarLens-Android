@@ -12,7 +12,7 @@ apply from: '../buildsystem/sonarqube.gradle'
 ext {
 
     secrets = [
-            hockeyAppId: keyProperty("HOCKEY_APP_ID")
+            appCenterAppId: keyProperty("APP_CENTER_APP_ID")
     ]
 }
 
@@ -29,9 +29,7 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        manifestPlaceholders = [
-                HOCKEY_APP_ID    : secrets.hockeyAppId
-        ]
+        buildConfigField 'String', 'APP_CENTER_ID', "\"${secrets.appCenterId}\""
     }
 
     buildTypes {
@@ -232,7 +230,4 @@ dependencies {
 
     // Lottie
     implementation libs.lottie
-
-    // HockeyApp
-    implementation libs.hockeyApp
 }
