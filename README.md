@@ -1,8 +1,8 @@
 # Car Regonition
 
-| environment | google play           | status             | test coverage |
+| environment | google play           | app center         | google play   |
 |-------------|-----------------------|--------------------|---------------|
-| Android     | [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.carrecognition) | [![Build Status](https://app.bitrise.io/app/9daec990ebe15a1e/status.svg?token=gGmNVn-KF3WX1axova7c3A&branch=master)](https://app.bitrise.io/app/9daec990ebe15a1e) | [![codecov](https://codecov.io/gh/netguru/car-recognition-android/branch/master/graph/badge.svg?token=1GVnGdZt3A)](https://codecov.io/gh/netguru/car-recognition-android) |
+| Android     | [Google Play](https://play.google.com/store/apps/details?id=co.netguru.android.carrecognition) |  [App Center](https://appcenter.ms/orgs/office-4dmm/apps/car-recognition-android)| [![Build Status](https://app.bitrise.io/app/9daec990ebe15a1e/status.svg?token=gGmNVn-KF3WX1axova7c3A&branch=master)](https://app.bitrise.io/app/9daec990ebe15a1e) |
 <!--- If applies, add link to app on Google Play -->
 
 ## About
@@ -22,7 +22,7 @@ Welcome to the **Car Regonition** project. It's an internal application made for
 	```
 2. Place `secrets.properties` file in application root folder:
    ```bash
-   HockeyAppId=ACTUAL_KEY
+   AppCenterAppId=ACTUAL_KEY
    # (...)
    ```  
 3. Open the project with Android Studio.
@@ -51,7 +51,7 @@ Welcome to the **Car Regonition** project. It's an internal application made for
 
 | Property             | External property name | Environment variable |
 |----------------------|------------------------|----------------------|
-| HockeyApp App ID     | HockeyAppId            | HOCKEY_APP_ID        |
+| App Center App ID    | AppCenterAppId         | APP_CENTER_APP_ID    |
 | Sonar access token   | -                      | SONAR_ACCESS_TOKEN   |
 
 ### Bitrise
@@ -60,8 +60,8 @@ Welcome to the **Car Regonition** project. It's an internal application made for
  - develop - workflow triggered on Push to develop branch;
  - production - workflow triggered on Push to production branch;
 
-### HockeyApp / Fabric environments
- - Project use HockeyApp for beta distribution and Crash managing and monitoring. Deploy to Hockeyapp is performed automatically by Bitrise system in develop and production step.
+### AppCenter / Fabric environments
+ - Project use App Center for beta distribution and Crash managing and monitoring. Deploy to App Center is performed automatically by Bitrise system in develop and production step.
 
 ### Supported devices
 Supported devices are listed here: https://developers.google.com/ar/discover/supported-devices 

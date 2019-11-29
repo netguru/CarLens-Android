@@ -2,8 +2,11 @@ package co.netguru.android.carrecognition.application
 
 import android.content.Context
 import co.netguru.android.carrecognition.application.scope.AppScope
-import net.hockeyapp.android.CrashManager
 import javax.inject.Inject
+import co.netguru.android.carrecognition.BuildConfig
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.crashes.Crashes
+import android.app.Application
 
 /**
  * Helper class that initializes a set of debugging tools
@@ -24,7 +27,7 @@ import javax.inject.Inject
 @AppScope
 class DebugMetricsHelper @Inject constructor() {
 
-    internal fun init(context: Context) {
-        CrashManager.register(context)
+    internal fun init(application: Application) {
+        AppCenter.start(application, BuildConfig.APP_CENTER_ID, Crashes::class.java)
     }
 }
